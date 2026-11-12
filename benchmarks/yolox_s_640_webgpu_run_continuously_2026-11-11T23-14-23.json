@@ -1,0 +1,84 @@
+{
+  "takenAt": "2026-11-11T23:14:23.819Z",
+  "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.2 Mobile/15E148 Safari/604.1",
+  "source": "camera",
+  "camera": {
+    "label": "Back Ultra Wide Camera",
+    "width": 3840,
+    "height": 2160,
+    "frameRate": 30,
+    "zoom": 1
+  },
+  "requested": {
+    "label": "4K (3840×2160)",
+    "w": 3840,
+    "h": 2160,
+    "fps": 60
+  },
+  "measuredFps": 29.9,
+  "devices": [
+    "Front Ultra Wide Camera",
+    "Back Triple Camera",
+    "Back Dual Wide Camera",
+    "Back Ultra Wide Camera",
+    "Back Dual Camera",
+    "Back Camera",
+    "Front Camera",
+    "Back Telephoto Camera"
+  ],
+  "capabilities": {
+    "aspectRatio": {
+      "max": 4032,
+      "min": 0.00033068783068783067
+    },
+    "backgroundBlur": [false],
+    "deviceId": "01D3F32A4FAD7C2700F541B4F982AE3BAFE1FF38",
+    "facingMode": ["environment"],
+    "focusDistance": {
+      "min": 0.02
+    },
+    "frameRate": {
+      "max": 60,
+      "min": 1
+    },
+    "groupId": "6268173ACF1D644E47A93559D19874637E041638",
+    "height": {
+      "max": 3024,
+      "min": 1
+    },
+    "powerEfficient": [false, true],
+    "torch": true,
+    "whiteBalanceMode": ["manual", "continuous"],
+    "width": {
+      "max": 4032,
+      "min": 1
+    },
+    "zoom": {
+      "max": 10,
+      "min": 1
+    }
+  },
+  "wakeLock": {
+    "state": "off",
+    "releases": 0
+  },
+  "detector": {
+    "model": "yolox_s",
+    "inputSize": 640,
+    "backend": "webgpu",
+    "info": "threads=1 crossOriginIsolated=false webgpu=true",
+    "loadMs": 353,
+    "warmupMs": 64,
+    "cropSourcePx": 640,
+    "runs": 5000,
+    "elapsedS": 611.8,
+    "inferP50": 76,
+    "inferP95": 78,
+    "totalP50": 105,
+    "grabP50": 13,
+    "prepP50": 3,
+    "postP50": 0,
+    "cropsPerS": 9.5,
+    "inferP50First50": 64
+  }
+}

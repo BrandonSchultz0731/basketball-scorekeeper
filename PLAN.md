@@ -2,7 +2,7 @@
 
 A web app that watches a full-court pickup basketball game through a phone camera and keeps score automatically.
 
-This plan was written before any code or footage exists. Browser-capability claims below are from memory and are marked **[verify]**; check them on a real iPhone before building on them.
+This plan was written before any code or footage existed. Browser-capability claims were from memory and marked **[verify]**. Phase 0 has since checked most of them on the user's iPhone; results are marked **[verified 2026-11-11]** below, and the raw numbers are in `benchmarks/README.md`.
 
 ## What the user wants
 
@@ -44,7 +44,7 @@ Brandon plays indoor, full-court pickup basketball. Players forget the score. He
 One phone on a tripod or clamp at the midcourt sideline, as high and as far back as the gym allows, using the ultra-wide (0.5x) lens.
 
 - Rough geometry: with the phone about 10 ft behind the sideline, the two hoops span about 100 degrees horizontally, which an iPhone ultra-wide covers. Flush against the sideline it needs about 118 degrees, which it does not.
-- At that distance each hoop is roughly 55 ft away, so the ball is only about 14 px wide at 1080p and about 28 px at 4K. Capture at the highest resolution the browser allows and crop, rather than downscaling the whole frame.
+- At that distance each hoop is roughly 55 ft away, so the ball is small. **[verified 2026-11-11]** It measured 91 px at 15 ft and 40 px at 30 ft at 4K, which extrapolates to about **22–25 px at 55 ft**, a little below the original 28 px estimate. Capture at the highest resolution the browser allows and crop, rather than downscaling the whole frame. Safari grants 30 fps at every resolution, so 4K costs no frame rate.
 - Height matters: players standing between the camera and the hoop block the view. Rough geometry: with the lens at 5 ft, a 6.5 ft player at the near sideline blocks the line of sight to the rim; at 7 ft the line clears their head by about a foot. Seeing shooters' feet for the 2 vs. 3 call benefits from every extra foot. The user is buying a light stand and has been advised to run it at 7 to 8 ft.
 - At that height the screen is hard to reach and faces away from the court. Setup has to be done in the final camera position, because raising the stand afterwards changes the view and invalidates the rim marks and arcs. Design setup to need as few precise taps as possible: detect the rims automatically and ask for confirmation, make the tap targets large, and consider letting setup be done on a captured still frame. Raise this with the user if it turns out to be awkward in practice.
 - The side-on view is good for seeing the ball drop through the net, but it cannot tell depth: an airball passing in front of the net can look like a make. See "Make detection".
@@ -69,7 +69,7 @@ camera (or video file) -> frame source -> ring buffer of recent frames (~4 s)
 - **Frame source abstraction.** The live camera and a recorded video file must be interchangeable inputs. All development and evaluation runs on recorded video; nobody will be at a court while coding.
 - **Cheap continuous work, expensive on-demand work.** Only the two small rim crops are processed continuously. The costly step (finding the shooter) runs only after a make, on frames already in the ring buffer. A few seconds of delay before the score updates is acceptable.
 - **Worker thread.** Inference runs in a Web Worker so the UI stays responsive.
-- **Suggested stack:** Vite + TypeScript + React, `onnxruntime-web` with WebGPU and a WASM fallback, IndexedDB for game history. Python (with `uv`) for any model training and export. These are suggestions; change them if something fits better.
+- **Stack:** Vite + TypeScript + React, `onnxruntime-web` with WebGPU and a WASM fallback, IndexedDB for game history. Python (with `uv`) for any model training and export. In use since Phase 0, with pnpm, Mantine for UI, and ESLint. Code standards are in `.claude/skills/developing-code/SKILL.md`.
 
 ### Setup flow (once per session, phone already mounted)
 
@@ -102,11 +102,14 @@ Keeping the arc as a polygon in image space avoids full camera calibration for t
 
 ### Make detection
 
-- Start with a COCO-pretrained nano detector, which already has `sports ball` and `person` classes, so there is a baseline with no training. Fine-tune on the user's footage only if evaluation shows it is needed.
+- Start with a COCO-pretrained detector, which already has `sports ball` and `person` classes, so there is a baseline with no training. **[verified 2026-11-11]** COCO YOLOX-nano almost never recognizes a basketball. YOLOX-s does much better, but on a still ball at 0.1 threshold it fell from 100% of frames at 91 px to 77% at 40 px, and the ball will be about 22–25 px at the rim. **Plan on fine-tuning on the user's footage**; it is no longer just a fallback. Use YOLOX-s as the untrained baseline. Also test enlarging the rim crop (a smaller area scaled up to the model input), since the model does better on balls that look bigger.
 - Licensing: Ultralytics YOLO is AGPL-3.0. That is fine for a personal project but restrictive if this is ever distributed commercially. Prefer a permissively licensed detector (YOLOX, RT-DETR family) if it performs comparably.
 - A make is the ball seen above the rim, then inside the rim's horizontal extent, then below the rim in the net region, within a short time window.
 - To reject balls passing in front of or behind the net, add a second cue: the net moves when a ball goes through it. Frame differencing in the net region right after the ball passes is a cheap check.
-- Use a motion gate (frame differencing in the crop) so the detector only runs when something is moving near the rim. This is the main lever on battery and heat.
+- Use a motion gate (frame differencing in the crop) so the detector only runs when something is moving near the rim. This is the main lever on battery and heat. **[verified 2026-11-11]** This is required, not optional. YOLOX-s on WebGPU takes 45 ms per crop when cool and 76 ms after 10 minutes of continuous use, so it cannot run on every frame for both rims. In a full-court game usually only one rim is active at a time, which helps:
+  - **nano:** 11 ms per crop, so it could check one rim every frame.
+  - **s:** about every second or third frame cool, every third or fourth hot.
+- About 20 ms per 4K crop goes to work outside the model: cutting the crop out of the frame, plus overhead that grows with camera resolution. Overlap that with inference in Phase 2.
 - If rule-based logic plateaus, the next step is a small classifier over short rim-crop clips (make vs. not), trained on clips the app saves.
 
 ### 2 vs. 3
@@ -161,6 +164,10 @@ Goal: prove the risky browser assumptions on a real iPhone, and get footage.
 
 Exit: measured numbers for resolution, frame rate, and inference time on the user's phone, plus at least one labeled game.
 
+Status (2026-11-11):
+- **Done:** the spike page and the labeling page are built, and the phone numbers are measured (`benchmarks/README.md`). The spike page is tested over local HTTPS. A GitHub Pages workflow is set up, but it only runs once the repo is pushed and Pages is enabled.
+- **Remaining:** the gym recording (checklist in `docs/gym-recording.md`) and its labels. A shoot-around is acceptable for the first session; a real game is still needed later for occlusion, shooter finding and game-start detection.
+
 ### Phase 1 — Manual scoreboard
 
 The full game-state model and UI with manual scoring only: setup flow, speech, undo, history in IndexedDB, installable to the home screen. Includes the live viewer page: room link, QR code, realtime publishing, and stale-data indicator. Useful on its own and the frame every later phase plugs into.
@@ -188,14 +195,23 @@ A full session on battery: heat, throttling, dropped frames, memory growth, and 
 
 ## Risks to resolve first
 
-1. **Ball size at distance.** About 14–28 px, with indoor motion blur. If the detector cannot find the ball in the rim crop, nothing else works. Phase 0 footage answers this.
-2. **iOS Safari camera control [verify].** Whether `getUserMedia` exposes the ultra-wide camera as a selectable device, and what maximum resolution and frame rate it grants.
-3. **On-device inference speed [verify].** WebGPU availability and speed in Safari on the user's iPhone, and the WASM fallback speed.
-4. **Staying alive for an hour [verify].** Screen Wake Lock behaviour in Safari and in home-screen mode, thermal throttling, and battery drain. Assume the phone is on a battery pack.
+1. **Ball size at distance.** About 22–25 px at 4K (measured at home and extrapolated), with indoor motion blur. If the detector cannot find the ball in the rim crop, nothing else works. Off-the-shelf models are weak at this size (see Make detection), so this is now the main risk. Gym footage answers it.
+2. **iOS Safari camera control [verified 2026-11-11].** `getUserMedia` lists "Back Ultra Wide Camera" as its own device, and the app picks it automatically. It grants 3840×2160 but only **30 fps**, at 4K, 1440p and 1080p alike, although the camera reports a 60 fps maximum.
+3. **On-device inference speed [verified 2026-11-11].** WebGPU works in Safari. Per crop, cool:
+   - YOLOX-nano (416): 11 ms
+   - YOLOX-tiny (416): 15 ms
+   - YOLOX-s (640): 45 ms
+   - YOLOX-nano on WASM, single thread: 27 ms
+
+   Threads are unavailable without cross-origin isolation.
+4. **Staying alive for an hour [partly verified 2026-11-11].**
+   - **Thermal throttling is real:** sustained YOLOX-s slowed about 70% over 10 minutes, from 45 to 76 ms per crop.
+   - **Screen:** stays on because the user's phone has Auto-Lock set to Never. The Screen Wake Lock API itself is untested, and so is home-screen mode.
+   - **Battery drain** and a full-length session on a battery pack in the gym are still to measure (Phase 4, and the first recording session).
 5. **Occlusion and depth ambiguity** from the sideline view, as described above.
 6. **2 vs. 3 accuracy.** May stay mediocre on-device, and with no mid-game correction a wrong call stays in the score. If it cannot be made reliable, tell the user and let them choose between flat scoring and accepting the error rate.
 7. **Hands-off accuracy in general.** The requirement leaves no safety net. If the footage shows the make detector cannot get close to the target, that is a finding to report early, not something to paper over with UI.
 
 ## Open questions for the user
 
-None blocking. Remaining unknowns wait on the first recorded session.
+None blocking. Remaining unknowns wait on the first recorded session: whether one phone sees both hoops well enough from the real mounting spot, and how detectable the ball is at the rim.
