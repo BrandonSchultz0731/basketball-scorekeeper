@@ -3,3 +3,14 @@ dist/
 public/models/
 .DS_Store
 *.local
+
+# Gym footage: large and private. Keep videos in footage/ (or outside the repo); labels can be committed.
+footage/**/*
+!footage/**/
+!footage/**/*.labels.json
+*.mov
+*.MOV
+*.mp4
+*.MP4
+*.m4v
+*.hevc

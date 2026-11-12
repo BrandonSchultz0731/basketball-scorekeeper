@@ -5,14 +5,24 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { HOOP_COLOR } from '../shared/theme';
 import { HOOP } from '../shared/enums';
 import { HOOPS, otherHoop } from '../shared/utils';
-import { LABEL_EVENT_KIND, type LabelEvent, type LabelFile } from './types';
+import { LABEL_EVENT_KIND, MISS_TYPE, type LabelEvent, type LabelFile } from './types';
 
 const KEYS: Record<string, { hoop: HOOP; points: 2 | 3 }> = {
   q: { hoop: HOOP.LEFT, points: 2 }, w: { hoop: HOOP.LEFT, points: 3 },
   o: { hoop: HOOP.RIGHT, points: 2 }, p: { hoop: HOOP.RIGHT, points: 3 },
 };
+const MISS_KEYS: Record<string, HOOP> = { a: HOOP.LEFT, l: HOOP.RIGHT };
+const MISS_TYPE_LABEL: Record<MISS_TYPE, string> = {
+  [MISS_TYPE.FRONT_AIRBALL]: 'front airball',
+  [MISS_TYPE.BEHIND_NET]: 'behind net',
+  [MISS_TYPE.BACK_RIM_DOWN]: 'back rim, down',
+  [MISS_TYPE.RIM_OUT]: 'rim out',
+  [MISS_TYPE.NET_TOUCH]: 'net touch',
+  [MISS_TYPE.OTHER]: 'other',
+};
 const KIND_LABEL: Record<LABEL_EVENT_KIND, string> = {
   [LABEL_EVENT_KIND.MAKE]: 'make',
+  [LABEL_EVENT_KIND.MISS]: 'miss',
   [LABEL_EVENT_KIND.GAME_START]: 'game start',
   [LABEL_EVENT_KIND.GAME_END]: 'game end',
 };
@@ -76,10 +86,12 @@ export const App = () => {
       const v = videoRef.current!;
       const k = e.key.toLowerCase();
       const t = v.currentTime;
-      if (KEYS[k] && !e.metaKey && !e.ctrlKey) add({ kind: LABEL_EVENT_KIND.MAKE, t, ...KEYS[k] });
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (KEYS[k]) add({ kind: LABEL_EVENT_KIND.MAKE, t, ...KEYS[k] });
+      else if (MISS_KEYS[k]) add({ kind: LABEL_EVENT_KIND.MISS, t, hoop: MISS_KEYS[k] });
       else if (k === 'g') add({ kind: LABEL_EVENT_KIND.GAME_START, t });
       else if (k === 'e') add({ kind: LABEL_EVENT_KIND.GAME_END, t });
-      else if (k === 'u' && selected !== null) { const ev = events[selected]; if (ev?.kind === LABEL_EVENT_KIND.MAKE) update(selected, { uncertain: !ev.uncertain }); }
+      else if (k === 'u' && selected !== null) { const ev = events[selected]; if (ev?.kind === LABEL_EVENT_KIND.MAKE || ev?.kind === LABEL_EVENT_KIND.MISS) update(selected, { uncertain: !ev.uncertain }); }
       else if ((k === 'backspace' || k === 'delete') && selected !== null) remove(selected);
       else if (k === ' ') { v.paused ? v.play() : v.pause(); }
       else if (k === 'arrowleft') seek(t - (e.shiftKey ? 10 : 2));
@@ -126,6 +138,7 @@ export const App = () => {
     else if (e.kind === LABEL_EVENT_KIND.MAKE && live && e.t <= now) score[e.hoop] += e.points;
   }
   const makes = events.filter((e) => e.kind === LABEL_EVENT_KIND.MAKE).length;
+  const misses = events.filter((e) => e.kind === LABEL_EVENT_KIND.MISS).length;
 
   const makeButtons = HOOPS.flatMap((hoop) =>
     ([2, 3] as const).map((points) => ({ hoop, points, key: Object.keys(KEYS).find((k) => KEYS[k].hoop === hoop && KEYS[k].points === points)! })),
@@ -153,7 +166,7 @@ export const App = () => {
                 {' – '}
                 <Text span inherit c={HOOP_COLOR[HOOP.RIGHT]}>{score[HOOP.RIGHT]} {hoopNames[HOOP.RIGHT]}</Text>
               </Text>
-              <Text c="dimmed" size="sm">{clock(now)} · {rate}× · {makes} makes</Text>
+              <Text c="dimmed" size="sm">{clock(now)} · {rate}× · {makes} makes · {misses} misses</Text>
             </Group>
             <Group gap="xs">
               {makeButtons.map(({ hoop, points, key }) => (
@@ -162,17 +175,24 @@ export const App = () => {
                   {hoopNames[hoop]} {points} ({key.toUpperCase()})
                 </Button>
               ))}
+              {HOOPS.map((hoop) => (
+                <Button key={`miss-${hoop}`} variant="outline" color={HOOP_COLOR[hoop]} disabled={!file}
+                  onClick={() => add({ kind: LABEL_EVENT_KIND.MISS, t: now, hoop })}>
+                  {hoopNames[hoop]} miss ({Object.keys(MISS_KEYS).find((k) => MISS_KEYS[k] === hoop)!.toUpperCase()})
+                </Button>
+              ))}
               <Button variant="default" disabled={!file} onClick={() => add({ kind: LABEL_EVENT_KIND.GAME_START, t: now })}>Game start (G)</Button>
               <Button variant="default" disabled={!file} onClick={() => add({ kind: LABEL_EVENT_KIND.GAME_END, t: now })}>Game end (E)</Button>
             </Group>
             <Paper withBorder p="sm">
               <Text size="sm" c="dimmed">
-                <Kbd>Q</Kbd>/<Kbd>W</Kbd> left 2/3 · <Kbd>O</Kbd>/<Kbd>P</Kbd> right 2/3 · <Kbd>G</Kbd>/<Kbd>E</Kbd> game start/end ·{' '}
+                <Kbd>Q</Kbd>/<Kbd>W</Kbd> left 2/3 · <Kbd>O</Kbd>/<Kbd>P</Kbd> right 2/3 · <Kbd>A</Kbd>/<Kbd>L</Kbd> left/right tricky miss · <Kbd>G</Kbd>/<Kbd>E</Kbd> game start/end ·{' '}
                 <Kbd>U</Kbd> toggle uncertain · <Kbd>⌫</Kbd> delete selected · <Kbd>Space</Kbd> play/pause ·{' '}
                 <Kbd>←</Kbd>/<Kbd>→</Kbd> 2 s (<Kbd>Shift</Kbd> 10 s) · <Kbd>,</Kbd>/<Kbd>.</Kbd> one frame · <Kbd>[</Kbd>/<Kbd>]</Kbd> speed
               </Text>
               <Text size="sm" c="dimmed" mt="xs">
                 Mark the moment the ball passes through the net, then nudge with ±0.1. Left/right means as seen in the video.
+                Only label misses that could look like a make from the side (airballs past the net, rim-outs, back-rim drops); skip ordinary misses.
                 Labels autosave in this browser per video file; export the JSON to keep them.
               </Text>
             </Paper>
@@ -196,27 +216,42 @@ export const App = () => {
                     bg={selected === i ? 'var(--mantine-color-default-hover)' : undefined}
                     style={{
                       borderRadius: 'var(--mantine-radius-sm)',
-                      borderLeft: `3px solid var(--mantine-color-${e.kind === LABEL_EVENT_KIND.MAKE ? HOOP_COLOR[e.hoop] : 'gray'}-filled)`,
+                      borderLeft: `3px ${e.kind === LABEL_EVENT_KIND.MISS ? 'dashed' : 'solid'} var(--mantine-color-${
+                        e.kind === LABEL_EVENT_KIND.MAKE || e.kind === LABEL_EVENT_KIND.MISS ? HOOP_COLOR[e.hoop] : 'gray'}-filled)`,
                     }}>
                     <Group justify="space-between" gap="xs" wrap="nowrap">
                       <Text size="sm" style={{ fontVariantNumeric: 'tabular-nums' }}>
                         {clock(e.t)}{' '}
                         {e.kind === LABEL_EVENT_KIND.MAKE
                           ? <>{hoopNames[e.hoop]} <b>{e.points}</b>{e.uncertain && <Badge size="xs" color="yellow" ml={4}>?</Badge>}</>
-                          : <i>{KIND_LABEL[e.kind]}</i>}
+                          : e.kind === LABEL_EVENT_KIND.MISS
+                            ? <>{hoopNames[e.hoop]} <Text span c="dimmed" inherit>× miss{e.missType ? `: ${MISS_TYPE_LABEL[e.missType]}` : ''}</Text>{e.uncertain && <Badge size="xs" color="yellow" ml={4}>?</Badge>}</>
+                            : <i>{KIND_LABEL[e.kind]}</i>}
                       </Text>
                       {selected === i && (
                         <Group gap={4} wrap="nowrap" onClick={(ev) => ev.stopPropagation()}>
                           <Button size="compact-xs" variant="default" onClick={() => update(i, { t: e.t - 0.1 })}>−.1</Button>
                           <Button size="compact-xs" variant="default" onClick={() => update(i, { t: e.t + 0.1 })}>+.1</Button>
-                          {e.kind === LABEL_EVENT_KIND.MAKE && <>
+                          {e.kind === LABEL_EVENT_KIND.MAKE && (
                             <Button size="compact-xs" variant="default" onClick={() => update(i, { points: e.points === 2 ? 3 : 2 })}>2/3</Button>
+                          )}
+                          {(e.kind === LABEL_EVENT_KIND.MAKE || e.kind === LABEL_EVENT_KIND.MISS) && (
                             <Button size="compact-xs" variant="default" onClick={() => update(i, { hoop: otherHoop(e.hoop) })}>L/R</Button>
-                          </>}
+                          )}
                           <Button size="compact-xs" variant="light" color="red" onClick={() => remove(i)}>✕</Button>
                         </Group>
                       )}
                     </Group>
+                    {selected === i && e.kind === LABEL_EVENT_KIND.MISS && (
+                      <Group gap={4} mt={6} onClick={(ev) => ev.stopPropagation()}>
+                        {Object.values(MISS_TYPE).map((mt) => (
+                          <Button key={mt} size="compact-xs" variant={e.missType === mt ? 'filled' : 'default'}
+                            onClick={() => update(i, { missType: e.missType === mt ? undefined : mt })}>
+                            {MISS_TYPE_LABEL[mt]}
+                          </Button>
+                        ))}
+                      </Group>
+                    )}
                   </UnstyledButton>
                 ))}
                 {!events.length && <Text size="sm" c="dimmed">No events yet.</Text>}

@@ -26,13 +26,30 @@ A shoot-around is fine for this first session. A real game is still needed later
 - [ ] **Record 20–40 minutes**, aiming for **100+ makes** across both baskets. One long recording or several clips are both fine; don't trim or edit them.
 - [ ] **Shoot at both baskets.**
 - [ ] **Shoot 2s and 3s in runs,** e.g. 10 from inside the arc, then 10 from outside. Or say "three" out loud on each 3.
-- [ ] **Mix in the hard cases:** swishes, layups, rattle-ins, rim-outs, bank shots, and airballs that pass in front of or behind the net.
+- [ ] **Work through the shot list below,** spread across both baskets and mixed in with normal shooting.
 - [ ] **Keep the phone still.** If it gets bumped or moved, note the time, or start a new clip.
 - [ ] **A busy gym is good.** Other courts and balls in the background are realistic and worth seeing.
+
+## Shot list
+
+Counts are totals across both baskets. Most of the session should still be normal shooting. Say the shot type out loud before each one ("front airball", "bank"), so it's easy to find when labeling.
+
+- [ ] **Normal makes: 100+.** 2s and 3s in runs of about 10, from different spots.
+- [ ] **Front airballs: about 10.** Miss everything and let the ball drop past the net on the camera's side. These are the shots most likely to look like a make.
+- [ ] **Behind-the-net airballs: about 10.** Miss everything and let it drop past the net on the far side.
+- [ ] **Back rim, straight down: about 10.** Hit the back of the rim so the ball drops behind the net.
+- [ ] **Rim-outs: about 10.** Shots that roll around or go in and out. You can't really aim for these, so count the ones that happen.
+- [ ] **Net touches: about 10.** Shots that brush the net from outside or underneath without going through.
+- [ ] **Hard makes: about 10 of each:**
+  - rattle-ins and shots that hang on the rim, then drop
+  - bank shots
+  - layups and tip-ins
+  - swishes
+- [ ] **A few non-shots near the rim:** tap or grab the net, tip a rebound around the rim, pass the ball close to the basket.
 
 ## Afterwards
 
 - [ ] **Feel the phone.** If it got hot, mention it, because the real app will run under the same conditions.
 - [ ] **AirDrop the original videos to the Mac.** Keep the originals, not compressed copies.
 - [ ] **Note which clips share a camera position.**
-- [ ] **Label each video** at `/label/` ([labeler guide](labeler.md)) and export the JSON next to the video.
+- [ ] **Label each video** at `/label/` ([labeler guide](labeler.md)): every make, plus the tricky misses from the shot list (A / L keys). Export the JSON next to the video.

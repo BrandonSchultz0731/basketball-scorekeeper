@@ -11,7 +11,7 @@ This is for marking up recorded games so we can measure the detector against wha
 ## Score line
 
 - **"left 0 – 0 right":** a running score up to the current playback position, worked out from your labels. If you've marked game starts, it resets at each one and only counts makes between a start and an end. It's a quick check that your labels add up to the real score.
-- **Time · speed · makes:** the current time in the video, the playback speed, and the total number of makes labeled.
+- **Time · speed · makes · misses:** the current time in the video, the playback speed, and how many makes and misses are labeled.
 
 ## Marking buttons (and keys)
 
@@ -19,15 +19,31 @@ Each button adds a label at the current playback time.
 
 - **left 2 (Q) / left 3 (W):** a 2 or a 3 at the basket on the left side of the video.
 - **right 2 (O) / right 3 (P):** the same for the right basket.
+- **left miss (A) / right miss (L):** a **tricky miss** at that basket: one that could look like a make from the side. Misses never change the score.
 - **Game start (G) / Game end (E):** marks where a game begins and ends, so warm-up shots and shots between games don't count. This tests the app's "ignore shooting around" behavior later.
 
 Mark a make at the moment the ball goes through the net. If you're a bit late, nudge it afterwards.
+
+### Which misses to label
+
+Only label misses that could fool a side-on camera into seeing a make. Skip ordinary misses, like a jumper that clanks off and bounces away; examples of those are pulled from the video automatically. Label these:
+
+| Miss type | What it looks like |
+|---|---|
+| front airball | Misses everything and drops past the net on the camera's side |
+| behind net | Misses everything and drops past the net on the far side |
+| back rim, down | Hits the back of the rim and drops straight down behind the net |
+| rim out | Rolls around or in-and-out of the rim, then falls outside |
+| net touch | Hits the net from outside or underneath without going through |
+| other | Anything else that looked like it might be a make |
+
+Mark the moment the ball is lowest beside the net, about where a make would come out the bottom. Picking the type is optional, but it lets the grading show which kinds of miss fool the detector.
 
 ## Other keys
 
 | Key | Action |
 |---|---|
-| U | Mark the selected make as uncertain. Use it when you can't tell from the video whether it went in, or whether it was a 2 or a 3. |
+| U | Mark the selected make or miss as uncertain. Use it when you can't tell from the video whether it went in, or whether it was a 2 or a 3. |
 | ⌫ / Delete | Delete the selected label |
 | Space | Play or pause |
 | ← / → | Skip back or forward 2 seconds. Hold Shift for 10 seconds. |
@@ -43,11 +59,12 @@ Keys are ignored while you're typing in a text box.
 ## Events panel (right side)
 
 - **Export JSON:** downloads a `<video name>.labels.json` file with every label sorted by time. Save it alongside the video.
-- **Event list:** every label in time order. The colored stripe shows which basket, and a `?` badge means uncertain. Clicking an event selects it and jumps the video to 2 seconds before it, so you can watch the play.
+- **Event list:** every label in time order. The colored stripe shows which basket: solid for a make, dashed for a miss, gray for game start/end. Misses show as "× miss" with their type, and a `?` badge means uncertain. Clicking an event selects it and jumps the video to 2 seconds before it, so you can watch the play.
 - **Buttons on the selected event:**
   - **−.1 / +.1** moves the label 0.1 seconds earlier or later.
-  - **2/3** switches the point value.
+  - **2/3** switches the point value (makes only).
   - **L/R** switches which basket.
+  - **Miss type buttons** (misses only) set what kind of miss it was. Tap the highlighted one again to clear it.
   - **✕** deletes it.
 
 ## Saving
