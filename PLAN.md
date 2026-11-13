@@ -128,7 +128,7 @@ When confidence is low, score 2 points and flag the event as uncertain in the lo
 The camera phone publishes the game state; any other phone can open a link and watch it update.
 
 - **Requirements:** free, updates reach viewers within about 2 seconds, viewers need no account or install, only the camera phone can write, and the service must not pause or sleep after days of inactivity (games may be a week apart).
-- **Suggested service:** Firebase Realtime Database on the free plan, used directly from the browser with no server code. Cloudflare Durable Objects would also work. Supabase's free tier pauses inactive projects **[verify]**, which fits weekly games badly. Check current free-tier limits before committing.
+- **Suggested service:** Firebase Realtime Database on the free plan, used directly from the browser with no server code. Cloudflare Durable Objects would also work. **[verified 2026-11-12]** Supabase's free tier pauses projects after 7 days of low activity, which rules it out for weekly games. Firebase's free (Spark) plan allows 100 simultaneous connections, 1 GB stored and 10 GB downloaded a month, with no pausing. That's plenty for one group's scoreboard, so Firebase it is.
 - **Joining:** a stable link per group (a short room code) that people can bookmark, plus a QR code shown on the camera phone during setup.
 - **What is published:** basket labels, score, the last few events, and game status (idle, live, final). The viewer page shows the same large scoreboard and a short event feed.
 - **Write protection:** the camera phone holds a secret created with the room; database rules reject writes without it. The room code is not a secret.
@@ -171,6 +171,10 @@ Status (2026-11-11):
 ### Phase 1 — Manual scoreboard
 
 The full game-state model and UI with manual scoring only: setup flow, speech, undo, history in IndexedDB, installable to the home screen. Includes the live viewer page: room link, QR code, realtime publishing, and stale-data indicator. Useful on its own and the frame every later phase plugs into.
+
+Status (2026-11-12):
+- **Part 1 built:** the camera-phone scoreboard at `/score/` (`src/scoreboard/`, guide in `docs/scoreboard.md`). Unit tests cover the scoring rules; a page test covers playing, undo, winning and reload. Not yet tried on the phone.
+- **Part 2 not started:** the live viewer page on Firebase. It needs the user to create a free Firebase project.
 
 ### Phase 2 — Automatic make detection
 

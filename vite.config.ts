@@ -17,6 +17,7 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         spike: resolve(import.meta.dirname, 'spike/index.html'),
         label: resolve(import.meta.dirname, 'label/index.html'),
+        score: resolve(import.meta.dirname, 'score/index.html'),
       },
     },
   },

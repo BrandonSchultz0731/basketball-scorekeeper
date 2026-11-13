@@ -14,24 +14,37 @@ Follow these rules for all code in this repo. When a rule conflicts with existin
 - Rules that can be checked mechanically go in `eslint.config.js` as well as this file.
 - TypeScript stays on 6.0.x until typescript-eslint supports 7 (it currently allows `<6.1.0`).
 
+## Testing
+
+- Tests use **Vitest** and sit next to the code they test: `game.ts` → `game.test.ts`. Run them with `pnpm test`; `pnpm build` runs them too and fails if any fail.
+- Keep rules and logic (scoring, decoding, make detection) in pure modules with no React, storage or browser APIs, and unit-test them directly.
+- Page tests render the real page in jsdom with React Testing Library:
+  - start the file with `// @vitest-environment jsdom`, then `import '../test/domSetup'`
+  - `domSetup` provides a fake IndexedDB and the browser APIs Mantine needs that jsdom lacks
+  - find elements the way a user would (button names, labels), adding an `aria-label` where there's no visible text
+- jsdom is pinned to 28.x because jsdom 29+ needs Node 22.22 or newer, and this Mac runs 22.14. Revisit when Node is upgraded.
+
 ## Project layout
 
 ```
 src/
-  shared/              code used by more than one page
+  shared/              code used, or about to be used, by more than one page
     components/        reusable React components (Section, StatList)
-    enums/             cross-feature enums, one file per enum (hoop.ts -> HOOP)
+    enums/             cross-feature enums, one file per enum (hoop.ts -> HOOP, gameStatus.ts -> GAME_STATUS)
+    hooks/             reusable React hooks (useWakeLock)
     theme/             Mantine theme, HOOP_COLOR, mount()
-    types/             cross-feature interfaces and types (Detection)
-    utils/             pure functions and constants (HOOPS, otherHoop, YOLOX decode)
-  <feature>/           one folder per page (spike/, label/): main.tsx, App.tsx, feature-only code
+    types/             cross-feature interfaces and types (Detection, Game, Settings)
+    utils/             pure functions and constants (HOOPS, otherHoop, YOLOX decode, game rules, announcement text)
+  <feature>/           one folder per page (score/, spike/, label/): main.tsx, App.tsx, components/, and that page's
+                       own state, storage and browser-API code (useScoreboard, storage.ts, speech.ts)
 ```
 
 - Each `shared/` folder has an `index.ts` that re-exports its files. Import from the folder (`from '../shared/enums'`), never from a file inside it.
 - Put things in the folder for what they *are*. Enums, types and functions go in separate folders even when they're about one topic: `COCO_CLASS` is in `enums/`, `Detection` in `types/`, `decode` in `utils/`. `enums/` holds only enums, and helpers built on an enum (`HOOPS`, `otherHoop`) go in `utils/`.
 - File names: components are PascalCase (`StatList.tsx`). Everything else is camelCase (`cocoClass.ts`).
-- Code starts in its feature folder. Move it to `shared/` once a second feature needs it.
-- `enums/`, `types/` and `utils/` must not import React, Mantine or browser-only globals, because the detector worker imports them. UI goes in `components/` or `theme/`.
+- **What goes in `shared/`:** domain code (game rules, their enums and types) and generic building blocks (hooks, components), as soon as more than one page will use them; don't wait for the second page to exist. Example: the game rules are shared because the viewer page and the detector will use them.
+- **What stays in a feature folder:** that page's screens and its own state, even when written as a hook. For example, `useScoreboard` is the scoreboard page's state, so it stays in `scoreboard/`.
+- `enums/`, `types/` and `utils/` must not import React, Mantine or browser-only globals, because the detector worker imports them. UI goes in `components/`, `theme/` or `hooks/`. Browser-only code that isn't a hook stays in its feature folder, like speech playback in `scoreboard/speech.ts`.
 - Lint enforces both import rules via `no-restricted-imports`. Lint can't check the browser-only-globals part.
 
 ## Functions
