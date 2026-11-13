@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { HOOP, SHOT } from '../shared/enums';
+import { GAME_STATUS, type HOOP, type SHOT } from '../shared/enums';
 import type { Game, GameEvent, Settings } from '../shared/types';
 import {
   addAdjustment, addScore, announcementFor, createGame, editEvent, endGame, removeEvent, undoLast, type ScoreInput,
@@ -50,12 +50,24 @@ export const useScoreboard = () => {
     saveSettings(next).catch(report);
   }, []);
 
+  /** Saves the room code into whatever the settings are now (not a copy from before an await). */
+  const setRoomCode = useCallback((roomCode: string) => {
+    const s = live.current.settings;
+    if (s) updateSettings({ ...s, roomCode });
+  }, [updateSettings]);
+
   const startGame = useCallback(() => {
     const s = live.current.settings;
     if (!s) return;
     if (s.speech) primeSpeech(); // must run inside the tap that starts the game (iOS)
     commit(createGame(s));
   }, [commit]);
+
+  /** A viewer pressed "start next game". Ignored if a game is already live. */
+  const startFromViewer = useCallback(() => {
+    if (live.current.game?.status === GAME_STATUS.LIVE) return;
+    startGame();
+  }, [startGame]);
 
   const score = useCallback((input: ScoreInput) => {
     const g = live.current.game;
@@ -95,6 +107,6 @@ export const useScoreboard = () => {
 
   return {
     ready: settings !== null, settings, game, history, error, clearError: () => setError(''),
-    updateSettings, startGame, score, adjust, undo, end, edit, remove, forget,
+    updateSettings, setRoomCode, startGame, startFromViewer, score, adjust, undo, end, edit, remove, forget,
   };
 };

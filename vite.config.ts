@@ -18,6 +18,7 @@ export default defineConfig({
         spike: resolve(import.meta.dirname, 'spike/index.html'),
         label: resolve(import.meta.dirname, 'label/index.html'),
         score: resolve(import.meta.dirname, 'score/index.html'),
+        watch: resolve(import.meta.dirname, 'watch/index.html'),
       },
     },
   },

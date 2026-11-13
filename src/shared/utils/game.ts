@@ -14,6 +14,7 @@ export const DEFAULT_SETTINGS: Settings = deepFreeze({
   scoring: { points: { [SHOT.SHORT]: 2, [SHOT.LONG]: 3 }, target: 21, winByTwo: true },
   hoopNames: { [HOOP.LEFT]: 'left side', [HOOP.RIGHT]: 'right side' },
   speech: false,
+  roomCode: null,
 });
 
 const newId = (): string => crypto.randomUUID();

@@ -174,7 +174,11 @@ The full game-state model and UI with manual scoring only: setup flow, speech, u
 
 Status (2026-11-12):
 - **Part 1 built:** the camera-phone scoreboard at `/score/` (`src/scoreboard/`, guide in `docs/scoreboard.md`). Unit tests cover the scoring rules; a page test covers playing, undo, winning and reload. Not yet tried on the phone.
-- **Part 2 not started:** the live viewer page on Firebase. It needs the user to create a free Firebase project.
+- **Part 2 built:** the Firebase project `pickup-scorekeeper` is set up with Realtime Database and anonymous sign-in.
+  - **Write protection:** anonymous sign-in replaces the planned room secret. The room stores its owner's ID, and `database.rules.json` only accepts writes from that owner.
+  - **Camera phone:** publishes the live score and an online flag. Firebase flips the flag off when the phone disconnects.
+  - **Viewer page:** `/watch/#CODE`, with a QR code and link from Settings. Viewers can only send "start next game", and only while no game is live.
+  - **Not yet:** shared history on Firebase.
 
 ### Phase 2 — Automatic make detection
 

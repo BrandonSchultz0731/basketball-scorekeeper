@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "rooms": {
+      "$code": {
+        ".read": true,
+        ".write": "auth != null && (data.exists() ? data.child('owner').val() === auth.uid : newData.child('owner').val() === auth.uid)",
+        ".validate": "$code.matches(/^[2-9A-HJKMNP-Z]{6}$/) && newData.hasChildren(['owner', 'createdAt'])",
+        "owner": {
+          ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val())"
+        },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "online": { ".validate": "newData.isBoolean()" },
+        "live": {
+          ".validate": "newData.hasChildren(['status', 'hoopNames', 'score', 'target', 'winByTwo', 'updatedAt']) && newData.child('status').isString()"
+        },
+        "startRequest": {
+          ".write": "auth != null && data.parent().exists() && (data.parent().child('owner').val() === auth.uid || data.parent().child('live/status').val() !== 'live')",
+          ".validate": "newData.hasChildren(['at', 'by']) && newData.child('at').val() === now && newData.child('by').val() === auth.uid"
+        },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
