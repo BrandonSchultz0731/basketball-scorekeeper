@@ -5,6 +5,11 @@ const base = import.meta.env.BASE_URL;
 
 const TOOLS = [
   {
+    href: `${base}score/`,
+    title: 'Scoreboard',
+    body: 'Keep score by hand for now: big score display, undo, spoken scores, game history. Add it to your home screen to use it like an app.',
+  },
+  {
     href: `${base}spike/`,
     title: 'Camera & inference spike',
     body: 'Open on the iPhone. Reports camera resolution, frame rate, wake lock, and detector speed.',
@@ -18,8 +23,8 @@ const TOOLS = [
 
 const Home = () => (
   <Container size="sm" py="md">
-    <Title order={2}>Pickup Scorekeeper — Phase 0</Title>
-    <Text c="dimmed" mb="md">Feasibility tools. The scoreboard comes in Phase 1.</Text>
+    <Title order={2}>Pickup Scorekeeper</Title>
+    <Text c="dimmed" mb="md">The scoreboard, plus the Phase 0 testing tools.</Text>
     <Stack>
       {TOOLS.map((t) => (
         <Card key={t.href} withBorder component="a" href={t.href}>
