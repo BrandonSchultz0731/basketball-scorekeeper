@@ -1,4 +1,5 @@
-import { Button, Drawer, Group, NumberInput, Stack, Switch, Text, TextInput, Title } from '@mantine/core';
+import { Button, Divider, Drawer, Group, NumberInput, Stack, Switch, Text, TextInput, Title } from '@mantine/core';
+import type { ReactNode } from 'react';
 import { HOOP, SHOT } from '../../shared/enums';
 import type { Settings } from '../../shared/types';
 import { HOOPS } from '../../shared/utils';
@@ -9,18 +10,22 @@ interface Props {
   onClose: () => void;
   settings: Settings;
   onChange: (next: Settings) => void;
+  /** The live-score section, shown first. */
+  liveSection: ReactNode;
 }
 
 const SIDE_LABEL: Record<HOOP, string> = { [HOOP.LEFT]: 'Left basket (as the camera sees it)', [HOOP.RIGHT]: 'Right basket' };
 
 /** Session settings. Scoring changes apply from the next game; names and speech apply right away. */
-export const SettingsDrawer = ({ opened, onClose, settings, onChange }: Props) => {
+export const SettingsDrawer = ({ opened, onClose, settings, onChange, liveSection }: Props) => {
   const setScoring = (patch: Partial<Settings['scoring']>) => onChange({ ...settings, scoring: { ...settings.scoring, ...patch } });
   const setPoints = (shot: SHOT, n: number) => setScoring({ points: { ...settings.scoring.points, [shot]: n } });
 
   return (
     <Drawer opened={opened} onClose={onClose} position="right" title={<Title order={4}>Settings</Title>}>
       <Stack gap="lg">
+        {liveSection}
+        <Divider />
         <Stack gap="xs">
           <Text fw={600}>Basket names</Text>
           <Text size="sm" c="dimmed">Name each basket after something near it, e.g. "door side". Used on the scoreboard and in announcements.</Text>

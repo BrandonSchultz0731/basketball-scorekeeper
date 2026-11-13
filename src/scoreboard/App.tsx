@@ -1,15 +1,18 @@
 import { Alert, Button, Center, Container, Grid, Group, Loader, Paper, Stack, Tabs, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ScorePanel } from '../shared/components';
 import { GAME_STATUS, HOOP } from '../shared/enums';
 import { useWakeLock } from '../shared/hooks';
 import { HOOP_COLOR } from '../shared/theme';
 import type { Game, ScoringSettings } from '../shared/types';
-import { HOOPS, otherHoop, scoreOf, winnerOf } from '../shared/utils';
+import { HOOPS, otherHoop, scoreOf, toLiveState, winnerOf } from '../shared/utils';
 import { EventLog } from './components/EventLog';
 import { HistoryList } from './components/HistoryList';
-import { ScorePanel } from './components/ScorePanel';
+import { LiveScoreSection } from './components/LiveScoreSection';
 import { SettingsDrawer } from './components/SettingsDrawer';
+import { primeSpeech } from './speech';
+import { useLiveRoom } from './useLiveRoom';
 import { useScoreboard } from './useScoreboard';
 
 enum TAB {
@@ -53,6 +56,18 @@ export const App = () => {
   const isLive = game?.status === GAME_STATUS.LIVE;
   useWakeLock(isLive);
 
+  const liveState = useMemo(() => (sb.settings ? toLiveState(game, sb.settings) : null), [game, sb.settings]);
+  const liveRoom = useLiveRoom(sb.settings?.roomCode ?? null, liveState, sb.startFromViewer);
+
+  // iOS only plays speech that started from a tap. A game started by a viewer has no tap on this
+  // phone, so unlock speech on the first tap of any kind.
+  const speechOn = sb.settings?.speech ?? false;
+  useEffect(() => {
+    if (!speechOn) return;
+    document.addEventListener('pointerdown', primeSpeech, { once: true });
+    return () => document.removeEventListener('pointerdown', primeSpeech);
+  }, [speechOn]);
+
   if (!sb.ready || !sb.settings) {
     return <Center h="100dvh">{sb.error ? <Alert color="red" title="Couldn't load saved data">{sb.error}</Alert> : <Loader />}</Center>;
   }
@@ -87,9 +102,8 @@ export const App = () => {
                 <Grid gap="sm">
                   {HOOPS.map((hoop) => (
                     <Grid.Col key={hoop} span={6}>
-                      <ScorePanel hoop={hoop} name={names[hoop]} score={score[hoop]} scoring={game.scoring} live
-                        leading={leader === hoop}
-                        onScore={(shot) => sb.score({ hoop, shot })} onAdjust={(points) => sb.adjust(hoop, points)} />
+                      <ScorePanel hoop={hoop} name={names[hoop]} score={score[hoop]} leading={leader === hoop}
+                        controls={{ scoring: game.scoring, onScore: (shot) => sb.score({ hoop, shot }), onAdjust: (points) => sb.adjust(hoop, points) }} />
                     </Grid.Col>
                   ))}
                 </Grid>
@@ -136,7 +150,16 @@ export const App = () => {
         </Tabs>
       </Stack>
 
-      <SettingsDrawer opened={settingsOpen} onClose={settings.close} settings={sb.settings} onChange={sb.updateSettings} />
+      <SettingsDrawer opened={settingsOpen} onClose={settings.close} settings={sb.settings} onChange={sb.updateSettings}
+        liveSection={
+          <LiveScoreSection roomCode={sb.settings.roomCode} connection={liveRoom.connection} error={liveRoom.error}
+            onCreate={async () => {
+              const previous = sb.settings?.roomCode ?? null;
+              sb.setRoomCode(await liveRoom.createRoom());
+              // Switch first, then delete, so this phone stops publishing to the old room before it goes.
+              if (previous) await liveRoom.deleteRoom(previous);
+            }} />
+        } />
     </Container>
   );
 };

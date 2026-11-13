@@ -56,6 +56,26 @@ Tap a game to open its full log, which can be edited the same way. **Delete game
 
 ## Settings
 
+### Live score for other phones
+
+Shown at the top of Settings. It lets everyone at the court follow the score on their own phone ([viewer guide](watch.md)).
+
+- **Set up live score:** creates your group's room, once. Do it in the copy of the app you'll actually score with. Safari and the home-screen app keep separate data, so a room set up in one isn't connected in the other.
+- **Code, QR code and link:** show the QR code or share the link. The code stays the same every week.
+- **Status badge:**
+  - **live**: connected and publishing.
+  - **connecting…**: setting up the connection.
+  - **offline, will catch up**: no connection right now. Scoring continues, and the latest score is sent when it reconnects.
+  - **error**: something went wrong. The message says what.
+- **Copy link:** copies the viewer link.
+- **Get a new code:** makes a new room and deletes the old one, so the old link and QR code show "No game with that code". It takes two taps. If the phone is offline at that moment, the old room can't be deleted and is left behind. It's harmless, and can be removed in the Firebase console.
+
+When a viewer taps **Start next game**, this phone starts the game as if you'd tapped it, but only if no game is live.
+
+If speech is on, it's unlocked by your first tap on the page, so games started from a viewer's phone are announced too. iOS won't play speech until the phone itself has been tapped once.
+
+### Scoring and names
+
 - **Basket names:** name each basket after something near it, e.g. "door side" and "window side". "Left" means left as the camera sees the court. Names show on the scoreboard and in announcements. A game in progress keeps the names it started with.
 - **Inside the arc / Beyond the arc:** points for each kind of basket, 2 and 3 by default. Some groups play 1s and 2s.
 - **Play to:** the target score, 21 by default.
@@ -67,4 +87,6 @@ Scoring changes apply from the next game. Names and speech apply right away.
 
 ## Where the data lives
 
-In the browser's storage on this phone (IndexedDB). Clearing Safari's website data deletes it. Nothing leaves the phone yet; the live score for other phones comes in Phase 1 part 2.
+Game history and settings stay in the browser's storage on this phone (IndexedDB). Clearing Safari's website data deletes them.
+
+If live score is set up, the phone also publishes the current game to Firebase: basket names, score, rules, the last 5 baskets, and whether a game is live. Nothing else is sent, and full history stays on the phone.

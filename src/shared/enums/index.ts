@@ -3,4 +3,5 @@ export * from './eventSource';
 export * from './gameEventKind';
 export * from './gameStatus';
 export * from './hoop';
+export * from './liveStatus';
 export * from './shot';

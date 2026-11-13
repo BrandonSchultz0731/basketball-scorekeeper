@@ -10,6 +10,11 @@ const TOOLS = [
     body: 'Keep score by hand for now: big score display, undo, spoken scores, game history. Add it to your home screen to use it like an app.',
   },
   {
+    href: `${base}watch/`,
+    title: 'Watch a game',
+    body: 'Follow the live score on your own phone. Enter the code shown on the scorekeeper phone.',
+  },
+  {
     href: `${base}spike/`,
     title: 'Camera & inference spike',
     body: 'Open on the iPhone. Reports camera resolution, frame rate, wake lock, and detector speed.',

@@ -15,6 +15,8 @@ export interface Settings {
   hoopNames: Record<HOOP, string>;
   /** Speak each score out loud. */
   speech: boolean;
+  /** The live-score room this phone publishes to, or null if live score isn't set up. */
+  roomCode: string | null;
 }
 
 interface EventBase {

@@ -16,9 +16,12 @@ export const speak = (text: string): void => {
  * iOS Safari only allows speech that starts from a tap. Call this inside a tap handler (e.g. Start
  * game) so later announcements, which aren't triggered by taps, are allowed to play.
  */
+let primed = false;
+
 export const primeSpeech = (): void => {
   const s = synth();
-  if (!s) return;
+  if (!s || primed) return;
+  primed = true;
   const u = new SpeechSynthesisUtterance(' ');
   u.volume = 0;
   s.speak(u);
