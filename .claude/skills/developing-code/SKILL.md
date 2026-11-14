@@ -34,8 +34,11 @@ src/
     hooks/             reusable React hooks (useWakeLock)
     theme/             Mantine theme, HOOP_COLOR, mount()
     types/             cross-feature interfaces and types (Detection, Game, Settings)
-    utils/             pure functions and constants (HOOPS, otherHoop, YOLOX decode, game rules, announcement text)
-  <feature>/           one folder per page (score/, spike/, label/): main.tsx, App.tsx, components/, and that page's
+    utils/             pure functions and constants (HOOPS, otherHoop, YOLOX decode, rim crops, game rules, announcement text)
+    detector/          the YOLOX detector worker, its message protocol and model list (browser-only; used by spike and eval)
+    live/              Firebase live-score rooms (browser-only)
+    video/             helpers for stepping through a <video> frame by frame (browser-only)
+  <feature>/           one folder per page (score/, spike/, label/, eval/): main.tsx, App.tsx, components/, and that page's
                        own state, storage and browser-API code (useScoreboard, storage.ts, speech.ts)
 ```
 
@@ -86,7 +89,7 @@ src/
   - Domain enums used across features go in `src/shared/enums/`, one file per enum (e.g. `HOOP` in `hoop.ts`), re-exported from `index.ts`.
   - Feature enums live with that feature's types (`LABEL_EVENT_KIND` in `src/label/types.ts`).
   - Enums private to one file stay in that file.
-- Don't put enums that the main thread imports in a worker file. Importing the enum pulls the whole worker module, onnxruntime included, into the page bundle. Use a separate protocol file (`src/spike/protocol.ts`).
+- Don't put enums that the main thread imports in a worker file. Importing the enum pulls the whole worker module, onnxruntime included, into the page bundle. Use a separate protocol file (`src/shared/detector/protocol.ts`).
 - Key lookup tables by the enum: `Record<HOOP, MantineColor>`, `{ [HOOP.LEFT]: 'cyan' }`. Display text comes from a label map (`KIND_LABEL[kind]`), never from string-munging the enum value.
 - Leave strings alone when they belong to an external API (DOM values like `'videoinput'`, Mantine props like `variant="light"`).
 - Point values stay numbers (`2 | 3`). They are about to become a setting, so an enum would be wrong.

@@ -3,5 +3,8 @@ export * from './eventSource';
 export * from './gameEventKind';
 export * from './gameStatus';
 export * from './hoop';
+export * from './labelEventKind';
 export * from './liveStatus';
+export * from './missType';
+export * from './sampleKind';
 export * from './shot';

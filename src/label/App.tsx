@@ -1,11 +1,12 @@
 import {
-  Badge, Button, Container, FileInput, Grid, Group, Kbd, Paper, ScrollArea, Stack, Text, TextInput, Title, UnstyledButton,
+  Badge, Box, Button, Container, FileInput, Grid, Group, Kbd, Paper, ScrollArea, Stack, Text, TextInput, Title, UnstyledButton,
 } from '@mantine/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HOOP_COLOR } from '../shared/theme';
-import { HOOP } from '../shared/enums';
-import { HOOPS, otherHoop } from '../shared/utils';
-import { LABEL_EVENT_KIND, MISS_TYPE, type LabelEvent, type LabelFile } from './types';
+import { HOOP, LABEL_EVENT_KIND, MISS_TYPE } from '../shared/enums';
+import type { LabelEvent, LabelFile, Rim } from '../shared/types';
+import { DEFAULT_RIM_CROP_MULTIPLE, HOOPS, otherHoop, rimCrop } from '../shared/utils';
+import { RimOverlay, type RimMarking } from './components/RimOverlay';
 
 const KEYS: Record<string, { hoop: HOOP; points: 2 | 3 }> = {
   q: { hoop: HOOP.LEFT, points: 2 }, w: { hoop: HOOP.LEFT, points: 3 },
@@ -48,15 +49,18 @@ export const App = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [rate, setRate] = useState(1);
   const [now, setNow] = useState(0);
+  const [frame, setFrame] = useState<{ width: number; height: number } | null>(null);
+  const [rims, setRims] = useState<Partial<Record<HOOP, Rim>>>({});
+  const [marking, setMarking] = useState<RimMarking | null>(null);
 
   const sorted = [...events].map((e, i) => ({ e, i })).sort((a, b) => a.e.t - b.e.t);
 
   // Autosave per video file.
   useEffect(() => {
     if (!file) return;
-    const data: LabelFile = { version: 1, video: { ...file, duration }, hoopNames, events };
+    const data: LabelFile = { version: 1, video: { ...file, duration, ...frame }, hoopNames, rims, events };
     try { localStorage.setItem(storageKey(file), JSON.stringify(data)); } catch { /* storage full or blocked */ }
-  }, [file, duration, events, hoopNames]);
+  }, [file, duration, frame, events, hoopNames, rims]);
 
   const openVideo = (f: File) => {
     const v = videoRef.current!;
@@ -66,6 +70,8 @@ export const App = () => {
     const saved = load(storageKey(meta));
     setEvents(saved?.events ?? []);
     if (saved?.hoopNames) setHoopNames(saved.hoopNames);
+    setRims(saved?.rims ?? {});
+    setMarking(null);
     setSelected(null);
   };
 
@@ -83,6 +89,7 @@ export const App = () => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!file || (e.target as HTMLElement).tagName === 'INPUT') return;
+      if (marking) { if (e.key === 'Escape') { setMarking(null); e.preventDefault(); } return; }
       const v = videoRef.current!;
       const k = e.key.toLowerCase();
       const t = v.currentTime;
@@ -106,14 +113,14 @@ export const App = () => {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [file, add, selected, events, rate]);
+  }, [file, add, selected, events, rate, marking]);
 
   useEffect(() => { if (videoRef.current) videoRef.current.playbackRate = rate; }, [rate]);
 
   const exportJson = () => {
     if (!file) return;
     const data: LabelFile = {
-      version: 1, video: { ...file, duration }, hoopNames,
+      version: 1, video: { ...file, duration, ...frame }, hoopNames, rims,
       events: [...events].sort((a, b) => a.t - b.t).map((e) => ({ ...e, t: +e.t.toFixed(3) })),
     };
     const a = document.createElement('a');
@@ -126,6 +133,22 @@ export const App = () => {
     const data = JSON.parse(await f.text()) as LabelFile;
     setEvents(data.events);
     if (data.hoopNames) setHoopNames(data.hoopNames);
+    setRims(data.rims ?? {});
+  };
+
+  const startMarking = (hoop: HOOP) => { videoRef.current?.pause(); setMarking({ hoop, first: null }); };
+
+  // Two clicks at opposite corners of a box around the rim and net: its width is the rim's width,
+  // its top the top of the rim and its bottom the bottom of the net. Either corner can come first.
+  const markPoint = (p: { x: number; y: number }) => {
+    if (!marking) return;
+    if (!marking.first) { setMarking({ ...marking, first: p }); return; }
+    const a = marking.first;
+    const rim: Rim = {
+      x: (a.x + p.x) / 2, y: Math.min(a.y, p.y), width: Math.abs(p.x - a.x), netBottom: Math.max(a.y, p.y),
+    };
+    if (rim.width >= 4) setRims((r) => ({ ...r, [marking.hoop]: rim }));
+    setMarking(null);
   };
 
   // Running score per hoop, counting only makes inside a game_start..game_end span (or all, if none marked).
@@ -156,10 +179,35 @@ export const App = () => {
               <FileInput label="Import labels" placeholder="*.labels.json" accept="application/json" clearable={false} w={220}
                 onChange={(f) => f && importJson(f)} />
             </Group>
-            <video ref={videoRef} controls playsInline
-              style={{ width: '100%', background: 'black', borderRadius: 'var(--mantine-radius-md)' }}
-              onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-              onTimeUpdate={(e) => setNow(e.currentTarget.currentTime)} />
+            <Box pos="relative">
+              <video ref={videoRef} controls playsInline
+                style={{ display: 'block', width: '100%', background: 'black', borderRadius: 'var(--mantine-radius-md)' }}
+                onLoadedMetadata={(e) => {
+                  setDuration(e.currentTarget.duration);
+                  setFrame({ width: e.currentTarget.videoWidth, height: e.currentTarget.videoHeight });
+                }}
+                onTimeUpdate={(e) => setNow(e.currentTarget.currentTime)} />
+              {frame && (
+                <RimOverlay frame={frame} rims={rims} names={hoopNames} marking={marking} onPoint={markPoint}
+                  crops={Object.fromEntries(HOOPS.flatMap((h) => {
+                    const r = rims[h];
+                    return r ? [[h, rimCrop(r, DEFAULT_RIM_CROP_MULTIPLE, frame.width, frame.height)]] : [];
+                  }))} />
+              )}
+            </Box>
+            <Group gap="xs">
+              {HOOPS.map((hoop) => (
+                <Button key={hoop} size="sm" variant={marking?.hoop === hoop ? 'filled' : 'default'} color={HOOP_COLOR[hoop]}
+                  disabled={!file || !frame} onClick={() => (marking?.hoop === hoop ? setMarking(null) : startMarking(hoop))}>
+                  {rims[hoop] ? 'Re-mark' : 'Mark'} {hoopNames[hoop]} rim
+                </Button>
+              ))}
+              <Text size="sm" c={marking ? undefined : 'dimmed'}>
+                {marking
+                  ? `${marking.first ? 'Now click the bottom-right corner, at the bottom of the net' : 'Click the top-left corner of a box around'} the ${hoopNames[marking.hoop]} rim and net. Esc cancels.`
+                  : HOOPS.map((h) => `${hoopNames[h]} rim: ${rims[h] ? `${Math.round(rims[h].width)} px wide` : 'not marked'}`).join(' · ')}
+              </Text>
+            </Group>
             <Group>
               <Text fz="xl" fw={700} style={{ fontVariantNumeric: 'tabular-nums' }}>
                 <Text span inherit c={HOOP_COLOR[HOOP.LEFT]}>{hoopNames[HOOP.LEFT]} {score[HOOP.LEFT]}</Text>
@@ -191,7 +239,7 @@ export const App = () => {
                 <Kbd>←</Kbd>/<Kbd>→</Kbd> 2 s (<Kbd>Shift</Kbd> 10 s) · <Kbd>,</Kbd>/<Kbd>.</Kbd> one frame · <Kbd>[</Kbd>/<Kbd>]</Kbd> speed
               </Text>
               <Text size="sm" c="dimmed" mt="xs">
-                Mark the moment the ball passes through the net, then nudge with ±0.1. Left/right means as seen in the video.
+                Mark a make when the ball comes out the bottom of the net. Left/right means as seen in the video.
                 Only label misses that could look like a make from the side (airballs past the net, rim-outs, back-rim drops); skip ordinary misses.
                 Labels autosave in this browser per video file; export the JSON to keep them.
               </Text>

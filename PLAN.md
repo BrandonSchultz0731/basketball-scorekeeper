@@ -188,6 +188,20 @@ Status (2026-11-12):
 
 Proposed exit target: at least 95% recall and 95% precision on labeled footage. This is a proposal, not something the user asked for. Because nothing is corrected mid-game, errors go straight into the score: a game to 21 has roughly 20 makes, so even 95% means about one wrong basket per game. Report the result as "games with a correct final score" as well as precision and recall, and tell the user plainly what the footage shows is achievable.
 
+Status (2026-11-14):
+- **Footage:** three corner clips are labeled, with rims marked: two shoot-arounds (court-1 and court-2) and a 2v2 (court-1, other corner). The 2v2 clip is held out as the test clip and is never used for training. 5v5 games are being recorded next.
+- **Rim crops and detector:** `rimCrop` sizes the crop in rim widths, so the ball is the same size in the input at the near and far rims. The detector worker moved to `src/shared/detector/` and supports one-class fine-tuned models.
+- **Eval page** (`/eval/`, `docs/eval.md`): runs a detector over the frames around each labeled make and miss, plus quiet frames, and reports how often the ball is found, per basket, crop size and score threshold.
+- **Stock YOLOX-s is not good enough:** it loses the ball at the rim and in the net, and at the near rim it finds the ball in only 9–56% of frames.
+- **Ball boxes page** (`/boxes/`, `docs/boxes.md`): review the detector's guesses and box every ball. 617 frames of the court-1 shoot-around are boxed.
+- **Fine-tuning** (`training/`): YOLOX-s with a one-class ball head, trained on the Mac and exported to ONNX. The first model, `ball_v1`, trained on court-1 only:
+  - On the 2v2 test clip it finds the ball at the near rim in nearly every frame (air, rim and dropping out), where stock found it in 7–38% at score 0.5.
+  - It also has false alarms: a fire alarm pull station on the wall, at about 0.6, and some heads, up to about 0.8.
+- **Next:**
+  - Box court-2 using `ball_v1`'s guesses, with more no-ball frames, then train `ball_v2` on both clips and re-test on 2v2.
+  - Then the make pipeline: frame source, ring buffer, motion gate and make logic, with a make eval reporting precision and recall.
+  - The fine-tuned model is only on the Mac for now, not on the Pages site.
+
 ### Phase 3 — 2 vs. 3
 
 Shot-origin analysis as described above, evaluated against the point values in the labels. Report accuracy separately for 2s and 3s.
