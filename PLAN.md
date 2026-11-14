@@ -197,10 +197,24 @@ Status (2026-11-14):
 - **Fine-tuning** (`training/`): YOLOX-s with a one-class ball head, trained on the Mac and exported to ONNX. The first model, `ball_v1`, trained on court-1 only:
   - On the 2v2 test clip it finds the ball at the near rim in nearly every frame (air, rim and dropping out), where stock found it in 7–38% at score 0.5.
   - It also has false alarms: a fire alarm pull station on the wall, at about 0.6, and some heads, up to about 0.8.
+- **More training data (later the same day):**
+  - **Court-2** is boxed (582 frames). Balls that sit still the whole clip, like a ball bin, aren't boxed. Instead those areas are painted gray before training (`training/ignore.json`), so they teach neither "ball" nor "not a ball".
+  - **`ball_v2`**, trained on court-1 and court-2: on the 2v2 test clip the fire alarm false alarm is gone (1,629 frames down to 1). Finding the ball at the rim is as good as v1 or better: 84% at the near rim and 100% at the far rim. Heads and arms are still flagged at up to about 0.9, and a dark framed picture above the far rim is a new false alarm. Nearly all false alarms are away from the rim itself.
+  - **5v5 footage:** five clips recorded, 82 minutes: four from floor-level corners and one from the balcony above court-1 ("bird's-eye").
+  - **Bird's-eye clip** labeled (2 games, 50 makes) and boxed (562 frames). A pile of balls and bags under the far rim changes all clip, so unboxed balls there get gray patches frame by frame from the model's own detections (`training/mask_unboxed.py`).
+  - **`ball_v3`**, on all three boxed clips, is training.
+- **Labeler additions:**
+  - **"Doesn't count" (X)** for real baskets that aren't game baskets: someone outside the game shooting, someone untangling the net, or a basket waved off.
+  - **Misses** default to type "other".
+- **Decisions:**
+  - **Camera spot:** the bird's-eye view is the likely spot. From up there the near rim is seen from above, about 150 px wide, with the whole net against the floor. The far rim is small, about 67 px.
+  - **No more floor-level labeling.** The clips already boxed stay in training for variety.
+  - **2 vs. 3 waits for Phase 3.** The 3-point line isn't fully visible from these angles.
 - **Next:**
-  - Box court-2 using `ball_v1`'s guesses, with more no-ball frames, then train `ball_v2` on both clips and re-test on 2v2.
-  - Then the make pipeline: frame source, ring buffer, motion gate and make logic, with a make eval reporting precision and recall.
-  - The fine-tuned model is only on the Mac for now, not on the Pages site.
+  - **Make logic and a make eval** over whole videos: precision, recall, and games with the correct final score.
+  - **A new bird's-eye session,** held out as the test clip.
+  - **Then the live pipeline:** frame source, ring buffer, motion gate, and wiring makes into the scoreboard.
+  - **Ship the model:** the fine-tuned model is only on the Mac for now, not on the Pages site.
 
 ### Phase 3 — 2 vs. 3
 

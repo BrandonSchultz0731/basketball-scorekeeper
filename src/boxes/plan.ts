@@ -9,7 +9,7 @@ import { GUESS_SOURCE, type ReviewFrame } from './types';
  */
 export const REVIEW_OFFSETS = [-0.9, -0.6, -0.4, -0.27, -0.13, 0, 0.13];
 /** Quiet frames to review per basket, as examples of no ball (or a stray one). */
-export const QUIET_PER_HOOP = 25;
+export const QUIET_PER_HOOP = 50;
 /** The saved region, in rim widths. The largest crop the eval page tried, so any crop size can be cut from it. */
 export const REGION_MULTIPLE = 10;
 /** A detection counts as a ball only if its width is in this range, in rim widths. A real ball is about half a rim. */

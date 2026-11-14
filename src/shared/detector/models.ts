@@ -9,6 +9,10 @@ export enum DETECTOR_MODEL {
   S = 'yolox_s',
   /** YOLOX-s fine-tuned on court-1 bottom-left boxes (one class: ball). */
   S_BALL_V1 = 'yolox_s_ball_v1',
+  /** YOLOX-s fine-tuned on court-1 bottom-left and court-2 bottom-right boxes (one class: ball). */
+  S_BALL_V2 = 'yolox_s_ball_v2',
+  /** ball_v2's clips plus the court-1 bird's-eye 5v5 game. */
+  S_BALL_V3 = 'yolox_s_ball_v3',
 }
 
 export interface ModelInfo {
@@ -29,6 +33,14 @@ export const MODELS: Record<DETECTOR_MODEL, ModelInfo> = {
   [DETECTOR_MODEL.S]: { label: 'YOLOX-s', file: 'yolox_s.onnx', size: 640, megabytes: 36 },
   [DETECTOR_MODEL.S_BALL_V1]: {
     label: 'YOLOX-s ball v1 (fine-tuned)', file: 'yolox_s_ball_v1.onnx', size: 640, megabytes: 36,
+    classes: [COCO_CLASS.SPORTS_BALL], local: true,
+  },
+  [DETECTOR_MODEL.S_BALL_V2]: {
+    label: 'YOLOX-s ball v2 (fine-tuned)', file: 'yolox_s_ball_v2.onnx', size: 640, megabytes: 36,
+    classes: [COCO_CLASS.SPORTS_BALL], local: true,
+  },
+  [DETECTOR_MODEL.S_BALL_V3]: {
+    label: 'YOLOX-s ball v3 (fine-tuned)', file: 'yolox_s_ball_v3.onnx', size: 640, megabytes: 36,
     classes: [COCO_CLASS.SPORTS_BALL], local: true,
   },
 };

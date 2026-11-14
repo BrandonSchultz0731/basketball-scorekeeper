@@ -71,11 +71,11 @@ export const BoxEditor = ({ canvasRef, region, guess, boxes, noBall, clickSize, 
         onPointerUp={up} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', cursor: 'crosshair', touchAction: 'none' }}>
         {guess && !draft && (
           <rect x={guess.x} y={guess.y} width={guess.w} height={guess.h} fill="none" stroke={theme.colors.yellow[4]}
-            strokeWidth={1.5} strokeDasharray="5 4" vectorEffect="non-scaling-stroke" />
+            strokeWidth={1} strokeDasharray="4 3" vectorEffect="non-scaling-stroke" />
         )}
         {shown.map((b, i) => (
           <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} fill="none" stroke={theme.colors.green[5]}
-            strokeWidth={2} vectorEffect="non-scaling-stroke" />
+            strokeWidth={1} vectorEffect="non-scaling-stroke" />
         ))}
       </svg>
     </div>

@@ -1,10 +1,13 @@
 import type { HOOP, LABEL_EVENT_KIND, MISS_TYPE } from '../enums';
 import type { Rim } from './rim';
 
-/** One labeled moment. Times are seconds from the start of the video. */
+/**
+ * One labeled moment. Times are seconds from the start of the video. `offGame` marks a real shot during a game
+ * that doesn't count toward the score: someone outside the game shooting, untangling the net, or a basket waved off.
+ */
 export type LabelEvent =
-  | { kind: LABEL_EVENT_KIND.MAKE; t: number; hoop: HOOP; points: 2 | 3; uncertain?: boolean; note?: string }
-  | { kind: LABEL_EVENT_KIND.MISS; t: number; hoop: HOOP; missType?: MISS_TYPE; uncertain?: boolean; note?: string }
+  | { kind: LABEL_EVENT_KIND.MAKE; t: number; hoop: HOOP; points: 2 | 3; uncertain?: boolean; offGame?: boolean; note?: string }
+  | { kind: LABEL_EVENT_KIND.MISS; t: number; hoop: HOOP; missType?: MISS_TYPE; uncertain?: boolean; offGame?: boolean; note?: string }
   | { kind: LABEL_EVENT_KIND.GAME_START | LABEL_EVENT_KIND.GAME_END; t: number; note?: string };
 
 /** A `*.labels.json` file, made by the label page. */

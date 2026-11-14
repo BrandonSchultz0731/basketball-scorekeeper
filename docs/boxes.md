@@ -16,7 +16,7 @@ Run the [eval page](eval.md) on the clip and save its `<clip>.eval.json` in `foo
 
 ## What you review
 
-For each make and tricky miss, 7 frames: 0.9, 0.6, 0.4, 0.27 and 0.13 seconds before the label, at the label, and 0.13 seconds after. That covers the ball in the air, at the rim, in the net and dropping out. There are also 25 quiet frames per basket, from times with no label, as examples of no ball. A training clip has roughly 550–650 frames.
+For each make and tricky miss, 7 frames: 0.9, 0.6, 0.4, 0.27 and 0.13 seconds before the label, at the label, and 0.13 seconds after. That covers the ball in the air, at the rim, in the net and dropping out. There are also 50 quiet frames per basket, from times with no label, as examples of no ball. A training clip has roughly 600–700 frames.
 
 Each frame shows a square around the rim, 10 rim widths across, at full resolution.
 
@@ -45,6 +45,7 @@ The line above the frame says which frame it is, what was labeled, and how long 
 - **No ball** when none of it is visible in this frame, even if you know from the frames around it where it must be: behind the backboard's padding or pole, behind a player, or outside the frame. A box on something that isn't the ball teaches the model to see balls there. If less than about a quarter of the ball shows, count it as not visible.
 - **Wrong guesses:** if the yellow box is on something that isn't the ball, like a head or a light, click on the real ball or press N. Don't save the guess.
 - **Every visible ball has to be boxed, or the frame left out.** Training treats anything unboxed as "not a ball", so a background ball left unboxed teaches the model that a ball isn't one, which makes it less sure about the balls at the rim too. So either box every ball (Shift for more than one), or press **X** to leave the frame out. Leaving a frame out loses that frame but can't confuse the model. Box the background balls when it's quick; press X when it isn't.
+- **Balls that sit still the whole clip** (in a bin, or resting by a wall) don't need boxes. Note where they are, and that area gets painted gray before training (`training/ignore.json`), so it teaches nothing either way. If one starts moving, box it while it moves.
 
 ## Progress
 

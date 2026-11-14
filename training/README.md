@@ -32,6 +32,8 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python train.py ../footage/<clip>.boxes.jso
 - **Defaults:** 20 epochs, batch 16, 3 crops per frame per epoch, SGD with warmup then cosine decay. About half a second per step on an M4 Pro, so roughly 20 minutes for one clip.
 - **Checking:** before training and after each epoch it prints validation recall (share of held-out balls found at score 0.25) and false positives per crop, on fixed 6× and 10× crops. The best epoch is kept.
 - **Output** in `runs/<name>/`: `log.txt`, `best.pth`, and `yolox_s_<name>.onnx`, which has the same input and output layout as the official YOLOX exports, with one class.
+- **Ignored areas:** `ignore.json` lists areas per clip, in video pixels, that are painted gray before training. Use it for balls that sit still for a whole clip and weren't boxed, like a ball bin, so they teach neither "ball" nor "not a ball". Boxes centered inside an ignored area are dropped. An area with a `"frame"` id applies to that one frame only.
+- **Balls that come and go** (a pile by a wall that people take balls from): `mask_unboxed.py` adds per-frame patches from a model's eval results, covering every ball-sized detection in a given area that you didn't box. See the comment at the top of the script.
 - `PYTORCH_ENABLE_MPS_FALLBACK=1` lets any operation the Mac GPU lacks run on the CPU instead of failing.
 
 ## Use a trained model in the app

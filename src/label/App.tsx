@@ -95,10 +95,11 @@ export const App = () => {
       const t = v.currentTime;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (KEYS[k]) add({ kind: LABEL_EVENT_KIND.MAKE, t, ...KEYS[k] });
-      else if (MISS_KEYS[k]) add({ kind: LABEL_EVENT_KIND.MISS, t, hoop: MISS_KEYS[k] });
+      else if (MISS_KEYS[k]) add({ kind: LABEL_EVENT_KIND.MISS, t, hoop: MISS_KEYS[k], missType: MISS_TYPE.OTHER });
       else if (k === 'g') add({ kind: LABEL_EVENT_KIND.GAME_START, t });
       else if (k === 'e') add({ kind: LABEL_EVENT_KIND.GAME_END, t });
       else if (k === 'u' && selected !== null) { const ev = events[selected]; if (ev?.kind === LABEL_EVENT_KIND.MAKE || ev?.kind === LABEL_EVENT_KIND.MISS) update(selected, { uncertain: !ev.uncertain }); }
+      else if (k === 'x' && selected !== null) { const ev = events[selected]; if (ev?.kind === LABEL_EVENT_KIND.MAKE || ev?.kind === LABEL_EVENT_KIND.MISS) update(selected, { offGame: !ev.offGame }); }
       else if ((k === 'backspace' || k === 'delete') && selected !== null) remove(selected);
       else if (k === ' ') { v.paused ? v.play() : v.pause(); }
       else if (k === 'arrowleft') seek(t - (e.shiftKey ? 10 : 2));
@@ -158,7 +159,7 @@ export const App = () => {
   for (const { e } of sorted) {
     if (e.kind === LABEL_EVENT_KIND.GAME_START) { live = true; score[HOOP.LEFT] = score[HOOP.RIGHT] = 0; }
     else if (e.kind === LABEL_EVENT_KIND.GAME_END) live = false;
-    else if (e.kind === LABEL_EVENT_KIND.MAKE && live && e.t <= now) score[e.hoop] += e.points;
+    else if (e.kind === LABEL_EVENT_KIND.MAKE && live && !e.offGame && e.t <= now) score[e.hoop] += e.points;
   }
   const makes = events.filter((e) => e.kind === LABEL_EVENT_KIND.MAKE).length;
   const misses = events.filter((e) => e.kind === LABEL_EVENT_KIND.MISS).length;
@@ -225,7 +226,7 @@ export const App = () => {
               ))}
               {HOOPS.map((hoop) => (
                 <Button key={`miss-${hoop}`} variant="outline" color={HOOP_COLOR[hoop]} disabled={!file}
-                  onClick={() => add({ kind: LABEL_EVENT_KIND.MISS, t: now, hoop })}>
+                  onClick={() => add({ kind: LABEL_EVENT_KIND.MISS, t: now, hoop, missType: MISS_TYPE.OTHER })}>
                   {hoopNames[hoop]} miss ({Object.keys(MISS_KEYS).find((k) => MISS_KEYS[k] === hoop)!.toUpperCase()})
                 </Button>
               ))}
@@ -235,7 +236,7 @@ export const App = () => {
             <Paper withBorder p="sm">
               <Text size="sm" c="dimmed">
                 <Kbd>Q</Kbd>/<Kbd>W</Kbd> left 2/3 · <Kbd>O</Kbd>/<Kbd>P</Kbd> right 2/3 · <Kbd>A</Kbd>/<Kbd>L</Kbd> left/right tricky miss · <Kbd>G</Kbd>/<Kbd>E</Kbd> game start/end ·{' '}
-                <Kbd>U</Kbd> toggle uncertain · <Kbd>⌫</Kbd> delete selected · <Kbd>Space</Kbd> play/pause ·{' '}
+                <Kbd>U</Kbd> toggle uncertain · <Kbd>X</Kbd> toggle doesn't count · <Kbd>⌫</Kbd> delete selected · <Kbd>Space</Kbd> play/pause ·{' '}
                 <Kbd>←</Kbd>/<Kbd>→</Kbd> 2 s (<Kbd>Shift</Kbd> 10 s) · <Kbd>,</Kbd>/<Kbd>.</Kbd> one frame · <Kbd>[</Kbd>/<Kbd>]</Kbd> speed
               </Text>
               <Text size="sm" c="dimmed" mt="xs">
@@ -271,9 +272,9 @@ export const App = () => {
                       <Text size="sm" style={{ fontVariantNumeric: 'tabular-nums' }}>
                         {clock(e.t)}{' '}
                         {e.kind === LABEL_EVENT_KIND.MAKE
-                          ? <>{hoopNames[e.hoop]} <b>{e.points}</b>{e.uncertain && <Badge size="xs" color="yellow" ml={4}>?</Badge>}</>
+                          ? <>{hoopNames[e.hoop]} <b>{e.points}</b>{e.uncertain && <Badge size="xs" color="yellow" ml={4}>?</Badge>}{e.offGame && <Badge size="xs" color="gray" ml={4}>doesn't count</Badge>}</>
                           : e.kind === LABEL_EVENT_KIND.MISS
-                            ? <>{hoopNames[e.hoop]} <Text span c="dimmed" inherit>× miss{e.missType ? `: ${MISS_TYPE_LABEL[e.missType]}` : ''}</Text>{e.uncertain && <Badge size="xs" color="yellow" ml={4}>?</Badge>}</>
+                            ? <>{hoopNames[e.hoop]} <Text span c="dimmed" inherit>× miss{e.missType ? `: ${MISS_TYPE_LABEL[e.missType]}` : ''}</Text>{e.uncertain && <Badge size="xs" color="yellow" ml={4}>?</Badge>}{e.offGame && <Badge size="xs" color="gray" ml={4}>doesn't count</Badge>}</>
                             : <i>{KIND_LABEL[e.kind]}</i>}
                       </Text>
                       {selected === i && (
@@ -285,6 +286,10 @@ export const App = () => {
                           )}
                           {(e.kind === LABEL_EVENT_KIND.MAKE || e.kind === LABEL_EVENT_KIND.MISS) && (
                             <Button size="compact-xs" variant="default" onClick={() => update(i, { hoop: otherHoop(e.hoop) })}>L/R</Button>
+                          )}
+                          {(e.kind === LABEL_EVENT_KIND.MAKE || e.kind === LABEL_EVENT_KIND.MISS) && (
+                            <Button size="compact-xs" variant={e.offGame ? 'filled' : 'default'} color="gray"
+                              title="Doesn't count (X): outside the game, fixing the net, or waved off" onClick={() => update(i, { offGame: !e.offGame })}>off</Button>
                           )}
                           <Button size="compact-xs" variant="light" color="red" onClick={() => remove(i)}>✕</Button>
                         </Group>

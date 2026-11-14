@@ -1,0 +1,3059 @@
+{
+  "court-2-bottom-right-baseline-shooting": [
+    {
+      "x": 310,
+      "y": 1232,
+      "w": 70,
+      "h": 64,
+      "note": "ball resting on the floor by the wall, left of the doors"
+    },
+    {
+      "x": 220,
+      "y": 1212,
+      "w": 82,
+      "h": 70,
+      "note": "blue ball bin with balls on top"
+    },
+    {
+      "x": 110,
+      "y": 1270,
+      "w": 160,
+      "h": 70,
+      "note": "pile of bags beside the bin, a ball among them"
+    }
+  ],
+  "court-1-birds-eye-5v5-11-14-2026-05": [
+    {
+      "x": 3123,
+      "y": 895,
+      "w": 58,
+      "h": 58,
+      "frame": "q-right-28.00",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3072,
+      "y": 866,
+      "w": 38,
+      "h": 38,
+      "frame": "q-right-28.00",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 895,
+      "w": 58,
+      "h": 58,
+      "frame": "q-right-56.00",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 867,
+      "w": 36,
+      "h": 36,
+      "frame": "q-right-56.00",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3072,
+      "y": 870,
+      "w": 31,
+      "h": 31,
+      "frame": "e002-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3074,
+      "y": 868,
+      "w": 35,
+      "h": 35,
+      "frame": "e002-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3074,
+      "y": 869,
+      "w": 34,
+      "h": 34,
+      "frame": "e002-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3123,
+      "y": 897,
+      "w": 35,
+      "h": 35,
+      "frame": "e002-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3123,
+      "y": 897,
+      "w": 35,
+      "h": 35,
+      "frame": "e002-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 869,
+      "w": 35,
+      "h": 35,
+      "frame": "e003-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3125,
+      "y": 899,
+      "w": 32,
+      "h": 32,
+      "frame": "e003-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 867,
+      "w": 38,
+      "h": 38,
+      "frame": "e003-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 867,
+      "w": 35,
+      "h": 35,
+      "frame": "e003-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 868,
+      "w": 35,
+      "h": 35,
+      "frame": "e003-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3123,
+      "y": 895,
+      "w": 40,
+      "h": 40,
+      "frame": "e003-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 868,
+      "w": 35,
+      "h": 35,
+      "frame": "e003-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 868,
+      "w": 36,
+      "h": 36,
+      "frame": "e003-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 868,
+      "w": 35,
+      "h": 35,
+      "frame": "e003-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3127,
+      "y": 894,
+      "w": 64,
+      "h": 64,
+      "frame": "e004-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3074,
+      "y": 868,
+      "w": 35,
+      "h": 35,
+      "frame": "e004-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3074,
+      "y": 867,
+      "w": 36,
+      "h": 36,
+      "frame": "e004-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 866,
+      "w": 36,
+      "h": 36,
+      "frame": "e004-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3074,
+      "y": 868,
+      "w": 36,
+      "h": 36,
+      "frame": "e004-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3073,
+      "y": 868,
+      "w": 36,
+      "h": 36,
+      "frame": "e004-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3074,
+      "y": 868,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-111.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 848,
+      "w": 30,
+      "h": 30,
+      "frame": "q-right-111.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3087,
+      "y": 808,
+      "w": 26,
+      "h": 26,
+      "frame": "q-right-139.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2996,
+      "y": 847,
+      "w": 31,
+      "h": 31,
+      "frame": "q-right-139.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 827,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-167.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3128,
+      "y": 894,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-167.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3129,
+      "y": 893,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-195.99",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3128,
+      "y": 895,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-223.98",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3042,
+      "y": 814,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-251.98",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3117,
+      "y": 905,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-251.98",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 913,
+      "w": 44,
+      "h": 44,
+      "frame": "e008-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 914,
+      "w": 43,
+      "h": 43,
+      "frame": "e008-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3162,
+      "y": 914,
+      "w": 43,
+      "h": 43,
+      "frame": "e008-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e008-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e008-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e008-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e008-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3161,
+      "y": 915,
+      "w": 43,
+      "h": 43,
+      "frame": "q-right-279.98",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3110,
+      "y": 829,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-279.98",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 915,
+      "w": 43,
+      "h": 43,
+      "frame": "e010-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e010-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3115,
+      "y": 832,
+      "w": 34,
+      "h": 34,
+      "frame": "e010-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3115,
+      "y": 831,
+      "w": 32,
+      "h": 32,
+      "frame": "e010-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e010-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e010-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3113,
+      "y": 831,
+      "w": 34,
+      "h": 34,
+      "frame": "e010-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3162,
+      "y": 914,
+      "w": 43,
+      "h": 43,
+      "frame": "e010-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 915,
+      "w": 43,
+      "h": 43,
+      "frame": "q-right-335.98",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3083,
+      "y": 789,
+      "w": 32,
+      "h": 32,
+      "frame": "e012-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 914,
+      "w": 46,
+      "h": 46,
+      "frame": "e012-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3087,
+      "y": 782,
+      "w": 35,
+      "h": 35,
+      "frame": "e012-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 914,
+      "w": 46,
+      "h": 46,
+      "frame": "e012-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 914,
+      "w": 46,
+      "h": 46,
+      "frame": "e012-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2996,
+      "y": 846,
+      "w": 39,
+      "h": 39,
+      "frame": "e012-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3161,
+      "y": 914,
+      "w": 43,
+      "h": 43,
+      "frame": "q-right-363.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 849,
+      "w": 30,
+      "h": 30,
+      "frame": "q-right-363.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3161,
+      "y": 913,
+      "w": 44,
+      "h": 44,
+      "frame": "e013-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 913,
+      "w": 44,
+      "h": 44,
+      "frame": "e013-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3161,
+      "y": 914,
+      "w": 44,
+      "h": 44,
+      "frame": "e013-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3158,
+      "y": 913,
+      "w": 47,
+      "h": 47,
+      "frame": "e013-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3161,
+      "y": 915,
+      "w": 43,
+      "h": 43,
+      "frame": "q-right-391.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2998,
+      "y": 849,
+      "w": 30,
+      "h": 30,
+      "frame": "q-right-391.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3159,
+      "y": 913,
+      "w": 46,
+      "h": 46,
+      "frame": "e014-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 849,
+      "w": 30,
+      "h": 30,
+      "frame": "e014-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2968,
+      "y": 779,
+      "w": 29,
+      "h": 29,
+      "frame": "e014-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3164,
+      "y": 916,
+      "w": 40,
+      "h": 40,
+      "frame": "e014-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3163,
+      "y": 916,
+      "w": 42,
+      "h": 42,
+      "frame": "e014-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3160,
+      "y": 913,
+      "w": 44,
+      "h": 44,
+      "frame": "q-right-419.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "e015-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "e015-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2996,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "e015-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-447.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3133,
+      "y": 929,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-447.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3064,
+      "y": 895,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-475.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2997,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-475.97",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-503.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3130,
+      "y": 893,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-503.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-531.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-531.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 895,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-559.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-559.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-587.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-587.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-615.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-615.96",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2919,
+      "y": 846,
+      "w": 43,
+      "h": 43,
+      "frame": "e019-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e019-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-643.95",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-643.95",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e020-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e020-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e020-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e020-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e020-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-671.95",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3042,
+      "y": 802,
+      "w": 42,
+      "h": 42,
+      "frame": "e021-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e021-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3044,
+      "y": 804,
+      "w": 39,
+      "h": 39,
+      "frame": "e021-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e022-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 895,
+      "w": 35,
+      "h": 35,
+      "frame": "e022-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e022-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e022-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e022-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 895,
+      "w": 35,
+      "h": 35,
+      "frame": "e022-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e022-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 32,
+      "h": 32,
+      "frame": "e023-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3045,
+      "y": 800,
+      "w": 40,
+      "h": 40,
+      "frame": "e023-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e023-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3052,
+      "y": 803,
+      "w": 40,
+      "h": 40,
+      "frame": "e023-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e023-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3057,
+      "y": 804,
+      "w": 38,
+      "h": 38,
+      "frame": "e023-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e023-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 805,
+      "w": 40,
+      "h": 40,
+      "frame": "e023-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e023-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3058,
+      "y": 805,
+      "w": 40,
+      "h": 40,
+      "frame": "e023-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e023-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e023-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3058,
+      "y": 806,
+      "w": 40,
+      "h": 40,
+      "frame": "e023-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3120,
+      "y": 893,
+      "w": 38,
+      "h": 38,
+      "frame": "e024-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e024-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 894,
+      "w": 35,
+      "h": 35,
+      "frame": "e024-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e024-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e024-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e024-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 36,
+      "h": 36,
+      "frame": "e024-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "e024-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e024-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e024-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e025-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2964,
+      "y": 862,
+      "w": 31,
+      "h": 31,
+      "frame": "e025-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e025-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 864,
+      "w": 32,
+      "h": 32,
+      "frame": "e025-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "e025-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 863,
+      "w": 32,
+      "h": 32,
+      "frame": "e025-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e025-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 863,
+      "w": 32,
+      "h": 32,
+      "frame": "e025-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e025-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 863,
+      "w": 32,
+      "h": 32,
+      "frame": "e025-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e025-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 863,
+      "w": 34,
+      "h": 34,
+      "frame": "e025-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e025-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 863,
+      "w": 32,
+      "h": 32,
+      "frame": "e025-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-755.95",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2963,
+      "y": 863,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-755.95",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-783.94",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-783.94",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e026-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-839.94",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-839.94",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 893,
+      "w": 38,
+      "h": 38,
+      "frame": "e028-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 850,
+      "w": 31,
+      "h": 31,
+      "frame": "e028-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e028-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e028-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e028-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e028-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e028-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e028-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-895.94",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 846,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 846,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e029-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 32,
+      "h": 32,
+      "frame": "e029-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e029-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 898,
+      "w": 32,
+      "h": 32,
+      "frame": "e029-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e029-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e030-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e030-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3133,
+      "y": 861,
+      "w": 46,
+      "h": 46,
+      "frame": "e030-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e030-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e030-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3127,
+      "y": 899,
+      "w": 30,
+      "h": 30,
+      "frame": "e030-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e030-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e030-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e030-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e030-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e031-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e031-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 846,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e031-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 32,
+      "h": 32,
+      "frame": "e032-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 897,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3121,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "e032-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3122,
+      "y": 896,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-923.93",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 846,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-923.93",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-979.93",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-1035.93",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-1063.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 849,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-1091.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3082,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1091.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3081,
+      "y": 912,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-1119.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-1119.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 43,
+      "h": 43,
+      "frame": "q-right-1147.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-1147.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 849,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-1175.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3081,
+      "y": 912,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-1175.92",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3119,
+      "y": 831,
+      "w": 34,
+      "h": 34,
+      "frame": "e039-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 42,
+      "h": 42,
+      "frame": "e039-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3081,
+      "y": 912,
+      "w": 42,
+      "h": 42,
+      "frame": "e039-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 42,
+      "h": 42,
+      "frame": "e039-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 42,
+      "h": 42,
+      "frame": "e039-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 42,
+      "h": 42,
+      "frame": "e039-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 42,
+      "h": 42,
+      "frame": "e039-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-1203.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-1203.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1231.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "q-right-1231.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e042-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2994,
+      "y": 847,
+      "w": 35,
+      "h": 35,
+      "frame": "e042-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 848,
+      "w": 34,
+      "h": 34,
+      "frame": "e042-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e042-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 849,
+      "w": 32,
+      "h": 32,
+      "frame": "e042-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 39,
+      "h": 39,
+      "frame": "e042-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 849,
+      "w": 32,
+      "h": 32,
+      "frame": "e042-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 39,
+      "h": 39,
+      "frame": "e042-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 849,
+      "w": 32,
+      "h": 32,
+      "frame": "e042-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e042-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2995,
+      "y": 849,
+      "w": 32,
+      "h": 32,
+      "frame": "e042-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 39,
+      "h": 39,
+      "frame": "e042-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3081,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1259.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3010,
+      "y": 863,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-1259.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3010,
+      "y": 864,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-1287.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3081,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1287.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1315.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3010,
+      "y": 864,
+      "w": 35,
+      "h": 35,
+      "frame": "q-right-1315.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3083,
+      "y": 833,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-1315.91",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3009,
+      "y": 865,
+      "w": 32,
+      "h": 32,
+      "frame": "e044-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3009,
+      "y": 865,
+      "w": 32,
+      "h": 32,
+      "frame": "e044-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3008,
+      "y": 861,
+      "w": 39,
+      "h": 39,
+      "frame": "e044-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3010,
+      "y": 864,
+      "w": 32,
+      "h": 32,
+      "frame": "q-right-1343.90",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1343.90",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3086,
+      "y": 817,
+      "w": 39,
+      "h": 39,
+      "frame": "e045-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3096,
+      "y": 800,
+      "w": 39,
+      "h": 39,
+      "frame": "e045-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 39,
+      "h": 39,
+      "frame": "e045-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3058,
+      "y": 821,
+      "w": 42,
+      "h": 42,
+      "frame": "e045-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e045-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e045-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e045-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e045-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e045-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3081,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1399.90",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e047-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "e047-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3001,
+      "y": 867,
+      "w": 66,
+      "h": 66,
+      "frame": "e047-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3070,
+      "y": 878,
+      "w": 61,
+      "h": 61,
+      "frame": "e047-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 39,
+      "h": 39,
+      "frame": "q-right-1427.90",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2989,
+      "y": 828,
+      "w": 43,
+      "h": 43,
+      "frame": "q-right-1427.90",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "e048-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "e048-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "e048-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "e048-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 911,
+      "w": 40,
+      "h": 40,
+      "frame": "e048-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 40,
+      "h": 40,
+      "frame": "q-right-1455.90",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3080,
+      "y": 912,
+      "w": 39,
+      "h": 39,
+      "frame": "q-right-1483.89",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3069,
+      "y": 905,
+      "w": 42,
+      "h": 42,
+      "frame": "q-right-1511.89",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3069,
+      "y": 905,
+      "w": 43,
+      "h": 43,
+      "frame": "e051-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3069,
+      "y": 904,
+      "w": 43,
+      "h": 43,
+      "frame": "e051-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3069,
+      "y": 904,
+      "w": 43,
+      "h": 43,
+      "frame": "e051-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2912,
+      "y": 817,
+      "w": 66,
+      "h": 66,
+      "frame": "e052-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 789,
+      "w": 58,
+      "h": 58,
+      "frame": "e053-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e053-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e053-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e054-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e053-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e053-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e054-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3130,
+      "y": 896,
+      "w": 38,
+      "h": 38,
+      "frame": "e054-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e054-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 58,
+      "h": 58,
+      "frame": "e054-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 58,
+      "h": 58,
+      "frame": "e054-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2905,
+      "y": 787,
+      "w": 57,
+      "h": 57,
+      "frame": "e055-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 62,
+      "h": 62,
+      "frame": "e055-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 786,
+      "w": 64,
+      "h": 64,
+      "frame": "e055-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 787,
+      "w": 58,
+      "h": 58,
+      "frame": "e055-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2905,
+      "y": 783,
+      "w": 27,
+      "h": 27,
+      "frame": "e055-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2891,
+      "y": 782,
+      "w": 27,
+      "h": 27,
+      "frame": "e055-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 789,
+      "w": 60,
+      "h": 60,
+      "frame": "e056-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e056-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e056-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 58,
+      "h": 58,
+      "frame": "e056-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 58,
+      "h": 58,
+      "frame": "e056-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 787,
+      "w": 60,
+      "h": 60,
+      "frame": "e056-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 789,
+      "w": 60,
+      "h": 60,
+      "frame": "e057-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 789,
+      "w": 58,
+      "h": 58,
+      "frame": "e057-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 789,
+      "w": 58,
+      "h": 58,
+      "frame": "e057-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 789,
+      "w": 58,
+      "h": 58,
+      "frame": "e057-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 58,
+      "h": 58,
+      "frame": "e057-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 789,
+      "w": 57,
+      "h": 57,
+      "frame": "e057-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 788,
+      "w": 58,
+      "h": 58,
+      "frame": "e058-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 788,
+      "w": 60,
+      "h": 60,
+      "frame": "e058-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 789,
+      "w": 58,
+      "h": 58,
+      "frame": "e058-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2904,
+      "y": 787,
+      "w": 60,
+      "h": 60,
+      "frame": "e058-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 787,
+      "w": 61,
+      "h": 61,
+      "frame": "e058-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 787,
+      "w": 61,
+      "h": 61,
+      "frame": "e058-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2903,
+      "y": 789,
+      "w": 60,
+      "h": 60,
+      "frame": "e058-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 820,
+      "w": 34,
+      "h": 34,
+      "frame": "e062-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 820,
+      "w": 34,
+      "h": 34,
+      "frame": "e062-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 820,
+      "w": 34,
+      "h": 34,
+      "frame": "e062-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 822,
+      "w": 32,
+      "h": 32,
+      "frame": "e062-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 822,
+      "w": 32,
+      "h": 32,
+      "frame": "e062-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 822,
+      "w": 32,
+      "h": 32,
+      "frame": "e062-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 2907,
+      "y": 822,
+      "w": 32,
+      "h": 32,
+      "frame": "e062-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3054,
+      "y": 886,
+      "w": 40,
+      "h": 40,
+      "frame": "e063-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 888,
+      "w": 38,
+      "h": 38,
+      "frame": "e063-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3054,
+      "y": 888,
+      "w": 39,
+      "h": 39,
+      "frame": "e063-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3055,
+      "y": 891,
+      "w": 29,
+      "h": 29,
+      "frame": "e063-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3054,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 887,
+      "w": 39,
+      "h": 39,
+      "frame": "e064-6",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3055,
+      "y": 889,
+      "w": 36,
+      "h": 36,
+      "frame": "e065-0",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3056,
+      "y": 889,
+      "w": 36,
+      "h": 36,
+      "frame": "e065-1",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3055,
+      "y": 888,
+      "w": 38,
+      "h": 38,
+      "frame": "e065-2",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3055,
+      "y": 888,
+      "w": 36,
+      "h": 36,
+      "frame": "e065-3",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3053,
+      "y": 888,
+      "w": 38,
+      "h": 38,
+      "frame": "e065-4",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3053,
+      "y": 887,
+      "w": 38,
+      "h": 38,
+      "frame": "e065-5",
+      "note": "ball pile under the right rim"
+    },
+    {
+      "x": 3053,
+      "y": 888,
+      "w": 38,
+      "h": 38,
+      "frame": "e065-6",
+      "note": "ball pile under the right rim"
+    }
+  ]
+}

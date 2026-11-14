@@ -45,22 +45,49 @@ COCO_SPORTS_BALL = 32
 CROP_MULTIPLES = (4.0, 10.0)
 # A box cut by the crop edge is kept if at least this much of it is inside, else the crop is redrawn.
 MIN_VISIBLE = 0.5
+# Gray that fills ignored areas: YOLOX's own padding value.
+IGNORE_FILL = 114
+IGNORE_FILE = HERE / "ignore.json"
+
+
+def load_ignore():
+    """Areas per clip (video pixels) that are painted gray before training: balls that weren't boxed, like ones in a
+    bin. Gray means the model learns nothing there, neither ball nor not-ball. An area with a "frame" (a frame id)
+    applies to that frame only; without one it applies to every frame of the clip."""
+    return json.loads(IGNORE_FILE.read_text()) if IGNORE_FILE.exists() else {}
+
+
+def read_image(f):
+    """A frame's region image with its ignored areas painted gray."""
+    img = cv2.imread(str(f["image"]))
+    if img is None:
+        raise FileNotFoundError(f["image"])
+    for x, y, w, h in f["ignore"]:
+        x0, y0 = max(0, int(x)), max(0, int(y))
+        img[y0:int(math.ceil(y + h)), x0:int(math.ceil(x + w))] = IGNORE_FILL
+    return img
 
 
 def load_frames(paths):
     """Every answered frame (ball or no ball) with its image path, region, rim width and boxes in region pixels."""
     frames = []
+    ignore_all = load_ignore()
     for p in paths:
         p = Path(p).resolve()
         d = json.loads(p.read_text())
         clip = d["video"]["name"].rsplit(".", 1)[0]
         image_dir = p.parent / "dataset" / clip
+        clip_ignore = ignore_all.get(clip, [])
         for f in d["frames"]:
             a = f.get("answer")
             if not a or a["answer"] not in ("ball", "no_ball"):
                 continue
             r = f["region"]
-            boxes = [(b["x"] - r["x"], b["y"] - r["y"], b["w"], b["h"]) for b in (a.get("boxes") or [])]
+            ignore = [(z["x"], z["y"], z["w"], z["h"]) for z in clip_ignore if z.get("frame") in (None, f["id"])]
+            # Boxes centered in an ignored area are dropped: that area is painted over.
+            boxes = [(b["x"] - r["x"], b["y"] - r["y"], b["w"], b["h"]) for b in (a.get("boxes") or [])
+                     if not any(ix <= b["x"] + b["w"] / 2 <= ix + iw and iy <= b["y"] + b["h"] / 2 <= iy + ih
+                                for ix, iy, iw, ih in ignore)]
             frames.append({
                 "image": image_dir / f"{f['id']}.jpg",
                 "clip": clip,
@@ -70,6 +97,7 @@ def load_frames(paths):
                 "rim": d["rims"][f["hoop"]]["width"],
                 "side": r["side"],
                 "boxes": np.array(boxes, dtype=np.float32).reshape(-1, 4),
+                "ignore": [(x - r["x"], y - r["y"], w, h) for x, y, w, h in ignore],
             })
     return frames
 
@@ -119,10 +147,7 @@ class CropDataset(torch.utils.data.Dataset):
 
     def image(self, f):
         if f["image"] not in self.cache:
-            img = cv2.imread(str(f["image"]))
-            if img is None:
-                raise FileNotFoundError(f["image"])
-            self.cache[f["image"]] = img
+            self.cache[f["image"]] = read_image(f)
         return self.cache[f["image"]]
 
     def __getitem__(self, i):
@@ -218,12 +243,14 @@ def evaluate(model, frames, device, score=0.25):
     model.head.decode_in_inference = False
     found = total = false_pos = 0
     for f in frames:
-        img = cv2.imread(str(f["image"]))
+        img = read_image(f)
         size = img.shape[0]
         for m in (6, 10):
             side = min(size, round(m * f["rim"]))
             x0 = y0 = (size - side) // 2
-            boxes, _ = clip_boxes(f["boxes"], x0, y0, side)
+            boxes, ok = clip_boxes(f["boxes"], x0, y0, side)
+            if not ok:  # a ball cut mostly off by this fixed crop: can't score it fairly either way
+                continue
             crop = cv2.resize(img[y0:y0 + side, x0:x0 + side], (INPUT, INPUT), interpolation=cv2.INTER_AREA)
             out = decode(model(to_tensor(crop)[None].to(device))[0].cpu().numpy())
             dets = nms(out[out[:, 4] >= score])[:, :4] * (side / INPUT)  # cx, cy, w, h in crop px
