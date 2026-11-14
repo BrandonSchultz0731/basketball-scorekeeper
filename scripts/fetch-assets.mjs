@@ -7,7 +7,7 @@ import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
 
-// COCO-pretrained YOLOX, Apache-2.0. Keep in sync with src/spike/models.ts.
+// COCO-pretrained YOLOX, Apache-2.0. Keep in sync with src/shared/detector/models.ts.
 const RELEASE = 'https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0';
 const MODELS = [
   { file: 'yolox_nano.onnx', bytes: 3659407 }, // 416x416

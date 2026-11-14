@@ -2,7 +2,7 @@ import tseslint from 'typescript-eslint';
 
 // Repo code standards (see .claude/skills/developing-code/SKILL.md).
 export default tseslint.config(
-  { ignores: ['dist/', 'node_modules/', 'public/'] },
+  { ignores: ['dist/', 'node_modules/', 'public/', 'training/'] },
   {
     files: ['**/*.{ts,tsx,js,mjs}'],
     languageOptions: { parser: tseslint.parser },

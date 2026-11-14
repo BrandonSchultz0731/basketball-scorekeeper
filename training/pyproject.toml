@@ -1,0 +1,21 @@
+[project]
+name = "pickup-scorekeeper-training"
+version = "0.0.0"
+description = "Fine-tunes the YOLOX ball detector on gym footage. See training/README.md."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "torch>=2.6",
+  "torchvision>=0.21",
+  "numpy",
+  "opencv-python-headless",
+  "loguru",
+  "tqdm",
+  "tabulate",
+  "psutil",
+  "pycocotools",
+  "onnx",
+  "onnxruntime",
+  "ninja",
+  "setuptools",
+  "onnxscript>=0.7.2",
+]

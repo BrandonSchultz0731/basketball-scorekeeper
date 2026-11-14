@@ -1,11 +1,14 @@
 /// <reference lib="webworker" />
 import * as ort from 'onnxruntime-web/webgpu';
-import { COCO_CLASS } from '../shared/enums';
-import { decode, toTensorData } from '../shared/utils';
+import { COCO_CLASS } from '../enums';
+import { decodeWanted, toTensorData } from '../utils';
 import { WORKER_MESSAGE_TYPE, type WorkerIn, type WorkerOut } from './protocol';
 
 let session: ort.InferenceSession | null = null;
 let size = 416;
+// Output class index -> COCO class, for fine-tuned models with their own classes. Null for COCO models.
+let classes: COCO_CLASS[] | null = null;
+const WANTED = [COCO_CLASS.PERSON, COCO_CLASS.SPORTS_BALL];
 let ctx: OffscreenCanvasRenderingContext2D | null = null;
 
 const post = (m: WorkerOut) => (self as DedicatedWorkerGlobalScope).postMessage(m);
@@ -15,6 +18,7 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
   try {
     if (msg.type === WORKER_MESSAGE_TYPE.INIT) {
       size = msg.size;
+      classes = msg.classes ?? null;
       // Threads need cross-origin isolation, which static hosts like GitHub Pages don't give.
       ort.env.wasm.numThreads = self.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency) : 1;
       const t0 = performance.now();
@@ -45,7 +49,7 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
       const t2 = performance.now();
       const raw = out[session.outputNames[0]];
       const numClasses = (raw.dims[2] as number) - 5;
-      const dets = decode(raw.data as Float32Array, size, numClasses, [COCO_CLASS.PERSON, COCO_CLASS.SPORTS_BALL], msg.threshold);
+      const dets = decodeWanted(raw.data as Float32Array, size, numClasses, WANTED, msg.threshold, classes ?? undefined);
       raw.dispose();
       post({ type: WORKER_MESSAGE_TYPE.RESULT, id: msg.id, prepMs: t1 - t0, inferMs: t2 - t1, postMs: performance.now() - t2, dets });
     }
