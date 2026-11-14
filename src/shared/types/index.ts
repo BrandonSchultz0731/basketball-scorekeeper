@@ -4,4 +4,5 @@ export * from './eval';
 export * from './game';
 export * from './label';
 export * from './live';
+export * from './make';
 export * from './rim';

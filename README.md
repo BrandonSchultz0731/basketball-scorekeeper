@@ -12,7 +12,7 @@ Phone-camera scorekeeping for full-court pickup basketball. See [PLAN.md](PLAN.m
 - `/boxes/` — review the ball's box in frames around each labeled shot, starting from the detector's guesses; saves training images and boxes into `footage/`.
 - `training/` — Python environment for fine-tuning the detector ([training guide](training/README.md)).
 
-What every button and setting does: [scoreboard guide](docs/scoreboard.md), [viewer guide](docs/watch.md), [spike page guide](docs/spike.md), [labeler guide](docs/labeler.md), [eval guide](docs/eval.md), [ball boxes guide](docs/boxes.md).
+What every button and setting does: [scoreboard guide](docs/scoreboard.md), [viewer guide](docs/watch.md), [spike page guide](docs/spike.md), [labeler guide](docs/labeler.md), [eval guide](docs/eval.md), [ball boxes guide](docs/boxes.md), [make eval guide](docs/make-eval.md).
 
 Recording footage: [gym recording checklist](docs/gym-recording.md). Phase 0 phone results: [benchmarks](benchmarks/README.md).
 

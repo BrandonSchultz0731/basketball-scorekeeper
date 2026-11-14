@@ -34,7 +34,7 @@ src/
     hooks/             reusable React hooks (useWakeLock)
     theme/             Mantine theme, HOOP_COLOR, mount()
     types/             cross-feature interfaces and types (Detection, Game, Settings)
-    utils/             pure functions and constants (HOOPS, otherHoop, YOLOX decode, rim crops, game rules, announcement text)
+    utils/             pure functions and constants (HOOPS, otherHoop, YOLOX decode, rim crops, game rules, make logic, announcement text)
     detector/          the YOLOX detector worker, its message protocol and model list (browser-only; used by spike and eval)
     live/              Firebase live-score rooms (browser-only)
     video/             helpers for stepping through a <video> frame by frame (browser-only)

@@ -3,4 +3,6 @@ export * from './crop';
 export * from './game';
 export * from './hoop';
 export * from './live';
+export * from './make';
+export * from './makeEval';
 export * from './yolox';

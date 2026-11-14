@@ -45,3 +45,23 @@ cp runs/ball_v1/yolox_s_ball_v1.onnx ../public/models/
 ```
 
 It then shows in the model menus on the eval and spike pages. `public/models` is gitignored and these files are only on this Mac, so a fine-tuned model isn't on the GitHub Pages site yet.
+
+## Run a model over whole videos
+
+`detect_video.py` runs a trained model on every frame around both rims, for the make eval. See [docs/make-eval.md](../docs/make-eval.md).
+
+## Make/miss model
+
+A second check on each make the make logic calls: given a short clip of the rim around the call, did the ball go in? It's trained from the labels alone, with no boxing: every call that matches a labeled make is a "make", and every other call is a "miss".
+
+```sh
+pnpm make-eval footage/<clip>.ball_v3.dets.json   # writes <clip>.ball_v3.makes.json
+cd training
+uv run python make_clips.py ../footage/<clip>.ball_v3.makes.json [more …]   # writes clips/<clip>.npz
+uv run python train_make.py --name make_v1 --seeds 3
+```
+
+- **Clips:** the square around the rim (2.5 rim widths), 0.3 s before the call to 0.7 s after, at 96 px.
+- **Model:** a small CNN trained from scratch on 10 frames stacked as channels.
+- **Checking:** leave-one-video-out. Each video is graded by models trained on the other videos, and it prints how many makes are kept and misses dropped at several thresholds. `--seeds` averages several models per check, which is steadier with few clips.
+- **Output:** `runs/<name>/<name>.onnx`. `clips/` is gitignored.

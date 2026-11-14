@@ -73,6 +73,12 @@
       "points": 3
     },
     {
+      "kind": "miss",
+      "t": 182.84,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
       "kind": "make",
       "t": 192.679,
       "hoop": "left",
@@ -107,6 +113,12 @@
       "t": 347.16,
       "hoop": "right",
       "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 366.792,
+      "hoop": "left",
+      "missType": "other"
     },
     {
       "kind": "make",
@@ -153,6 +165,18 @@
     {
       "kind": "game_end",
       "t": 627.305
+    },
+    {
+      "kind": "miss",
+      "t": 646.922,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "miss",
+      "t": 659.077,
+      "hoop": "right",
+      "missType": "front_airball"
     },
     {
       "kind": "make",
@@ -202,6 +226,27 @@
     },
     {
       "kind": "make",
+      "t": 801.787,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 805.53,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 808.372,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
       "t": 810.034,
       "hoop": "left",
       "points": 3
@@ -211,6 +256,33 @@
       "t": 854.88,
       "hoop": "right",
       "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 865.993,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 870.57,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 875.942,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "miss",
+      "t": 896.233,
+      "hoop": "right",
+      "missType": "other"
     },
     {
       "kind": "make",
@@ -238,6 +310,12 @@
       "hoop": "right",
       "points": 2,
       "offGame": true
+    },
+    {
+      "kind": "miss",
+      "t": 943.937,
+      "hoop": "left",
+      "missType": "rim_out"
     },
     {
       "kind": "make",
@@ -305,6 +383,12 @@
       "t": 1254.432,
       "hoop": "left",
       "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 1280.825,
+      "hoop": "left",
+      "missType": "other"
     },
     {
       "kind": "make",
@@ -435,6 +519,12 @@
       "t": 1672.749,
       "hoop": "right",
       "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 1685.972,
+      "hoop": "right",
+      "missType": "front_airball"
     },
     {
       "kind": "make",

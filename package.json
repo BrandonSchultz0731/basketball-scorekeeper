@@ -10,7 +10,8 @@
     "preview": "vite preview --host",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "make-eval": "node scripts/make-eval.mjs"
   },
   "dependencies": {
     "@mantine/core": "^9.8.0",
