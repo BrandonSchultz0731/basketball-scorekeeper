@@ -30,6 +30,19 @@ For each clip it prints:
 
 Makes marked uncertain (U) aren't counted either way. Everything is also written to `footage/<clip>.<name>.makes.json`.
 
+## Simulate the phone
+
+```sh
+cd training && uv run python motion_video.py ../footage/<clip>.labels.json   # once per clip, ~15–20 min
+pnpm make-eval footage/<clip>.ball_v3-416.dets.json --phone 12
+```
+
+`--phone 12` replays the clip the way a phone that manages 12 detector checks a second would see it. Both rims share those checks, the motion check wakes each rim, and the Camera tab's own scheduler (`src/shared/utils/checkScheduler.ts`) picks which rim each check goes to. Results come out in the same form as above.
+
+- **Why it matters:** the phone can't check every frame. On the bird's-eye game, 12 checks a second catch 44 of 58 makes, against 51 with every frame checked.
+- **What it's for:** trying scheduler rules and settings across whole games instead of one phone run at a time. `--set` also takes the scheduler's settings, for example `--set minRateWithBall=2`.
+- **Input:** the motion levels come from `training/motion_video.py`, which measures them the same way the Camera tab does.
+
 To try a different setting without changing code, add `--set name=value`, for example `--set minScore=0.4`. The settings and what they mean are in `MakeSettings` in `src/shared/types/make.ts`; the defaults are in `src/shared/utils/make.ts`.
 
 ## How the make logic decides

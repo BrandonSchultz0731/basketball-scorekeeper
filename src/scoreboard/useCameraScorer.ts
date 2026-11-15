@@ -8,30 +8,26 @@
 // It runs for a whole session, so the frame loop reads everything from refs (see the standards skill).
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  BACKEND, LIVE_BALL_MODEL, startDetector, startMakeCheck, type Detector, type MakeCheck,
+  BACKEND, LIVE_BALL_MODEL, MODELS, startDetector, startMakeCheck, type Detector, type MakeCheck,
 } from '../shared/detector';
 import { COCO_CLASS, FRAME_SOURCE, HOOP } from '../shared/enums';
 import type { BallBox, Crop, MakeCall, Rim } from '../shared/types';
 import {
-  DEFAULT_RIM_CROP_MULTIPLE, HOOPS, MAKE_CLIP, MAKE_CLIP_AFTER, clipFrameTimes, createMakeDetector, makeClipInput,
+  DEFAULT_RIM_CROP_MULTIPLE, HOOPS, createCheckScheduler, MAKE_CLIP, MAKE_CLIP_AFTER, clipFrameTimes, createMakeDetector, makeClipInput,
   motionLevel, rimCrop, rimSquare, toVideoBox,
 } from '../shared/utils';
 import { openBackCamera } from '../shared/video';
 
-/** Detector input size and the lowest score kept (the make logic applies its own, higher bar). */
-const DETECT_SIZE = 640;
+/** Detector input size (from the live model) and the lowest score kept (the make logic applies its own bar). */
+const DETECT_SIZE = MODELS[LIVE_BALL_MODEL].size;
 const DETECT_MIN_SCORE = 0.1;
-/** Motion thumbnail size, the brightness change (0–255) that counts as motion, and how long a rim stays active. */
+/** Motion thumbnail size. What counts as motion, and which rim gets each check, is up to the check scheduler. */
 const MOTION_SIZE = 32;
-const MOTION_LEVEL = 3;
-const ACTIVE_FOR = 1.5;
 /**
  * Motion is watched in the detector's whole square around the rim, so the detector is already running while a shot
  * flies in. (A tight square around the rim only saw the ball a moment before it went through, too late.)
  */
 const MOTION_MULTIPLE = DEFAULT_RIM_CROP_MULTIPLE;
-/** A rim keeps the detector while a moving ball was seen there in the last BALL_FOCUS seconds. */
-const BALL_FOCUS = 0.5;
 /** Seconds of rim frames kept: the clip reaches 0.27 s before a call and the call can be a little late. */
 const BUFFER_SECONDS = 2;
 /** The make/miss model's bar for counting a make. */
@@ -52,8 +48,9 @@ export interface CameraCall {
 export interface CameraStatus {
   source: FRAME_SOURCE;
   running: boolean;
-  /** Models loaded and ready. */
+  /** Models loaded and ready, or loading now. */
   ready: boolean;
+  loading: boolean;
   error: string;
   /** Frames arriving, and detector runs per rim, per second. */
   frameFps: number;
@@ -87,8 +84,13 @@ const canvas2d = (width: number, height = width) => {
 const drawSquare = (ctx: CanvasRenderingContext2D, v: HTMLVideoElement, c: Crop, i: number, size: number) =>
   ctx.drawImage(v, c.x, c.y, c.side, c.side, i * size, 0, size, size);
 
+/**
+ * Clip squares are buffered from every BUFFER_EVERY-th frame: the make/miss model uses every 3rd frame, so the
+ * nearest buffered one is at most a frame off, and the phone has half the drawing to do.
+ */
+const BUFFER_EVERY = 2;
 /** The motion check runs on every MOTION_EVERY-th frame, with one small read-back for both rims. */
-const MOTION_EVERY = 3;
+const MOTION_EVERY = 4;
 
 /** Square `slot` out of RGBA pixels of `count` `size`-px squares side by side. */
 const rowsOf = (all: Uint8ClampedArray, slot: number, size: number, count: number): Uint8ClampedArray => {
@@ -135,7 +137,7 @@ const clipAnchor = (call: MakeCall): number => Math.min(call.t, call.fromT + CRO
 export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop: HOOP) => void) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [status, setStatus] = useState<CameraStatus>({
-    source: FRAME_SOURCE.NONE, running: false, ready: false, error: '', frameFps: 0,
+    source: FRAME_SOURCE.NONE, running: false, ready: false, loading: false, error: '', frameFps: 0,
     detectFps: zeroByHoop(0), detectMs: 0, frameMs: 0, active: zeroByHoop(false), calls: [], frame: null,
   });
 
@@ -146,6 +148,8 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     source: FRAME_SOURCE.NONE,
     detector: null as Detector | null,
     makeCheck: null as MakeCheck | null,
+    /** The models' load in progress, shared by every caller, so repeated taps can't load a second copy. */
+    loadingModels: null as Promise<void> | null,
     busy: false,
     stream: null as MediaStream | null,
     fileUrl: '',
@@ -155,9 +159,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     detectCtx: null as CanvasRenderingContext2D | null,
     buffer: [] as Buffered[],
     motionPrev: zeroByHoop<Uint8ClampedArray | null>(null),
-    activeUntil: zeroByHoop(-Infinity),
-    lastRun: zeroByHoop(-Infinity),
-    ballSeen: zeroByHoop(-Infinity),
+    scheduler: createCheckScheduler(HOOPS),
     makers: {} as Partial<Record<HOOP, ReturnType<typeof createMakeDetector>>>,
     pending: [] as MakeCall[],
     calls: [] as CameraCall[],
@@ -185,7 +187,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     const st = s.current, v = videoRef.current, rim = st.rims[hoop];
     if (!st.detector || !v || !rim || !st.detectCtx) return;
     st.busy = true;
-    st.lastRun[hoop] = t;
+    st.scheduler.ran(hoop, t);
     try {
       const crop = rimCrop(rim, DEFAULT_RIM_CROP_MULTIPLE, v.videoWidth, v.videoHeight);
       st.detectCtx.drawImage(v, crop.x, crop.y, crop.side, crop.side, 0, 0, DETECT_SIZE, DETECT_SIZE);
@@ -201,7 +203,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
       st.makers[hoop] ??= createMakeDetector(hoop, rim);
       const call = st.makers[hoop]!.push(t, boxes);
       // Only a ball in play counts, not one sitting by the wall, which would keep the detector at that rim.
-      st.ballSeen[hoop] = st.makers[hoop]!.lastMovingBall();
+      st.scheduler.ball(hoop, st.makers[hoop]!.lastMovingBall());
       if (call) {
         st.pending.push(call);
         st.calls = [{ hoop, t: call.t, p: null, scored: false }, ...st.calls].slice(0, 20);
@@ -238,14 +240,16 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     st.frames++;
     const W = v.videoWidth, H = v.videoHeight;
     // Both rims' clip squares into one strip, snapshotted as a bitmap that stays on the GPU.
-    for (const hoop of HOOPS) {
-      const rim = st.rims[hoop];
-      if (rim) drawSquare(st.squareCtx, v, rimSquare(rim, W, H), hoopSlot(hoop), MAKE_CLIP.size);
+    if (st.frames % BUFFER_EVERY === 0) {
+      for (const hoop of HOOPS) {
+        const rim = st.rims[hoop];
+        if (rim) drawSquare(st.squareCtx, v, rimSquare(rim, W, H), hoopSlot(hoop), MAKE_CLIP.size);
+      }
+      void createImageBitmap(st.squareCtx.canvas).then((bitmap) => {
+        st.buffer.push({ t, bitmap });
+        while (st.buffer.length && t - st.buffer[0].t > BUFFER_SECONDS) st.buffer.shift()!.bitmap.close();
+      });
     }
-    void createImageBitmap(st.squareCtx.canvas).then((bitmap) => {
-      st.buffer.push({ t, bitmap });
-      while (st.buffer.length && t - st.buffer[0].t > BUFFER_SECONDS) st.buffer.shift()!.bitmap.close();
-    });
     // Motion: both rims' thumbnails, one read-back, every few frames.
     if (st.frames % MOTION_EVERY === 0) {
       for (const hoop of HOOPS) {
@@ -257,17 +261,14 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
         if (!st.rims[hoop]) continue;
         const thumb = rowsOf(all, hoopSlot(hoop), MOTION_SIZE, HOOPS.length);
         const prev = st.motionPrev[hoop];
-        if (prev && motionLevel(prev, thumb) >= MOTION_LEVEL) st.activeUntil[hoop] = t + ACTIVE_FOR;
+        if (prev) st.scheduler.motion(hoop, t, motionLevel(prev, thumb));
         st.motionPrev[hoop] = thumb;
       }
     }
     st.frameMsSum += performance.now() - t0;
-    // The detector goes to a rim where a ball was just seen; otherwise to whichever active rim it ran on least
-    // recently. While a ball is near one rim, that rim gets every check.
+    // The scheduler picks the rim (src/shared/utils/checkScheduler.ts, the same rules the make eval simulates).
     if (!st.busy) {
-      const active = HOOPS.filter((h) => st.rims[h] && st.activeUntil[h] >= t);
-      const withBall = active.filter((h) => t - st.ballSeen[h] <= BALL_FOCUS).sort((a, b) => st.ballSeen[b] - st.ballSeen[a]);
-      const next = withBall[0] ?? active.sort((a, b) => st.lastRun[a] - st.lastRun[b])[0];
+      const next = st.scheduler.next(t);
       if (next) void detect(next, t);
     }
     const due = st.pending.filter((c) => t >= clipAnchor(c) + MAKE_CLIP_AFTER + 1 / MAKE_CLIP.fps);
@@ -284,7 +285,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
         detectFps: { [HOOP.LEFT]: st.runs[HOOP.LEFT] / secs, [HOOP.RIGHT]: st.runs[HOOP.RIGHT] / secs },
         detectMs: runs ? st.msSum / runs : 0,
         frameMs: st.frames ? st.frameMsSum / st.frames : 0,
-        active: { [HOOP.LEFT]: st.activeUntil[HOOP.LEFT] >= t, [HOOP.RIGHT]: st.activeUntil[HOOP.RIGHT] >= t },
+        active: { [HOOP.LEFT]: st.scheduler.busy(HOOP.LEFT, t), [HOOP.RIGHT]: st.scheduler.busy(HOOP.RIGHT, t) },
         calls: st.calls.map((c) => ({ ...c })),
       };
       setStatus((old) => ({ ...old, ...next }));
@@ -306,17 +307,26 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
   }, [status.running, onFrame]);
 
   /** Loads both models once. */
-  const loadModels = useCallback(async () => {
+  const loadModels = useCallback((): Promise<void> => {
     const st = s.current;
-    if (st.detector && st.makeCheck) return;
+    if (st.detector && st.makeCheck) return Promise.resolve();
     st.squareCtx ??= canvas2d(MAKE_CLIP.size * HOOPS.length, MAKE_CLIP.size);
     st.motionCtx ??= canvas2d(MOTION_SIZE * HOOPS.length, MOTION_SIZE);
     st.readCtx ??= canvas2d(MAKE_CLIP.size);
     st.detectCtx ??= canvas2d(DETECT_SIZE);
-    [st.detector, st.makeCheck] = await Promise.all([
-      st.detector ?? startDetector(LIVE_BALL_MODEL, BACKEND.WEBGPU), st.makeCheck ?? startMakeCheck(),
-    ]);
-    setStatus((old) => ({ ...old, ready: true }));
+    if (!st.loadingModels) {
+      setStatus((old) => ({ ...old, loading: true }));
+      // One at a time: the ball model is the big one, and loading both at once adds to the peak memory.
+      st.loadingModels = (async () => {
+        st.detector ??= await startDetector(LIVE_BALL_MODEL, BACKEND.WEBGPU);
+        st.makeCheck ??= await startMakeCheck();
+        setStatus((old) => ({ ...old, ready: true }));
+      })().finally(() => {
+        st.loadingModels = null;
+        setStatus((old) => ({ ...old, loading: false }));
+      });
+    }
+    return st.loadingModels;
   }, []);
 
   const stop = useCallback(() => {
@@ -383,6 +393,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
       await loadModels();
       const st = s.current;
       st.makers = {};
+      st.scheduler = createCheckScheduler(HOOPS.filter((h) => st.rims[h]));
       st.pending = [];
       st.running = true;
       if (v.paused) await v.play();

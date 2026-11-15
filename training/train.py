@@ -203,11 +203,12 @@ def build_model():
     return model
 
 
-def decode(raw):
-    """Raw head outputs [N, 5 + classes] -> (cx, cy, w, h, score) in input pixels, the same decode as the web app."""
+def decode(raw, size=INPUT):
+    """Raw head outputs [N, 5 + classes] -> (cx, cy, w, h, score) in input pixels, the same decode as the web app.
+    `size` is the input size the model ran at (the model works at any multiple of 32)."""
     grids, strides = [], []
     for s in (8, 16, 32):
-        g = INPUT // s
+        g = size // s
         ys, xs = np.mgrid[0:g, 0:g]
         grids.append(np.stack([xs.ravel(), ys.ravel()], 1))
         strides.append(np.full(g * g, s))
@@ -269,10 +270,10 @@ def evaluate(model, frames, device, score=0.25):
     return {"recall": found / max(total, 1), "false_pos_per_crop": false_pos / max(2 * len(frames), 1), "balls": total}
 
 
-def export_onnx(model, path):
+def export_onnx(model, path, size=INPUT):
     model = model.to("cpu").eval()
     model.head.decode_in_inference = False  # raw head outputs, decoded in the web app like the official exports
-    torch.onnx.export(model, torch.zeros(1, 3, INPUT, INPUT), str(path), input_names=["images"], output_names=["output"],
+    torch.onnx.export(model, torch.zeros(1, 3, size, size), str(path), input_names=["images"], output_names=["output"],
                       opset_version=17, dynamo=False)
 
 

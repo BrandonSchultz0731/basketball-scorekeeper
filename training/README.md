@@ -46,9 +46,13 @@ cp runs/ball_v1/yolox_s_ball_v1.onnx ../public/models/
 
 It then shows in the model menus on the eval and spike pages. `public/models` is gitignored and these files are only on this Mac, so a fine-tuned model isn't on the GitHub Pages site yet.
 
+## Export at a smaller input size
+
+`export_model.py --name ball_v3 --size 416` exports a trained model at another input size (any multiple of 32), to `runs/<name>/yolox_s_<name>_<size>.onnx`. A 416 px input is about 2.4 times less work than 640. On the bird's-eye clip it finds as many makes at the check rates a phone manages, so the Camera tab uses it. `detect_video.py --input 416` checks a size with the make eval first.
+
 ## Run a model over whole videos
 
-`detect_video.py` runs a trained model on every frame around both rims, for the make eval. See [docs/make-eval.md](../docs/make-eval.md).
+`detect_video.py` runs a trained model on every frame around both rims, for the make eval. `motion_video.py` measures the motion level at both rims through a video, for the make eval's phone simulation (`--phone`). See [docs/make-eval.md](../docs/make-eval.md).
 
 ## Make/miss model
 

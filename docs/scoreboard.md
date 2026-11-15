@@ -37,7 +37,7 @@ Automatic scoring. The phone is mounted where it can see both rims (the balcony,
 - **Use camera:** opens the back camera, the ultra-wide if the phone has one, at 4K.
 - **Play a video file:** plays a recorded clip instead, as if it were the camera, to try it out without going to the gym. It plays in real time, so the phone has to keep up the same way it would live. It has the usual video controls, so you can jump to a moment before starting.
 - **Mark left rim / Mark right rim:** tap two opposite corners of a box around each rim: the top of the rim to the bottom of the net, with the sides on the ends of the rim, like in the [labeler](labeler.md#rims). The dashed square is the area the ball detector looks at. Rims are saved, so they only need re-marking when the phone moves.
-- **Start watching / Stop watching.** While watching, the screen stays on.
+- **Start watching / Stop watching.** The first start loads the two models, which takes a while (the ball model is 36 MB); the button shows dots until they're ready. While watching, the screen stays on.
 
 **While watching:**
 - **Stay on this tab.** A video on a hidden tab can stop sending frames.

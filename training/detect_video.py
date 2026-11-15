@@ -55,6 +55,7 @@ def main():
     ap.add_argument("--stride", type=int, default=1, help="run every n-th frame")
     ap.add_argument("--batch", type=int, default=8, help="frames per detector batch")
     ap.add_argument("--max-frames", type=int, default=0, help="stop early, for testing")
+    ap.add_argument("--input", type=int, default=INPUT, help="detector input size, a multiple of 32 (smaller is faster)")
     args = ap.parse_args()
 
     labels_path = Path(args.labels).resolve()
@@ -84,17 +85,17 @@ def main():
             for h in HOOPS:
                 x, y, side = crops[h]
                 crop = frame[y:y + side, x:x + side]
-                interp = cv2.INTER_AREA if side > INPUT else cv2.INTER_LINEAR
-                tensors.append(to_tensor(cv2.resize(crop, (INPUT, INPUT), interpolation=interp)))
+                interp = cv2.INTER_AREA if side > args.input else cv2.INTER_LINEAR
+                tensors.append(to_tensor(cv2.resize(crop, (args.input, args.input), interpolation=interp)))
         with torch.no_grad():
             raw = model(torch.stack(tensors).to(device)).cpu().numpy()
         for j, (i, _) in enumerate(batch):
             for k, h in enumerate(HOOPS):
-                d = decode(raw[j * len(HOOPS) + k])
+                d = decode(raw[j * len(HOOPS) + k], args.input)
                 d = nms(d[d[:, 4] >= args.min_score])
                 if len(d):
                     x, y, side = crops[h]
-                    s = side / INPUT
+                    s = side / args.input
                     boxes = [[round(x + (cx - w / 2) * s, 1), round(y + (cy - bh / 2) * s, 1), round(w * s, 1),
                               round(bh * s, 1), round(float(sc), 3)] for cx, cy, w, bh, sc in d]
                     out[h].append([i, boxes])
@@ -116,11 +117,13 @@ def main():
                       f"{(total // args.stride - done) / max(done / el, 1e-6) / 60:.1f} min left", flush=True)
 
     clip = labels["video"]["name"].rsplit(".", 1)[0]
-    path = labels_path.parent / f"{clip}.{args.name}.dets.json"
+    tag = args.name if args.input == INPUT else f"{args.name}-{args.input}"
+    path = labels_path.parent / f"{clip}.{tag}.dets.json"
     path.write_text(json.dumps({
         "version": 1,
         "video": {"name": labels["video"]["name"], "width": width, "height": height, "fps": fps, "frames": total},
-        "model": f"yolox_s_{args.name}",
+        "model": f"yolox_s_{tag}",
+        "input": args.input,
         "multiple": args.multiple,
         "stride": args.stride,
         "minScore": args.min_score,

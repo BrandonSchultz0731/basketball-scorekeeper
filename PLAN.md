@@ -238,7 +238,14 @@ Status (2026-11-14):
      - Hold one out as the bird's-eye test clip, never trained on.
      - Add the rest to the make/miss model. Box some for the ball model too if heads and arms remain a problem.
   3. **Reach the exit target** on the held-out bird's-eye clip: 95% recall and 95% precision, and games with the correct final count. Tune the make logic's misses (6 of 58 bird's-eye makes) and the make/miss threshold.
-  4. **Live pipeline on the phone:** built and working on the Mac (the Camera tab). Still to do: try it on the iPhone with a video file, then the camera. The original checklist was:
+  4. **Live pipeline on the phone:** built, and running on the iPhone with a video file. Still to do: the camera itself, and a full game.
+     - **First iPhone runs** (90 s bird's-eye clip): 16 frames/s at 24 ms each. The 640 px detector took 124 ms per check, about 6 checks/s, and missed makes.
+     - **Changes:** a 416 px export of the ball model (about 2.4x faster, as good at phone check rates), half the per-frame work, a motion threshold of 1.0 (3 woke the rim too late), and a new check scheduler (below). After them the phone gets about 10–15 checks/s and catches all 3 makes.
+     - **Phone simulation** (`pnpm make-eval --phone N`): replays recorded detections with N checks/s and the Camera tab's scheduler.
+     - **The scheduler:** a rim with a moving ball gets the checks; rims with balls take turns; the other rim keeps 1 check/s, or 3 with no ball in play.
+     - **Results at 12 checks/s:** bird's-eye 44 of 58 makes (51 with every frame checked); 2v2 38 of 40 (25 with the old rule; not used for tuning).
+     - **Next lever:** a faster ball model (YOLOX-tiny, about 15 ms per check on the phone in Phase 0).
+     - **The original checklist was:**
      - frame source (camera, or a video file for testing)
      - ring buffer of recent frames, for the make/miss clip
      - motion gate, to run the detector only when something moves near a rim

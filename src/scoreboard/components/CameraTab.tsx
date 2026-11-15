@@ -93,18 +93,26 @@ export const CameraTab = ({ rims, names, onRimsChange, gameLive, onMake }: Props
       {st.source !== FRAME_SOURCE.NONE && (
         st.running
           ? <Button size="lg" color="red" variant="light" onClick={cam.stop}>Stop watching</Button>
-          : <Button size="lg" disabled={!anyRim} onClick={cam.start}>Start watching</Button>
+          : (
+            <Button size="lg" disabled={!anyRim || st.loading} loading={st.loading} loaderProps={{ type: 'dots' }} onClick={cam.start}>
+              Start watching
+            </Button>
+          )
       )}
 
       {st.running && !gameLive && (
         <Alert color="yellow">No game is live, so makes aren&apos;t being scored. Start one on the Game tab, or from a viewer&apos;s phone.</Alert>
       )}
 
+      {st.loading && (
+        <Text size="sm" c="dimmed" ta="center">Loading the models. The first time takes a while: the ball model is 36 MB.</Text>
+      )}
+
       {(st.running || st.ready) && (
         <Paper withBorder p="sm">
           <Text size="sm" fw={600} mb={6}>Status</Text>
           <StatList rows={[
-            ['Models', st.ready ? 'ready' : 'loading…'],
+            ['Models', st.ready ? 'ready' : st.loading ? 'loading…' : 'not loaded'],
             ['Frames', `${st.frameFps.toFixed(0)} per second, ${st.frameMs.toFixed(1)} ms of work each`],
             ...HOOPS.filter((h) => rims[h]).map((h): [string, string] => [
               `${names[h]} rim`, `${st.active[h] ? 'motion' : 'quiet'}, ${st.detectFps[h].toFixed(1)} checks/s`,

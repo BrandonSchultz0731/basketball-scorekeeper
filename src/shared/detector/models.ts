@@ -13,6 +13,8 @@ export enum DETECTOR_MODEL {
   S_BALL_V2 = 'yolox_s_ball_v2',
   /** ball_v2's clips plus the court-1 bird's-eye 5v5 game. */
   S_BALL_V3 = 'yolox_s_ball_v3',
+  /** ball_v3 exported at 416 px input: about 2.4x faster per check, nearly as good (training/export_model.py). */
+  S_BALL_V3_416 = 'yolox_s_ball_v3_416',
 }
 
 export interface ModelInfo {
@@ -43,13 +45,20 @@ export const MODELS: Record<DETECTOR_MODEL, ModelInfo> = {
     label: 'YOLOX-s ball v3 (fine-tuned)', file: 'yolox_s_ball_v3.onnx', size: 640, megabytes: 36,
     classes: [COCO_CLASS.SPORTS_BALL], local: true,
   },
+  [DETECTOR_MODEL.S_BALL_V3_416]: {
+    label: 'YOLOX-s ball v3, 416 px (fine-tuned)', file: 'yolox_s_ball_v3_416.onnx', size: 416, megabytes: 36,
+    classes: [COCO_CLASS.SPORTS_BALL], local: true,
+  },
 };
 
 /** The make/miss model (training/train_make.py), made locally like the fine-tuned ball models. */
 export const MAKE_CHECK_MODEL = { label: 'make/miss v1', file: 'make_v1.onnx', local: true } as const;
 
-/** Ball model used for live scoring. */
-export const LIVE_BALL_MODEL = DETECTOR_MODEL.S_BALL_V3;
+/**
+ * Ball model used for live scoring. The 416 px export: on the phone a 640 px check took about 124 ms, too slow to
+ * check a rim often enough, and at the check rates a phone manages the 416 px one finds as many makes.
+ */
+export const LIVE_BALL_MODEL = DETECTOR_MODEL.S_BALL_V3_416;
 
 /**
  * Crop side as a multiple of the model input.
