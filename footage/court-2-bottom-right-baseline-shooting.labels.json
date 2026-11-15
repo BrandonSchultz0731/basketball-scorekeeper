@@ -1,0 +1,450 @@
+{
+  "version": 1,
+  "video": {
+    "name": "court-2-bottom-right-baseline-shooting.MOV",
+    "size": 2978159519,
+    "duration": 928.983333,
+    "width": 3840,
+    "height": 2160
+  },
+  "hoopNames": {
+    "left": "left",
+    "right": "right"
+  },
+  "rims": {
+    "left": {
+      "x": 764.9938433231902,
+      "y": 759.5691741561105,
+      "width": 152.61085556577746,
+      "netBottom": 916.093128582549
+    },
+    "right": {
+      "x": 2844.80588776449,
+      "y": 970.8765126318023,
+      "width": 54.78338404925353,
+      "netBottom": 1021.7467978203948
+    }
+  },
+  "events": [
+    {
+      "kind": "make",
+      "t": 7.344,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 17.056,
+      "hoop": "left",
+      "missType": "front_airball"
+    },
+    {
+      "kind": "make",
+      "t": 39.047,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 49.36,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 56.098,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 84.755,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 92.693,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 101.542,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 110.863,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 131.773,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 137.341,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 146.273,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 157.586,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 166.031,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 176.778,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 187.636,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 192.157,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 210.203,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 233.984,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 242.207,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 252.249,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 262.051,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 275.726,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 298.747,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 314.251,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 339.249,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 350.912,
+      "hoop": "left",
+      "missType": "net_touch"
+    },
+    {
+      "kind": "make",
+      "t": 361.271,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 389.409,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 399.518,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 418.025,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 428.787,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 441.289,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 456.754,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 465.18,
+      "hoop": "right",
+      "missType": "back_rim_down"
+    },
+    {
+      "kind": "make",
+      "t": 470.866,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 477.532,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 486.039,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 495.874,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 509.081,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 516.708,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 534.639,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 542.296,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 549.617,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 557.718,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 599.071,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 610.336,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 643.021,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 682.086,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 718.155,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 730.474,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "miss",
+      "t": 744.856,
+      "hoop": "right",
+      "missType": "back_rim_down"
+    },
+    {
+      "kind": "make",
+      "t": 758.52,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 766.866,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 777.681,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 790.087,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 800.967,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 806.726,
+      "hoop": "right",
+      "missType": "net_touch"
+    },
+    {
+      "kind": "miss",
+      "t": 810.001,
+      "hoop": "right",
+      "missType": "net_touch"
+    },
+    {
+      "kind": "make",
+      "t": 822.079,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 832.702,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 836.262,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 839.395,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 843.225,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 849.461,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 864.864,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 872.162,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 888.441,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 898.18,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 906.95,
+      "hoop": "right",
+      "points": 2
+    }
+  ]
+}

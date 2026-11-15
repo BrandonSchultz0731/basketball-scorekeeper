@@ -1,0 +1,536 @@
+{
+  "version": 1,
+  "video": {
+    "name": "court-1-birds-eye-5v5-11-14-2026-05.MOV",
+    "size": 5466771022,
+    "duration": 1707.878333,
+    "width": 3840,
+    "height": 2160
+  },
+  "hoopNames": {
+    "left": "left",
+    "right": "right"
+  },
+  "rims": {
+    "left": {
+      "x": 463.6852310522964,
+      "y": 1154.7921590828673,
+      "width": 152.61085556577734,
+      "netBottom": 1299.5768169273229
+    },
+    "right": {
+      "x": 3108.940060859104,
+      "y": 691.0899440945439,
+      "width": 66.5226806312362,
+      "netBottom": 773.265020168424
+    }
+  },
+  "events": [
+    {
+      "kind": "game_start",
+      "t": 0
+    },
+    {
+      "kind": "miss",
+      "t": 39.957,
+      "hoop": "left",
+      "missType": "other"
+    },
+    {
+      "kind": "miss",
+      "t": 54.033,
+      "hoop": "left",
+      "missType": "other"
+    },
+    {
+      "kind": "miss",
+      "t": 66.859,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 85.557,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 102.295,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 125.423,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 164.401,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 182.84,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 192.679,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 273.686,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 289.785,
+      "hoop": "left",
+      "missType": "rim_out"
+    },
+    {
+      "kind": "make",
+      "t": 306.421,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 325.828,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 347.16,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 366.792,
+      "hoop": "left",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 373.328,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 405.477,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 438.241,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 466.126,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 498.868,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 550.258,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 627.301,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "game_end",
+      "t": 627.305
+    },
+    {
+      "kind": "miss",
+      "t": 646.922,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "miss",
+      "t": 659.077,
+      "hoop": "right",
+      "missType": "front_airball"
+    },
+    {
+      "kind": "make",
+      "t": 665.78,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 687.743,
+      "hoop": "right",
+      "missType": "front_airball"
+    },
+    {
+      "kind": "make",
+      "t": 698.209,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 700.703,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 728.907,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 731.779,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "game_start",
+      "t": 782.213
+    },
+    {
+      "kind": "make",
+      "t": 788.989,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 801.787,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 805.53,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 808.372,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 810.034,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 854.88,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 865.993,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 870.57,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 875.942,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "miss",
+      "t": 896.233,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 906.425,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 910.156,
+      "hoop": "right",
+      "missType": "other",
+      "offGame": true
+    },
+    {
+      "kind": "miss",
+      "t": 915.9,
+      "hoop": "right",
+      "missType": "other",
+      "offGame": true
+    },
+    {
+      "kind": "make",
+      "t": 918.957,
+      "hoop": "right",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "miss",
+      "t": 943.937,
+      "hoop": "left",
+      "missType": "rim_out"
+    },
+    {
+      "kind": "make",
+      "t": 967.77,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1067.038,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 1086.765,
+      "hoop": "left",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 1107.372,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1122.056,
+      "hoop": "left",
+      "points": 2,
+      "offGame": true
+    },
+    {
+      "kind": "miss",
+      "t": 1143.488,
+      "hoop": "left",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 1187.343,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 1198.333,
+      "hoop": "left",
+      "missType": "rim_out"
+    },
+    {
+      "kind": "make",
+      "t": 1217.649,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 1241.231,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 1254.432,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 1280.825,
+      "hoop": "left",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 1340.179,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 1371.47,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 1396.289,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 1403.543,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "miss",
+      "t": 1447.614,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 1463.918,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1491.553,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "game_end",
+      "t": 1491.553
+    },
+    {
+      "kind": "make",
+      "t": 1515.427,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1517.422,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1542.18,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 1542.714,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1549.653,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1551.222,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 1560.438,
+      "hoop": "right",
+      "missType": "other"
+    },
+    {
+      "kind": "make",
+      "t": 1569.539,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 1609.815,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 1615.853,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 1622.271,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1629.298,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1667.147,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 1672.749,
+      "hoop": "right",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 1685.972,
+      "hoop": "right",
+      "missType": "front_airball"
+    },
+    {
+      "kind": "make",
+      "t": 1692.898,
+      "hoop": "right",
+      "points": 3
+    }
+  ]
+}

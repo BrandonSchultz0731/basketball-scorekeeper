@@ -65,3 +65,21 @@ export const decode = (
   }
   return nms(dets, 0.45);
 };
+
+/**
+ * Decode, keeping only the `wanted` COCO classes. `classes` says what each output class is, for fine-tuned models
+ * with their own class list (e.g. [SPORTS_BALL] for a one-class ball model); leave it out for the 80 COCO classes.
+ * Detections always come back labeled with COCO classes.
+ */
+export const decodeWanted = (
+  raw: Float32Array,
+  size: number,
+  numClasses: number,
+  wanted: COCO_CLASS[],
+  threshold: number,
+  classes?: COCO_CLASS[],
+): Detection[] => {
+  if (!classes) return decode(raw, size, numClasses, wanted, threshold);
+  const keep = classes.flatMap((c, i) => (wanted.includes(c) ? [i as COCO_CLASS] : []));
+  return decode(raw, size, numClasses, keep, threshold).map((d) => ({ ...d, cls: classes[d.cls] }));
+};

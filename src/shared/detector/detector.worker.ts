@@ -1,12 +1,18 @@
 /// <reference lib="webworker" />
 import * as ort from 'onnxruntime-web/webgpu';
-import { COCO_CLASS } from '../shared/enums';
-import { decode, toTensorData } from '../shared/utils';
+import { COCO_CLASS } from '../enums';
+import { decodeWanted, toTensorData } from '../utils';
 import { WORKER_MESSAGE_TYPE, type WorkerIn, type WorkerOut } from './protocol';
 
 let session: ort.InferenceSession | null = null;
 let size = 416;
+// Output class index -> COCO class, for fine-tuned models with their own classes. Null for COCO models.
+let classes: COCO_CLASS[] | null = null;
+const WANTED = [COCO_CLASS.PERSON, COCO_CLASS.SPORTS_BALL];
 let ctx: OffscreenCanvasRenderingContext2D | null = null;
+// A check can arrive while the model is still on the last one. Its pixels are prepared straight away, but the model
+// runs checks one after another (a session can't run two at once), in the order they came.
+let modelQueue: Promise<unknown> = Promise.resolve();
 
 const post = (m: WorkerOut) => (self as DedicatedWorkerGlobalScope).postMessage(m);
 
@@ -15,6 +21,7 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
   try {
     if (msg.type === WORKER_MESSAGE_TYPE.INIT) {
       size = msg.size;
+      classes = msg.classes ?? null;
       // Threads need cross-origin isolation, which static hosts like GitHub Pages don't give.
       ort.env.wasm.numThreads = self.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency) : 1;
       const t0 = performance.now();
@@ -41,13 +48,22 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
       const px = ctx.getImageData(0, 0, size, size).data;
       const input = new ort.Tensor('float32', toTensorData(px, size), [1, 3, size, size]);
       const t1 = performance.now();
-      const out = await session.run({ [session.inputNames[0]]: input });
+      const s = session;
+      const turn = modelQueue.then(async () => {
+        const start = performance.now();
+        return { out: await s.run({ [s.inputNames[0]]: input }), start };
+      });
+      modelQueue = turn.catch(() => undefined);
+      const { out, start } = await turn;
       const t2 = performance.now();
       const raw = out[session.outputNames[0]];
       const numClasses = (raw.dims[2] as number) - 5;
-      const dets = decode(raw.data as Float32Array, size, numClasses, [COCO_CLASS.PERSON, COCO_CLASS.SPORTS_BALL], msg.threshold);
+      const dets = decodeWanted(raw.data as Float32Array, size, numClasses, WANTED, msg.threshold, classes ?? undefined);
       raw.dispose();
-      post({ type: WORKER_MESSAGE_TYPE.RESULT, id: msg.id, prepMs: t1 - t0, inferMs: t2 - t1, postMs: performance.now() - t2, dets });
+      post({
+        type: WORKER_MESSAGE_TYPE.RESULT, id: msg.id, prepMs: t1 - t0, queueMs: start - t1, inferMs: t2 - start,
+        postMs: performance.now() - t2, dets,
+      });
     }
   } catch (err) {
     post({ type: WORKER_MESSAGE_TYPE.ERROR, message: err instanceof Error ? err.message : String(err) });

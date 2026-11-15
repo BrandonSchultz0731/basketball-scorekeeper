@@ -17,6 +17,8 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         spike: resolve(import.meta.dirname, 'spike/index.html'),
         label: resolve(import.meta.dirname, 'label/index.html'),
+        eval: resolve(import.meta.dirname, 'eval/index.html'),
+        boxes: resolve(import.meta.dirname, 'boxes/index.html'),
         score: resolve(import.meta.dirname, 'score/index.html'),
         watch: resolve(import.meta.dirname, 'watch/index.html'),
       },

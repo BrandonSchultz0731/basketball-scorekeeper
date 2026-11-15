@@ -22,7 +22,9 @@ Each button adds a label at the current playback time.
 - **left miss (A) / right miss (L):** a **tricky miss** at that basket: one that could look like a make from the side. Misses never change the score.
 - **Game start (G) / Game end (E):** marks where a game begins and ends, so warm-up shots and shots between games don't count. This tests the app's "ignore shooting around" behavior later.
 
-Mark a make at the moment the ball goes through the net. If you're a bit late, nudge it afterwards.
+Label every make at the two rims, whoever shoots: warm-ups, shooting between games, and people outside the game shooting during one. During a game, mark anything that goes in but doesn't count with **X**: outside shots, untangling the net, a basket waved off. The app has to learn to ignore these, so the grading needs to know which they are.
+
+Mark a make when the ball comes out the bottom of the net. That is the same spot used for tricky misses, below, and the first moment a make is certain. Being off by a few frames is fine: grading allows about a second either way. What matters is using the same moment every time, so frame-stepping each one is not needed.
 
 ### Which misses to label
 
@@ -37,13 +39,14 @@ Only label misses that could fool a side-on camera into seeing a make. Skip ordi
 | net touch | Hits the net from outside or underneath without going through |
 | other | Anything else that looked like it might be a make |
 
-Mark the moment the ball is lowest beside the net, about where a make would come out the bottom. Picking the type is optional, but it lets the grading show which kinds of miss fool the detector.
+Mark the moment the ball is lowest beside the net, about where a make would come out the bottom. A new miss starts as "other"; select it in the event list and click a type if one fits better. The type lets the grading show which kinds of miss fool the detector.
 
 ## Other keys
 
 | Key | Action |
 |---|---|
 | U | Mark the selected make or miss as uncertain. Use it when you can't tell from the video whether it went in, or whether it was a 2 or a 3. |
+| X | Mark the selected make or miss as **doesn't count**: a real ball through (or at) the net that isn't a game basket. For example someone outside the game shooting during it, someone using the ball to untangle the net, or a basket waved off for a foul or timeout. It doesn't count toward the running score. Also the **off** button on the selected event. |
 | ⌫ / Delete | Delete the selected label |
 | Space | Play or pause |
 | ← / → | Skip back or forward 2 seconds. Hold Shift for 10 seconds. |
@@ -51,6 +54,17 @@ Mark the moment the ball is lowest beside the net, about where a make would come
 | [ / ] | Slower or faster playback, from 0.25× to 4×. Watching at 2× is a quick way to get through a full session. |
 
 Keys are ignored while you're typing in a text box.
+
+## Rims
+
+The eval page and the detector look at a square around each game rim, so each clip needs both rims marked once. The camera doesn't move during a clip, so once is enough.
+
+- **Mark left rim / Mark right rim:** pauses the video. Draw a box around the rim and net with two clicks: the top-left corner (the top of the rim, at its left edge), then the bottom-right corner (the bottom of the net, level with the rim's right edge). The box's width is taken as the rim's width, so keep its sides on the rim's edges, not the net's. **Esc** cancels. Pick a frame where nothing is in front of the rim.
+- **Re-mark:** shown once a rim is marked. Do it again if the line is off.
+- **What's drawn on the video:** a solid box around each marked rim and net, and a dashed square around that. The square is the area the detector looks at, 6 rim widths across, placed a bit low so the net is inside it.
+- **The line beside the buttons:** each rim's width in video pixels, or "not marked".
+
+Rims are saved and exported with the labels. Mark them before exporting, or export again afterwards.
 
 ## Basket names
 
@@ -71,4 +85,4 @@ Keys are ignored while you're typing in a text box.
 
 Labels save in your browser as you go, tied to that video file's name and size. Clearing your browser data erases them, so export the JSON when you finish a session.
 
-The file format is defined in `src/label/types.ts`.
+The file format is defined in `src/shared/types/label.ts`.

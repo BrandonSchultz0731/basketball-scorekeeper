@@ -1,6 +1,6 @@
 # Scoreboard (`/score/`)
 
-The scorekeeper itself. For now, scoring is by hand; automatic detection plugs into the same screen in Phase 2. Everything is saved on the phone, so it works without a connection.
+The scorekeeper itself. Score by hand on the Game tab, or let the camera score on the Camera tab. Everything is saved on the phone, so it works without a connection.
 
 ## Install it like an app
 
@@ -29,13 +29,41 @@ In Safari, open `/score/`, tap **Share → Add to Home Screen**. It then opens f
 
 While a game is live, the page asks the phone to keep the screen on.
 
+## Camera tab
+
+Automatic scoring. The phone is mounted where it can see both rims (the balcony, for court-1) and nobody needs to look at it: each make it sees is added to the live game, and everyone follows the score on [their own phones](watch.md). Spoken announcements are off for automatic makes, since the phone is away from the court.
+
+**Setting up, once per session after mounting the phone:**
+- **Use camera:** opens the back camera, the ultra-wide if the phone has one, at 4K.
+- **Play a video file:** plays a recorded clip instead, as if it were the camera, to try it out without going to the gym. It plays in real time, so the phone has to keep up the same way it would live. It has the usual video controls, so you can jump to a moment before starting.
+- **Finding the rims again:** when the camera (or a file) opens, the app looks for the rims where they were last session, using the picture of each rim it saved when watching last started. It searches up to 4 rim widths around the old spot, for a rim up to a third bigger or a quarter smaller, so a phone back on the same mount, sitting a little differently, is fine. It then says which rims it found and moves their boxes. If something blocks a rim, or the phone moved a lot, it says it couldn't find that rim and leaves the box alone: adjust it by hand. **Find them again** repeats the search, for example once a player has moved out of the way. Always check the boxes before starting.
+- **Mark left rim / Mark right rim** (or **Adjust**, once marked): tap roughly on the rim, then fit its box in a zoomed-in live view. The box goes from the top of the rim to the bottom of the net, with the sides on the ends of the rim, like in the [labeler](labeler.md#rims). Drag a corner to resize it or the middle to move it. **Zoom in / Zoom out** change the view, and **It's somewhere else** goes back to tapping on the whole picture. **Adjust** opens the zoomed view on the rim's current box. The dashed square on the main picture is the area the ball detector looks at.
+- **Start watching / Stop watching.** Starting saves a fresh picture of each rim, for finding them next time. The first start loads the two models, which takes a while (the ball model is 20 MB); the button shows dots until they're ready. While watching, the screen stays on.
+
+**While watching:**
+- **Stay on this tab.** A video on a hidden tab can stop sending frames.
+- **Makes only count during a live game.** Start the game on the Game tab, or from a viewer's phone with **Start next game**. A yellow note shows if no game is live.
+- **Every automatic make counts as an inside-the-arc basket** (2 points by default). The camera can't tell 2s from 3s yet.
+- **Makes can't be fixed from the court.** Fix them afterwards on the Log tab, where automatic makes are marked **auto**.
+
+**Status:**
+- **Models:** the ball detector and the make/miss model, loading or ready.
+- **Frames:** video frames handled per second, and the work each one takes. The camera gives 30 frames a second, so each needs well under 33 ms of work, or frames get dropped.
+- **Each rim:** **motion** or **quiet**, and how many detector checks per second it's getting. The detector only runs at a rim where something moves, and shares its time between the two rims when both are busy. About 15 checks a second on the rim with play is enough. Below about 10, makes start being missed.
+- **Detector:** how long one check takes, from the frame being cut out to the answer. Up to two checks are in flight at once, and both rims can be checked on the same frame, so the next check is being prepared while the model works on this one.
+- **Check parts:** where that time goes. **cut out:** cutting the rim's square out of the video frame. **prepare:** reading the pixels and converting them for the model. **wait:** waiting for the model to finish the check before. **model:** the ball model itself. **decode:** turning its output into boxes. **hand-off:** the rest, passing the square to the detector and the answer back.
+
+**Download log:** saves a file with the status for every second since watching started, each make with the make/miss model's answer, and the phone, model, video size and rims. On an iPhone it goes to Files, from where it can be AirDropped. Use it to report how a session went, instead of screenshots. Starting to watch again starts a new log.
+
+**Makes seen:** each time the ball comes down through a rim, the camera waits a moment, then a second model looks at the clip and decides whether it went in. Each entry shows the time in the video, the rim, and that model's answer: **scored**, or **not a make** with how sure it was. **save clip** downloads the frames that model looked at, side by side in one image, for checking a wrong answer.
+
 ## Log tab
 
 Every entry in the current (or last) game, in order. The score is always worked out from this list, so fixing an entry fixes the score. For each entry:
 - **time** since the game started
 - **basket name**
 - **points**, or "fix" for a −1 correction
-- **auto** (later): added by the detector
+- **auto**: added by the camera (Camera tab)
 - **check** (later): the detector wasn't sure, so review it
 
 Buttons on each entry:

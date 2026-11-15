@@ -7,6 +7,7 @@ import { useWakeLock } from '../shared/hooks';
 import { HOOP_COLOR } from '../shared/theme';
 import type { Game, ScoringSettings } from '../shared/types';
 import { HOOPS, otherHoop, scoreOf, toLiveState, winnerOf } from '../shared/utils';
+import { CameraTab } from './components/CameraTab';
 import { EventLog } from './components/EventLog';
 import { HistoryList } from './components/HistoryList';
 import { LiveScoreSection } from './components/LiveScoreSection';
@@ -17,6 +18,7 @@ import { useScoreboard } from './useScoreboard';
 
 enum TAB {
   GAME = 'game',
+  CAMERA = 'camera',
   LOG = 'log',
   HISTORY = 'history',
 }
@@ -91,6 +93,7 @@ export const App = () => {
         <Tabs value={tab} onChange={setTab}>
           <Tabs.List grow>
             <Tabs.Tab value={TAB.GAME}>Game</Tabs.Tab>
+            <Tabs.Tab value={TAB.CAMERA}>Camera</Tabs.Tab>
             <Tabs.Tab value={TAB.LOG}>Log</Tabs.Tab>
             <Tabs.Tab value={TAB.HISTORY}>History</Tabs.Tab>
           </Tabs.List>
@@ -130,6 +133,12 @@ export const App = () => {
                 </Text>
               </Stack>
             )}
+          </Tabs.Panel>
+
+          <Tabs.Panel value={TAB.CAMERA} pt="md">
+            <CameraTab rims={sb.settings.rims ?? {}} rimRefs={sb.settings.rimRefs ?? {}} names={names} gameLive={isLive}
+              onRimsChange={(rims, rimRefs) => sb.settings && sb.updateSettings({ ...sb.settings, rims, rimRefs })}
+              onMake={sb.scoreAuto} />
           </Tabs.Panel>
 
           <Tabs.Panel value={TAB.LOG} pt="md">

@@ -24,6 +24,16 @@ const TOOLS = [
     title: 'Footage labeler',
     body: 'Play a recorded game, mark each make, export JSON. Works best on a laptop.',
   },
+  {
+    href: `${base}eval/`,
+    title: 'Detector eval',
+    body: 'Run the detector over a labeled clip and see how often it finds the ball at the rims. Use it on a laptop.',
+  },
+  {
+    href: `${base}boxes/`,
+    title: 'Ball boxes',
+    body: 'Check or draw the ball in frames around each labeled shot, to build the training set. Chrome on a laptop.',
+  },
 ];
 
 const Home = () => (

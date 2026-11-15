@@ -8,6 +8,7 @@ public/models/
 footage/**/*
 !footage/**/
 !footage/**/*.labels.json
+!footage/**/*.boxes.json
 *.mov
 *.MOV
 *.mp4

@@ -188,6 +188,71 @@ Status (2026-11-12):
 
 Proposed exit target: at least 95% recall and 95% precision on labeled footage. This is a proposal, not something the user asked for. Because nothing is corrected mid-game, errors go straight into the score: a game to 21 has roughly 20 makes, so even 95% means about one wrong basket per game. Report the result as "games with a correct final score" as well as precision and recall, and tell the user plainly what the footage shows is achievable.
 
+Status (2026-11-14):
+- **Footage:** three corner clips are labeled, with rims marked: two shoot-arounds (court-1 and court-2) and a 2v2 (court-1, other corner). The 2v2 clip is held out as the test clip and is never used for training. 5v5 games are being recorded next.
+- **Rim crops and detector:** `rimCrop` sizes the crop in rim widths, so the ball is the same size in the input at the near and far rims. The detector worker moved to `src/shared/detector/` and supports one-class fine-tuned models.
+- **Eval page** (`/eval/`, `docs/eval.md`): runs a detector over the frames around each labeled make and miss, plus quiet frames, and reports how often the ball is found, per basket, crop size and score threshold.
+- **Stock YOLOX-s is not good enough:** it loses the ball at the rim and in the net, and at the near rim it finds the ball in only 9–56% of frames.
+- **Ball boxes page** (`/boxes/`, `docs/boxes.md`): review the detector's guesses and box every ball. 617 frames of the court-1 shoot-around are boxed.
+- **Fine-tuning** (`training/`): YOLOX-s with a one-class ball head, trained on the Mac and exported to ONNX. The first model, `ball_v1`, trained on court-1 only:
+  - On the 2v2 test clip it finds the ball at the near rim in nearly every frame (air, rim and dropping out), where stock found it in 7–38% at score 0.5.
+  - It also has false alarms: a fire alarm pull station on the wall, at about 0.6, and some heads, up to about 0.8.
+- **More training data (later the same day):**
+  - **Court-2** is boxed (582 frames). Balls that sit still the whole clip, like a ball bin, aren't boxed. Instead those areas are painted gray before training (`training/ignore.json`), so they teach neither "ball" nor "not a ball".
+  - **`ball_v2`**, trained on court-1 and court-2: on the 2v2 test clip the fire alarm false alarm is gone (1,629 frames down to 1). Finding the ball at the rim is as good as v1 or better: 84% at the near rim and 100% at the far rim. Heads and arms are still flagged at up to about 0.9, and a dark framed picture above the far rim is a new false alarm. Nearly all false alarms are away from the rim itself.
+  - **5v5 footage:** five clips recorded, 82 minutes: four from floor-level corners and one from the balcony above court-1 ("bird's-eye").
+  - **Bird's-eye clip** labeled (2 games, 50 makes) and boxed (562 frames). A pile of balls and bags under the far rim changes all clip, so unboxed balls there get gray patches frame by frame from the model's own detections (`training/mask_unboxed.py`).
+  - **`ball_v3`**, on all three boxed clips: 97% of held-out balls found, 0.05 false detections per crop. It's the model the make eval uses.
+- **Labeler additions:**
+  - **"Doesn't count" (X)** for real baskets that aren't game baskets: someone outside the game shooting, someone untangling the net, or a basket waved off.
+  - **Misses** default to type "other".
+- **Decisions:**
+  - **Camera spot:** the bird's-eye view is the likely spot. From up there the near rim is seen from above, about 150 px wide, with the whole net against the floor. The far rim is small, about 67 px.
+  - **No more floor-level labeling.** The clips already boxed stay in training for variety.
+  - **2 vs. 3 waits for Phase 3.** The 3-point line isn't fully visible from these angles.
+- **Make logic** (`src/shared/utils/make.ts`, unit-tested): per rim, frame by frame. It keeps ball-sized detections at score 0.3+, drops ones that sit still, follows each ball, and calls a make when a ball that came down across the rim top reaches the net. It's streaming code, so the phone can run it as is.
+- **Make eval** (`docs/make-eval.md`):
+  - `training/detect_video.py` runs the model over every frame around both rims once per clip. That takes 10–20 minutes.
+  - `pnpm make-eval` then grades the make logic against the labels in seconds: recall, precision, per-game make counts, and every mistake with its time.
+- **First make eval results (ball_v3):**
+  - **Bird's-eye:** 52 of 58 makes found. All 15 false makes are labeled tricky misses.
+  - **2v2:** 39 of 40 found, with 14 false makes, 9 of them tricky misses.
+  - **Shoot-arounds:** 66 of 68 and 63 of 63 found, with 24 and 11 false makes.
+  - **Games:** neither bird's-eye game comes out right yet.
+  - **Why:** the ball's path alone can't separate a make from a ball dropping just behind or in front of the net, even from above.
+- **Make/miss model** (`training/make_clips.py`, `train_make.py`): a second check on each call, a small CNN that looks at 1 s of the rim around the call. It's trained from the labels alone: calls matching a labeled make are makes, the others misses.
+  - **Leave-one-video-out on the 4 videos**, averaging 3 models: keeps 204 of 220 makes (93%) and drops 53 of 64 misses (83%).
+  - **Bird's-eye:** keeps 48 of 52 makes and drops 12 of 15 misses.
+  - **Estimated with the make logic:** about 89% recall and 95% precision. It isn't wired into the make eval yet.
+- **Make/miss model wired in (2026-11-14):**
+  - `pnpm make-eval --verdicts` applies its grades. Over the 4 clips that gives 94% of makes found with 90% of calls right at threshold 0.3, and 89% found with 95% right at 0.5.
+  - **Bird's-eye games still come out wrong.** That's mostly shots by people outside the game ("doesn't count"), which get called.
+- **Camera tab** (`/score/`, `docs/scoreboard.md`): the live pipeline runs in the browser.
+  - **How it works:** the camera or a video file, the rims marked on screen, a motion check per rim, then the detector on rims with motion, the make logic, and the make/miss model in its own worker. Each make is scored 2 points for that basket and published to the live room. No speech. Viewers can't fix the score (user's decision).
+  - **On the Mac (Chrome), bird's-eye game 1:** 31 frames/s at 8.6 ms of work each; 17–18 detector checks/s at the active rim, 21 ms each.
+  - **Game 1 results:** all 7 left-rim makes and 8 of 9 right-rim makes scored (one only on a second pass). No misses scored. The make/miss model was trained on this video, so this is optimistic.
+- **Phone pipeline status (2026-11-14):**
+  - **Built:** the full pipeline runs on the iPhone with a video file (Camera tab). It has not run on the camera itself or through a full game yet.
+  - **First iPhone runs** (90 s bird's-eye clip): 16 frames/s at 24 ms each. The 640 px detector took 124 ms per check, about 6 checks/s, and missed makes.
+  - **Changes:** a 416 px export of the ball model (about 2.4x faster, as good at phone check rates), half the per-frame work, a motion threshold of 1.0 (3 woke the rim too late), and a new check scheduler. After them the phone gets about 10–15 checks/s and catches all 3 makes.
+  - **Phone simulation** (`pnpm make-eval --phone N`): replays recorded detections with N checks/s and the Camera tab's scheduler.
+  - **The scheduler:** a rim with a moving ball gets the checks; rims with balls take turns; the other rim keeps 1 check/s, or 3 with no ball in play.
+  - **Results at 12 checks/s:** bird's-eye 44 of 58 makes (51 with every frame checked); 2v2 38 of 40 (25 with the old rule; not used for tuning).
+  - **What was tuned on the bird's-eye game** and may not carry over: the motion threshold, the scheduler's minimums, and both models, which trained partly on that game. Only a held-out session can show it.
+- **Done:** fine-tuned ball model (v3, plus a 416 px export for the phone); make logic; make eval and phone simulation; make/miss model in the make eval and on the phone; Camera tab running on the iPhone with a video file.
+- **To finish Phase 2, in the suggested order:**
+  1. **Put the models online** (assistant). *Done 2026-11-15.* The tiny ball model and the make/miss model are in the GitHub release `models-v1`, and `scripts/fetch-assets.mjs` downloads them (size and SHA-256 checked) in `pnpm dev` and `pnpm build`, so the Pages site has them once PR #2 is merged to main. New models go in a new release (training/README.md).
+  2. **Easier rim marking on the phone** (assistant). *Built 2026-11-15, needs a phone try.* Tap roughly on a rim, then fit its box in a zoomed live view by dragging corners. Also new: the app saves a picture of each rim when watching starts and looks for the rims there next time (`findRim`, checked with `pnpm rim-eval`: 224/224 within a clip, the far rim found across three differently placed tripods, nothing wrong ever trusted). No orange-color guess: the box starts at a typical rim size, since a color search was unreliable.
+  3. **A held-out bird's-eye session** (user). Record from the balcony and label makes and tricky misses, with no boxing. Never trained or tuned on. It's the honest test of everything. Try the real camera at the same visit: the mount, power, people on the track, heat, and whether the screen stays on.
+  4. **A faster ball model** (assistant). *Done 2026-11-15; the live model now.* YOLOX-tiny (`ball_tiny_v1`, `train.py --arch tiny`) on ball_v3's boxes: 98% val recall, 20 MB. Phone simulation, make logic only, held-out 2v2: 33/40 at 12 checks/s and 39/40 at 30 (ball_v3-416: 29 and 36). Bird's-eye: 51/58 from 15 checks/s up (ball_v3-416: 49). On the iPhone, with the bird's-eye test clip (Camera tab **Download log**): the model takes 14–17 ms, and with two checks in flight and both rims checked on the same frame, about 21 checks/s in total (10–15 before), with all 3 makes scored. What's left is overhead: cutting the squares out of the 4K frame takes about 18 ms a check on the main page, where file playback ran at only 17–21 frames/s. Cropping straight from the video with createImageBitmap was slower. If the real camera is also short of checks, move the cut-out into the worker. One run had a minute where the model slowed to 40 ms (the phone, not the clip); watch for it in real sessions.
+  5. **Reach the exit target** on the held-out session: 95% recall, 95% precision, and games with the correct final count. More labeled bird's-eye sessions improve both models: the make/miss model trains from labels alone, and the ball model can take boxes if heads and arms stay a problem. Tune the make/miss threshold there.
+  6. **A full session live** from the balcony with the camera: speed, heat and battery over a whole session. That overlaps with Phase 4.
+  7. **Merge PR #2** once the user has reviewed it. It can go in as "Phase 2 progress" or wait until Phase 2 is done.
+- **Later, not needed for Phase 2:**
+  - Ignoring shots by people outside the game (the "doesn't count" labels). Possible signals: where the players are, or a make right after another make at the same rim. Until then, those shots make bird's-eye game counts come out wrong.
+  - An automatic rim finder (a small model that finds every hoop, so the user just taps one). It needs more marked rims first; every session marked with the zoomed marking adds some.
+  - 2 vs. 3 (Phase 3).
+
 ### Phase 3 — 2 vs. 3
 
 Shot-origin analysis as described above, evaluated against the point values in the labels. Report accuracy separately for 2s and 3s.

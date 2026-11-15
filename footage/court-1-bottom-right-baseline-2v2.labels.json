@@ -1,0 +1,324 @@
+{
+  "version": 1,
+  "video": {
+    "name": "court-1-bottom-right-baseline-2v2.MOV",
+    "size": 2687797817,
+    "duration": 837.3417,
+    "width": 3840,
+    "height": 2160
+  },
+  "hoopNames": {
+    "left": "left",
+    "right": "right"
+  },
+  "rims": {
+    "left": {
+      "x": 761.0807444625292,
+      "y": 794.7870639020592,
+      "width": 136.9584601231336,
+      "netBottom": 939.5717217465148
+    },
+    "right": {
+      "x": 2594.367560682188,
+      "y": 974.7896114924635,
+      "width": 54.78338404925353,
+      "netBottom": 1029.5729955417169
+    }
+  },
+  "events": [
+    {
+      "kind": "make",
+      "t": 13.843,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 16.392,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 18.842,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 24.597,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 40.189,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 45.045,
+      "hoop": "right",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 62.188,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 68.769,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 91.173,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 100.319,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 149.586,
+      "hoop": "left",
+      "missType": "behind_net"
+    },
+    {
+      "kind": "make",
+      "t": 155.958,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 164.638,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 185.333,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 195.697,
+      "hoop": "left",
+      "missType": "back_rim_down"
+    },
+    {
+      "kind": "make",
+      "t": 212.187,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 239.287,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 288.728,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 303.451,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 321.628,
+      "hoop": "left",
+      "missType": "back_rim_down"
+    },
+    {
+      "kind": "make",
+      "t": 325.319,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 336.028,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 355.555,
+      "hoop": "left",
+      "missType": "rim_out"
+    },
+    {
+      "kind": "make",
+      "t": 373.642,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 413.391,
+      "hoop": "left",
+      "missType": "back_rim_down"
+    },
+    {
+      "kind": "make",
+      "t": 436.94,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 447.619,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 467.199,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 486.425,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 488.6,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "miss",
+      "t": 541.188,
+      "hoop": "left",
+      "missType": "rim_out"
+    },
+    {
+      "kind": "miss",
+      "t": 550.33,
+      "hoop": "left",
+      "missType": "back_rim_down"
+    },
+    {
+      "kind": "make",
+      "t": 555.459,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 603.401,
+      "hoop": "left",
+      "missType": "behind_net"
+    },
+    {
+      "kind": "make",
+      "t": 618.7,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 633.848,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 657.808,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 669.663,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 681.194,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 712.629,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 723.222,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 736.442,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 758.607,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 768.711,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "make",
+      "t": 776.97,
+      "hoop": "left",
+      "points": 3
+    },
+    {
+      "kind": "miss",
+      "t": 788.135,
+      "hoop": "left",
+      "missType": "net_touch"
+    },
+    {
+      "kind": "make",
+      "t": 795.933,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 806.439,
+      "hoop": "left",
+      "points": 2
+    },
+    {
+      "kind": "make",
+      "t": 819.558,
+      "hoop": "left",
+      "points": 2
+    }
+  ]
+}

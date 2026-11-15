@@ -5,9 +5,11 @@ import {
 import { useClipboard } from '@mantine/hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Section, StatList } from '../shared/components';
-import { CROP_SCALES, DETECTOR_MODEL, MODELS, cropScaleLabel } from './models';
-import { BACKEND, WORKER_MESSAGE_TYPE, type WorkerIn, type WorkerOut } from './protocol';
-import { COCO_CLASS } from '../shared/enums';
+import {
+  BACKEND, CROP_SCALES, DETECTOR_MODEL, MODELS, WORKER_MESSAGE_TYPE, createDetectorWorker, cropScaleLabel, type WorkerIn, type WorkerOut,
+} from '../shared/detector';
+import { COCO_CLASS, FRAME_SOURCE } from '../shared/enums';
+import { pickBackCamera } from '../shared/video';
 import type { Detection } from '../shared/types';
 import { fmt, percentile, watchFrameRate } from './stats';
 
@@ -18,18 +20,6 @@ const RESOLUTIONS = [
   { label: '1080p', w: 1920, h: 1080 },
   { label: '720p', w: 1280, h: 720 },
 ];
-
-/** Best back camera by label: ultra-wide first, then any back/rear camera. iOS labels look like "Back Ultra Wide Camera". */
-const pickBackCamera = (cams: MediaDeviceInfo[]): MediaDeviceInfo | undefined => {
-  const back = cams.filter((d) => /back|rear|environment/i.test(d.label));
-  return back.find((d) => /ultra/i.test(d.label)) ?? back[0];
-};
-
-enum FRAME_SOURCE {
-  NONE = 'none',
-  CAMERA = 'camera',
-  FILE = 'file',
-}
 
 enum WAKE_LOCK_STATE {
   OFF = 'off',
@@ -229,7 +219,7 @@ export const App = () => {
     setReady(null);
     setLoading(true);
     setError('');
-    const w = new Worker(new URL('./detector.worker.ts', import.meta.url), { type: 'module' });
+    const w = createDetectorWorker();
     workerRef.current = w;
     w.onmessage = (e: MessageEvent<WorkerOut>) => {
       if (e.data.type === WORKER_MESSAGE_TYPE.READY) { setReady(e.data); setLoading(false); }
@@ -237,7 +227,7 @@ export const App = () => {
     };
     const abs = (p: string) => new URL(p, location.origin).href;
     w.postMessage({
-      type: WORKER_MESSAGE_TYPE.INIT, model, backend, size: MODELS[model].size,
+      type: WORKER_MESSAGE_TYPE.INIT, model, backend, size: MODELS[model].size, classes: MODELS[model].classes,
       modelUrl: abs(`${BASE}models/${MODELS[model].file}`),
     } satisfies WorkerIn);
   };
