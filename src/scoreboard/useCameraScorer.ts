@@ -90,6 +90,10 @@ interface LogEntry {
   inFlight: number;
 }
 
+/** Makes listed on the Camera tab (with their clips), and makes kept for the log. */
+const CALLS_SHOWN = 20;
+const CALLS_KEPT = 5000;
+
 /** Seconds of status kept in the log: four hours. */
 const LOG_LIMIT = 4 * 3600;
 
@@ -246,7 +250,9 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
       st.scheduler.ball(hoop, st.makers[hoop]!.lastMovingBall());
       if (call) {
         st.pending.push(call);
-        st.calls = [{ hoop, t: call.t, p: null, scored: false }, ...st.calls].slice(0, 20);
+        // Every make is kept for the log; only the newest few keep their clip image, to bound memory.
+        st.calls = [{ hoop, t: call.t, p: null, scored: false }, ...st.calls].slice(0, CALLS_KEPT);
+        for (const c of st.calls.slice(CALLS_SHOWN)) delete c.strip;
       }
     } catch (err) {
       fail(err);
@@ -336,7 +342,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
         },
         frameMs: st.frames ? st.frameMsSum / st.frames : 0,
         active: { [HOOP.LEFT]: st.scheduler.busy(HOOP.LEFT, t), [HOOP.RIGHT]: st.scheduler.busy(HOOP.RIGHT, t) },
-        calls: st.calls.map((c) => ({ ...c })),
+        calls: st.calls.slice(0, CALLS_SHOWN).map((c) => ({ ...c })),
       };
       setStatus((old) => ({ ...old, ...next }));
       if (st.log.length < LOG_LIMIT) {
