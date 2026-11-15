@@ -231,30 +231,26 @@ Status (2026-11-14):
   - **How it works:** the camera or a video file, the rims marked on screen, a motion check per rim, then the detector on rims with motion, the make logic, and the make/miss model in its own worker. Each make is scored 2 points for that basket and published to the live room. No speech. Viewers can't fix the score (user's decision).
   - **On the Mac (Chrome), bird's-eye game 1:** 31 frames/s at 8.6 ms of work each; 17–18 detector checks/s at the active rim, 21 ms each.
   - **Game 1 results:** all 7 left-rim makes and 8 of 9 right-rim makes scored (one only on a second pass). No misses scored. The make/miss model was trained on this video, so this is optimistic.
-- **To finish Phase 2, in order:**
-  1. ~~Wire the make/miss model into `pnpm make-eval`~~ (done).
-  2. **More bird's-eye footage:**
-     - The user records and labels new sessions (makes and tricky misses; no boxing needed for the make/miss model).
-     - Hold one out as the bird's-eye test clip, never trained on.
-     - Add the rest to the make/miss model. Box some for the ball model too if heads and arms remain a problem.
-  3. **Reach the exit target** on the held-out bird's-eye clip: 95% recall and 95% precision, and games with the correct final count. Tune the make logic's misses (6 of 58 bird's-eye makes) and the make/miss threshold.
-  4. **Live pipeline on the phone:** built, and running on the iPhone with a video file. Still to do: the camera itself, and a full game.
-     - **First iPhone runs** (90 s bird's-eye clip): 16 frames/s at 24 ms each. The 640 px detector took 124 ms per check, about 6 checks/s, and missed makes.
-     - **Changes:** a 416 px export of the ball model (about 2.4x faster, as good at phone check rates), half the per-frame work, a motion threshold of 1.0 (3 woke the rim too late), and a new check scheduler (below). After them the phone gets about 10–15 checks/s and catches all 3 makes.
-     - **Phone simulation** (`pnpm make-eval --phone N`): replays recorded detections with N checks/s and the Camera tab's scheduler.
-     - **The scheduler:** a rim with a moving ball gets the checks; rims with balls take turns; the other rim keeps 1 check/s, or 3 with no ball in play.
-     - **Results at 12 checks/s:** bird's-eye 44 of 58 makes (51 with every frame checked); 2v2 38 of 40 (25 with the old rule; not used for tuning).
-     - **Next lever:** a faster ball model (YOLOX-tiny, about 15 ms per check on the phone in Phase 0).
-     - **The original checklist was:**
-     - frame source (camera, or a video file for testing)
-     - ring buffer of recent frames, for the make/miss clip
-     - motion gate, to run the detector only when something moves near a rim
-     - detector, then make logic, then the make/miss model, with each make scoring 2 points for that basket's team on the scoreboard
-     - check speed and heat: YOLOX-s takes 45 ms per crop, and there are two rims at 30 fps
-  5. **Ship the models:** the ball and make/miss models are only on the Mac. Put them on the Pages site, for example with Git LFS or a release download in `scripts/fetch-assets.mjs`.
-  6. **Try it live at the gym** from the balcony. Check power, the mount, and heat for a whole session.
+- **Phone pipeline status (2026-11-14):**
+  - **Built:** the full pipeline runs on the iPhone with a video file (Camera tab). It has not run on the camera itself or through a full game yet.
+  - **First iPhone runs** (90 s bird's-eye clip): 16 frames/s at 24 ms each. The 640 px detector took 124 ms per check, about 6 checks/s, and missed makes.
+  - **Changes:** a 416 px export of the ball model (about 2.4x faster, as good at phone check rates), half the per-frame work, a motion threshold of 1.0 (3 woke the rim too late), and a new check scheduler. After them the phone gets about 10–15 checks/s and catches all 3 makes.
+  - **Phone simulation** (`pnpm make-eval --phone N`): replays recorded detections with N checks/s and the Camera tab's scheduler.
+  - **The scheduler:** a rim with a moving ball gets the checks; rims with balls take turns; the other rim keeps 1 check/s, or 3 with no ball in play.
+  - **Results at 12 checks/s:** bird's-eye 44 of 58 makes (51 with every frame checked); 2v2 38 of 40 (25 with the old rule; not used for tuning).
+  - **What was tuned on the bird's-eye game** and may not carry over: the motion threshold, the scheduler's minimums, and both models, which trained partly on that game. Only a held-out session can show it.
+- **Done:** fine-tuned ball model (v3, plus a 416 px export for the phone); make logic; make eval and phone simulation; make/miss model in the make eval and on the phone; Camera tab running on the iPhone with a video file.
+- **To finish Phase 2, in the suggested order:**
+  1. **Put the models online** (assistant; one decision from the user). The ball and make/miss models only exist on the Mac. The Pages site needs them so the app works at the gym without the Mac. Suggested: model files as a GitHub Release, downloaded by the site build (`scripts/fetch-assets.mjs`). Git LFS also works.
+  2. **Easier rim marking on the phone** (assistant). Tapping exact corners on the phone is hard. Instead: tap roughly near a rim, the app zooms into that area with a best-guess box from the rim's orange nearby, and the user drags the corners. A whole-frame color search was tried and was unreliable (washed-out, thin rims in video).
+  3. **A held-out bird's-eye session** (user). Record from the balcony and label makes and tricky misses, with no boxing. Never trained or tuned on. It's the honest test of everything. Try the real camera at the same visit: the mount, power, people on the track, heat, and whether the screen stays on.
+  4. **A faster ball model** (assistant): YOLOX-tiny fine-tuned on the same boxes, about 15 ms per check on the phone in Phase 0 (416 px). At 12 checks/s the simulation misses about 1 make in 4; near 30 it's about 1 in 8. Check it with the make eval and the phone simulation before switching.
+  5. **Reach the exit target** on the held-out session: 95% recall, 95% precision, and games with the correct final count. More labeled bird's-eye sessions improve both models: the make/miss model trains from labels alone, and the ball model can take boxes if heads and arms stay a problem. Tune the make/miss threshold there.
+  6. **A full session live** from the balcony with the camera: speed, heat and battery over a whole session. That overlaps with Phase 4.
+  7. **Merge PR #2** once the user has reviewed it. It can go in as "Phase 2 progress" or wait until Phase 2 is done.
 - **Later, not needed for Phase 2:**
-  - Ignoring shots by people outside the game (the "doesn't count" labels). Possible signals: where the players are, or a make right after another make at the same rim.
+  - Ignoring shots by people outside the game (the "doesn't count" labels). Possible signals: where the players are, or a make right after another make at the same rim. Until then, those shots make bird's-eye game counts come out wrong.
+  - An automatic rim finder (a small model that finds every hoop, so the user just taps one). It needs more marked rims first; every session marked with the zoomed marking adds some.
   - 2 vs. 3 (Phase 3).
 
 ### Phase 3 — 2 vs. 3
