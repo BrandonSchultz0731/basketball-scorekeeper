@@ -4,13 +4,21 @@
 //
 // Detections come from training/detect_video.py. The labels file is found next to them as <clip>.labels.json.
 // --set overrides a make setting for this run (names in MakeSettings, src/shared/types/make.ts), for tuning.
+// --every n keeps only every n-th frame, to see how the logic does at a lower frame rate (30 fps / n).
+// --verdicts <file> applies the make/miss model's grades (training/runs/<name>/verdicts.json): a call graded below
+//   --threshold (default 0.5) is dropped. Grades exist for calls made at the default settings and 30 fps.
 // Writes <clip>.<model>.makes.json beside the detections with every call, hit, miss and false call.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { createServer } from 'vite';
 
 const args = process.argv.slice(2);
-const files = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--set');
+const VALUE_FLAGS = ['--set', '--every', '--verdicts', '--threshold'];
+const files = args.filter((a, i) => !a.startsWith('--') && !VALUE_FLAGS.includes(args[i - 1]));
+const flag = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : undefined);
+const every = Number(flag('--every') ?? 1);
+const verdicts = flag('--verdicts') ? JSON.parse(readFileSync(flag('--verdicts'), 'utf8')) : null;
+const threshold = Number(flag('--threshold') ?? 0.5);
 const overrides = Object.fromEntries(args.flatMap((a, i) => (args[i - 1] === '--set' ? [a.split('=')] : []))
   .map(([k, v]) => [k, Number(v)]));
 if (files.length === 0) {
@@ -31,19 +39,30 @@ try {
     const dets = JSON.parse(readFileSync(file, 'utf8'));
     const clip = dets.video.name.replace(/\.[^.]+$/, '');
     const labels = JSON.parse(readFileSync(join(dirname(file), `${clip}.labels.json`), 'utf8'));
-    const fps = dets.video.fps / dets.stride;
-    const until = dets.framesRun / fps;
-    const calls = HOOPS.flatMap((hoop) => {
-      const frames = Array.from({ length: dets.framesRun }, () => []);
+    const fps = dets.video.fps / dets.stride / every;
+    const until = dets.framesRun / (dets.video.fps / dets.stride);
+    let calls = HOOPS.flatMap((hoop) => {
+      const frames = Array.from({ length: Math.ceil(dets.framesRun / every) }, () => []);
       for (const [i, boxes] of dets.detections[hoop]) {
         const k = Math.round(i / dets.stride);
-        if (k < frames.length) frames[k] = boxes.map(([x, y, w, h, score]) => ({ x, y, w, h, score }));
+        if (k % every === 0 && k / every < frames.length) frames[k / every] = boxes.map(([x, y, w, h, score]) => ({ x, y, w, h, score }));
       }
       return detectMakes(hoop, dets.rims[hoop], frames, fps, settings);
     }).sort((a, b) => a.t - b.t);
+    let dropped = 0, ungraded = 0;
+    if (verdicts) {
+      const graded = verdicts[clip] ?? [];
+      calls = calls.filter((c) => {
+        const v = graded.find((g) => g.hoop === c.hoop && Math.abs(g.t - c.t) < 0.05);
+        if (!v) { ungraded++; return true; }
+        if (v.p < threshold) { dropped++; return false; }
+        return true;
+      });
+    }
     const r = evaluateMakes(calls, labels.events, until);
 
     console.log(`\n${clip} (${dets.model}, ${fmtTime(until)} of video)`);
+    if (verdicts) console.log(`  make/miss model dropped ${dropped} calls${ungraded ? `; ${ungraded} calls had no grade and were kept` : ''}`);
     console.log(`  makes found ${r.hits.length} of ${r.hits.length + r.missed.length} (recall ${pct(r.recall)}), ` +
       `false makes ${r.falseCalls.length} (precision ${pct(r.precision)})`);
     for (const g of r.games) {

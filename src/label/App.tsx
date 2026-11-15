@@ -4,9 +4,9 @@ import {
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { HOOP_COLOR } from '../shared/theme';
 import { HOOP, LABEL_EVENT_KIND, MISS_TYPE } from '../shared/enums';
-import type { LabelEvent, LabelFile, Rim } from '../shared/types';
-import { DEFAULT_RIM_CROP_MULTIPLE, HOOPS, otherHoop, rimCrop } from '../shared/utils';
-import { RimOverlay, type RimMarking } from './components/RimOverlay';
+import { RimOverlay } from '../shared/components';
+import type { LabelEvent, LabelFile, Rim, RimMarking } from '../shared/types';
+import { DEFAULT_RIM_CROP_MULTIPLE, HOOPS, otherHoop, rimCrop, rimFromCorners } from '../shared/utils';
 
 const KEYS: Record<string, { hoop: HOOP; points: 2 | 3 }> = {
   q: { hoop: HOOP.LEFT, points: 2 }, w: { hoop: HOOP.LEFT, points: 3 },
@@ -144,11 +144,8 @@ export const App = () => {
   const markPoint = (p: { x: number; y: number }) => {
     if (!marking) return;
     if (!marking.first) { setMarking({ ...marking, first: p }); return; }
-    const a = marking.first;
-    const rim: Rim = {
-      x: (a.x + p.x) / 2, y: Math.min(a.y, p.y), width: Math.abs(p.x - a.x), netBottom: Math.max(a.y, p.y),
-    };
-    if (rim.width >= 4) setRims((r) => ({ ...r, [marking.hoop]: rim }));
+    const rim = rimFromCorners(marking.first, p);
+    if (rim) setRims((r) => ({ ...r, [marking.hoop]: rim }));
     setMarking(null);
   };
 

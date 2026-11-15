@@ -224,14 +224,21 @@ Status (2026-11-14):
   - **Leave-one-video-out on the 4 videos**, averaging 3 models: keeps 204 of 220 makes (93%) and drops 53 of 64 misses (83%).
   - **Bird's-eye:** keeps 48 of 52 makes and drops 12 of 15 misses.
   - **Estimated with the make logic:** about 89% recall and 95% precision. It isn't wired into the make eval yet.
+- **Make/miss model wired in (2026-11-14):**
+  - `pnpm make-eval --verdicts` applies its grades. Over the 4 clips that gives 94% of makes found with 90% of calls right at threshold 0.3, and 89% found with 95% right at 0.5.
+  - **Bird's-eye games still come out wrong.** That's mostly shots by people outside the game ("doesn't count"), which get called.
+- **Camera tab** (`/score/`, `docs/scoreboard.md`): the live pipeline runs in the browser.
+  - **How it works:** the camera or a video file, the rims marked on screen, a motion check per rim, then the detector on rims with motion, the make logic, and the make/miss model in its own worker. Each make is scored 2 points for that basket and published to the live room. No speech. Viewers can't fix the score (user's decision).
+  - **On the Mac (Chrome), bird's-eye game 1:** 31 frames/s at 8.6 ms of work each; 17–18 detector checks/s at the active rim, 21 ms each.
+  - **Game 1 results:** all 7 left-rim makes and 8 of 9 right-rim makes scored (one only on a second pass). No misses scored. The make/miss model was trained on this video, so this is optimistic.
 - **To finish Phase 2, in order:**
-  1. **Wire the make/miss model into `pnpm make-eval`**, so recall, precision and per-game results come from the real tool. Export the final model (`train_make.py` without `--no-final`).
+  1. ~~Wire the make/miss model into `pnpm make-eval`~~ (done).
   2. **More bird's-eye footage:**
      - The user records and labels new sessions (makes and tricky misses; no boxing needed for the make/miss model).
      - Hold one out as the bird's-eye test clip, never trained on.
      - Add the rest to the make/miss model. Box some for the ball model too if heads and arms remain a problem.
   3. **Reach the exit target** on the held-out bird's-eye clip: 95% recall and 95% precision, and games with the correct final count. Tune the make logic's misses (6 of 58 bird's-eye makes) and the make/miss threshold.
-  4. **Live pipeline on the phone:**
+  4. **Live pipeline on the phone:** built and working on the Mac (the Camera tab). Still to do: try it on the iPhone with a video file, then the camera. The original checklist was:
      - frame source (camera, or a video file for testing)
      - ring buffer of recent frames, for the make/miss clip
      - motion gate, to run the detector only when something moves near a rim

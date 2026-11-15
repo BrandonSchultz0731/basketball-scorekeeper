@@ -3,11 +3,10 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
-import { BACKEND, DETECTOR_MODEL, MODELS } from '../shared/detector';
+import { BACKEND, DETECTOR_MODEL, MODELS, startDetector } from '../shared/detector';
 import { COCO_CLASS, HOOP, LABEL_EVENT_KIND } from '../shared/enums';
 import { HOOPS, rimCrop, toVideoBox } from '../shared/utils';
 import { seekTo } from '../shared/video';
-import { startDetector } from './detect';
 import { evalEvents, planSamples } from './sampling';
 import { summarize } from './summary';
 import type { BallBox, EvalResults, FrameResult, LabelFile } from '../shared/types';

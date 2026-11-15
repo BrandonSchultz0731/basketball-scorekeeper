@@ -61,6 +61,14 @@ describe('make logic', () => {
     expect(det.push(92 / FPS, [ball(1000, 560)])).toBeNull();
   });
 
+  it('reports when a moving ball was last seen, but not a ball sitting still', () => {
+    const det = createMakeDetector(HOOP.LEFT, RIM);
+    for (let i = 0; i < 90; i++) det.push(i / FPS, [ball(800, 700)]);
+    expect(det.lastMovingBall()).toBeLessThan(2.1);
+    det.push(91 / FPS, [ball(1000, 300)]);
+    expect(det.lastMovingBall()).toBeCloseTo(91 / FPS);
+  });
+
   it('works out when the ball was last above the rim', () => {
     const pts = [400, 450, 490, 520, 560].map((y, i) => ({ t: i / FPS, x: 1000, y, size: 50, score: 0.9 }));
     expect(madeFrom(pts, RIM, DEFAULT_MAKE_SETTINGS)).toBeCloseTo(2 / FPS);

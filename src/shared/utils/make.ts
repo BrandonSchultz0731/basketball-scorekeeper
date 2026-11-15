@@ -61,6 +61,7 @@ export const createMakeDetector = (hoop: HOOP, rim: Rim, s: MakeSettings = DEFAU
   const history: { t: number; pts: BallSighting[] }[] = [];
   let tracks: Track[] = [];
   let lastMake = -Infinity;
+  let lastMoving = -Infinity;
 
   const isStatic = (b: BallSighting): boolean => {
     if (history.length === 0 || b.t - history[0].t < 0.9 * s.staticWindow) return false;
@@ -74,6 +75,7 @@ export const createMakeDetector = (hoop: HOOP, rim: Rim, s: MakeSettings = DEFAU
       .map((b) => ({ t, x: b.x + b.w / 2, y: b.y + b.h / 2, size: Math.max(b.w, b.h), score: b.score }))
       .filter((b) => b.score >= s.minScore && b.size >= s.minSize * w && b.size <= s.maxSize * w);
     const moving = seen.filter((b) => !isStatic(b));
+    if (moving.length) lastMoving = t;
     history.push({ t, pts: seen });
     while (history.length && t - history[0].t > s.staticWindow) history.shift();
 
@@ -109,7 +111,10 @@ export const createMakeDetector = (hoop: HOOP, rim: Rim, s: MakeSettings = DEFAU
     return null;
   };
 
-  return { push };
+  /** When a ball-sized detection that isn't sitting still was last seen: a ball in play near this rim. */
+  const lastMovingBall = (): number => lastMoving;
+
+  return { push, lastMovingBall };
 };
 
 /** Runs the make logic over recorded detections: `frames[i]` holds the boxes of frame `i`, at `fps`. */

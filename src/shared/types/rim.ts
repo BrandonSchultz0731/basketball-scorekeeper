@@ -1,3 +1,5 @@
+import type { HOOP } from '../enums';
+
 /** Where a rim sits in the camera image, in video pixels. The camera doesn't move during a clip, so this is per clip. */
 export interface Rim {
   /** Horizontal center of the rim, and the top of the rim. */
@@ -7,4 +9,10 @@ export interface Rim {
   width: number;
   /** Bottom of the net. Recorded by the label page's box marking. */
   netBottom?: number;
+}
+
+/** Rim marking in progress: which rim, and the first corner once it's been clicked. */
+export interface RimMarking {
+  hoop: HOOP;
+  first: { x: number; y: number } | null;
 }

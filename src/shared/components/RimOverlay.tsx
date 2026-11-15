@@ -1,14 +1,8 @@
 import type { MouseEvent } from 'react';
-import type { HOOP } from '../../shared/enums';
-import { HOOP_COLOR } from '../../shared/theme';
-import type { Crop, Rim } from '../../shared/types';
-import { HOOPS } from '../../shared/utils';
-
-/** Rim marking in progress: which rim, and the left edge once it's been clicked. */
-export interface RimMarking {
-  hoop: HOOP;
-  first: { x: number; y: number } | null;
-}
+import type { HOOP } from '../enums';
+import { HOOP_COLOR } from '../theme';
+import type { Crop, Rim, RimMarking } from '../types';
+import { HOOPS } from '../utils';
 
 interface Props {
   frame: { width: number; height: number };

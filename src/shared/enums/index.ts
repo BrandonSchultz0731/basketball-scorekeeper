@@ -1,5 +1,6 @@
 export * from './cocoClass';
 export * from './eventSource';
+export * from './frameSource';
 export * from './gameEventKind';
 export * from './gameStatus';
 export * from './hoop';

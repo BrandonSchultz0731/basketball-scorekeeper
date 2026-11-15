@@ -4,5 +4,7 @@ export * from './game';
 export * from './hoop';
 export * from './live';
 export * from './make';
+export * from './makeClip';
 export * from './makeEval';
+export * from './motion';
 export * from './yolox';

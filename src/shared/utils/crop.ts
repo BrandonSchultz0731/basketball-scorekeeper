@@ -29,3 +29,13 @@ export const toVideoBox = (d: Detection, crop: Crop, inputSize: number): Detecti
 
 /** The crop size the label page previews, in rim widths. The eval page tries several. */
 export const DEFAULT_RIM_CROP_MULTIPLE = 6;
+
+/**
+ * A rim from two clicks at opposite corners of a box around the rim and net, either corner first: the box's width is
+ * the rim's width, its top the top of the rim and its bottom the bottom of the net. Null if the box is too narrow
+ * to be a real marking (a double click).
+ */
+export const rimFromCorners = (a: { x: number; y: number }, b: { x: number; y: number }): Rim | null => {
+  const rim: Rim = { x: (a.x + b.x) / 2, y: Math.min(a.y, b.y), width: Math.abs(b.x - a.x), netBottom: Math.max(a.y, b.y) };
+  return rim.width >= 4 ? rim : null;
+};

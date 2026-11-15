@@ -8,7 +8,8 @@ import { Section, StatList } from '../shared/components';
 import {
   BACKEND, CROP_SCALES, DETECTOR_MODEL, MODELS, WORKER_MESSAGE_TYPE, createDetectorWorker, cropScaleLabel, type WorkerIn, type WorkerOut,
 } from '../shared/detector';
-import { COCO_CLASS } from '../shared/enums';
+import { COCO_CLASS, FRAME_SOURCE } from '../shared/enums';
+import { pickBackCamera } from '../shared/video';
 import type { Detection } from '../shared/types';
 import { fmt, percentile, watchFrameRate } from './stats';
 
@@ -19,18 +20,6 @@ const RESOLUTIONS = [
   { label: '1080p', w: 1920, h: 1080 },
   { label: '720p', w: 1280, h: 720 },
 ];
-
-/** Best back camera by label: ultra-wide first, then any back/rear camera. iOS labels look like "Back Ultra Wide Camera". */
-const pickBackCamera = (cams: MediaDeviceInfo[]): MediaDeviceInfo | undefined => {
-  const back = cams.filter((d) => /back|rear|environment/i.test(d.label));
-  return back.find((d) => /ultra/i.test(d.label)) ?? back[0];
-};
-
-enum FRAME_SOURCE {
-  NONE = 'none',
-  CAMERA = 'camera',
-  FILE = 'file',
-}
 
 enum WAKE_LOCK_STATE {
   OFF = 'off',

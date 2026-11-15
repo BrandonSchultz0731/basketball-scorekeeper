@@ -45,6 +45,12 @@ export const MODELS: Record<DETECTOR_MODEL, ModelInfo> = {
   },
 };
 
+/** The make/miss model (training/train_make.py), made locally like the fine-tuned ball models. */
+export const MAKE_CHECK_MODEL = { label: 'make/miss v1', file: 'make_v1.onnx', local: true } as const;
+
+/** Ball model used for live scoring. */
+export const LIVE_BALL_MODEL = DETECTOR_MODEL.S_BALL_V3;
+
 /**
  * Crop side as a multiple of the model input.
  * - 1: native pixels.

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { GAME_STATUS, type HOOP, type SHOT } from '../shared/enums';
+import { EVENT_SOURCE, GAME_STATUS, SHOT, type HOOP } from '../shared/enums';
 import type { Game, GameEvent, Settings } from '../shared/types';
 import {
   addAdjustment, addScore, announcementFor, createGame, editEvent, endGame, removeEvent, undoLast, type ScoreInput,
@@ -76,6 +76,15 @@ export const useScoreboard = () => {
     commit(next, next.events[next.events.length - 1]);
   }, [commit]);
 
+  /**
+   * A make from the camera. Phase 2 can't tell 2s from 3s, so every automatic make is an inside-the-arc basket.
+   * Not announced: the camera phone is mounted away from the court.
+   */
+  const scoreAuto = useCallback((hoop: HOOP) => {
+    const g = live.current.game;
+    if (g) commit(addScore(g, { hoop, shot: SHOT.SHORT, source: EVENT_SOURCE.AUTO }));
+  }, [commit]);
+
   const adjust = useCallback((hoop: HOOP, points: number) => {
     const g = live.current.game;
     if (!g) return;
@@ -107,6 +116,6 @@ export const useScoreboard = () => {
 
   return {
     ready: settings !== null, settings, game, history, error, clearError: () => setError(''),
-    updateSettings, setRoomCode, startGame, startFromViewer, score, adjust, undo, end, edit, remove, forget,
+    updateSettings, setRoomCode, startGame, startFromViewer, score, scoreAuto, adjust, undo, end, edit, remove, forget,
   };
 };

@@ -9,11 +9,13 @@ channels. The model is a small CNN trained from scratch: there are only a few hu
 leans on augmentation.
 
 Checking: leave-one-clip-out. For each video, a model trained on the other videos grades that video's clips, so every
-number comes from footage the model never saw. Then a final model is trained on everything and exported to
-runs/<name>/<name>.onnx.
+number comes from footage the model never saw. Those grades are saved to runs/<name>/verdicts.json, which
+`pnpm make-eval --verdicts` applies to the make logic's calls. Then a final model is trained on everything and
+exported to runs/<name>/<name>.onnx.
 """
 
 import argparse
+import json
 import random
 from pathlib import Path
 
@@ -131,10 +133,16 @@ def main():
         d = sum(1 for c in clips if not c["made"] and c["p"] < th)
         print(f"  threshold {th}: makes kept {k} of {makes}, misses dropped {d} of {misses}")
 
-    if args.no_final:
-        return
     out = HERE / "runs" / args.name
     out.mkdir(parents=True, exist_ok=True)
+    # Each call's grade from models that never saw its video, for `pnpm make-eval --verdicts`.
+    verdicts = {}
+    for c in clips:
+        verdicts.setdefault(c["video"], []).append({"t": round(c["t"], 3), "hoop": c["hoop"], "p": round(c["p"], 3)})
+    (out / "verdicts.json").write_text(json.dumps(verdicts, indent=1))
+    print(f"wrote {out / 'verdicts.json'}")
+    if args.no_final:
+        return
     model = train(clips, args.epochs, args.balance)
     torch.save(model.state_dict(), out / "make.pth")
     model.eval()
