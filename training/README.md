@@ -54,7 +54,20 @@ Copy the export into `public/models`, named to match its entry in `src/shared/de
 cp runs/ball_v1/yolox_s_ball_v1.onnx ../public/models/
 ```
 
-It then shows in the model menus on the eval and spike pages. `public/models` is gitignored and these files are only on this Mac, so a fine-tuned model isn't on the GitHub Pages site yet.
+It then shows in the model menus on the eval and spike pages. `public/models` is gitignored, so a copied model is only on this Mac.
+
+## Publish a model for the Camera tab
+
+The Camera tab's models (`LIVE_BALL_MODEL` and `MAKE_CHECK_MODEL` in `src/shared/detector/models.ts`) are published as a GitHub release, so the Pages site and any fresh checkout get them. `scripts/fetch-assets.mjs` downloads them, checking each file's size and SHA-256.
+
+To publish a new one, make a new release rather than changing an old one, so earlier builds keep working:
+
+```sh
+gh release create models-v2 public/models/<file>.onnx [more.onnx] --title "Models v2" --notes "…"
+shasum -a 256 public/models/<file>.onnx; stat -f %z public/models/<file>.onnx
+```
+
+Then point `OURS` in `scripts/fetch-assets.mjs` at the new release, list the files there with their sizes and checksums (a file kept from the old release has to be uploaded to the new one too), and take `local: true` off their entries in `models.ts`.
 
 ## Export at a smaller input size
 

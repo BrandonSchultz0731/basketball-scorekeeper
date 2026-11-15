@@ -27,7 +27,10 @@ export interface ModelInfo {
   megabytes: number;
   /** What each output class is. Leave out for the 80 COCO classes, where the index is the COCO class. */
   classes?: COCO_CLASS[];
-  /** Made locally by training, not downloaded, so it only exists on the machine that trained it. */
+  /**
+   * Made locally by training and not published, so it only exists on the machine that trained it. The live models are
+   * published as a GitHub release and downloaded by scripts/fetch-assets.mjs.
+   */
   local?: boolean;
 }
 
@@ -53,12 +56,12 @@ export const MODELS: Record<DETECTOR_MODEL, ModelInfo> = {
   },
   [DETECTOR_MODEL.TINY_BALL_V1_416]: {
     label: 'YOLOX-tiny ball v1, 416 px (fine-tuned)', file: 'yolox_tiny_ball_tiny_v1_416.onnx', size: 416, megabytes: 20,
-    classes: [COCO_CLASS.SPORTS_BALL], local: true,
+    classes: [COCO_CLASS.SPORTS_BALL],
   },
 };
 
-/** The make/miss model (training/train_make.py), made locally like the fine-tuned ball models. */
-export const MAKE_CHECK_MODEL = { label: 'make/miss v1', file: 'make_v1.onnx', local: true } as const;
+/** The make/miss model (training/train_make.py), published with the live ball model. */
+export const MAKE_CHECK_MODEL = { label: 'make/miss v1', file: 'make_v1.onnx' } as const;
 
 /**
  * Ball model used for live scoring. A 416 px input, since on the phone a 640 px check took about 124 ms, too slow to

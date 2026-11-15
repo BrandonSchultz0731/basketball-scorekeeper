@@ -10,7 +10,7 @@ The clip's labels file needs both rims marked. In the label page, open the clip,
 
 - **Video:** the clip.
 - **Labels:** that clip's `*.labels.json`. If it belongs to a different video, a warning says so and **Run** stays off.
-- **Model:** YOLOX-s by default. Nano and tiny are there for comparison. Fine-tuned models ("ball v1" and later) appear here once copied into `public/models` ([training guide](../training/README.md)); they only exist on the Mac that trained them.
+- **Model:** YOLOX-s by default. Nano and tiny are there for comparison. Fine-tuned models ("ball v1" and later) appear here once copied into `public/models` ([training guide](../training/README.md)); most only exist on the Mac that trained them. The Camera tab's models are published and downloaded with the others.
 - **Backend:** WebGPU (fast) or WASM (CPU, much slower). Use WebGPU unless it errors.
 
 Under the inputs, a line shows each rim's width in pixels, how many makes and tricky misses will be checked, and how many frames will be run. Labels marked uncertain are left out.
