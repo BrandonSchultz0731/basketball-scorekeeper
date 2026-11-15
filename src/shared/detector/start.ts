@@ -6,15 +6,28 @@ import {
 } from './protocol';
 import { createDetectorWorker, createMakeCheckWorker } from './workers';
 
+/** One check's detections, and where its time went in the worker, ms. */
+export interface DetectorResult {
+  dets: Detection[];
+  /** Reading the pixels and converting them for the model. */
+  prepMs: number;
+  /** Waiting for the model to finish the check before this one (two can be in flight). */
+  queueMs: number;
+  /** The model itself. */
+  inferMs: number;
+  /** Decoding the boxes. */
+  postMs: number;
+}
+
 export interface Detector {
-  run: (bitmap: ImageBitmap, threshold: number) => Promise<Detection[]>;
+  run: (bitmap: ImageBitmap, threshold: number) => Promise<DetectorResult>;
   stop: () => void;
 }
 
 /** Starts a worker, loads the model and resolves once it's warmed up. */
 export const startDetector = (model: DETECTOR_MODEL, backend: BACKEND): Promise<Detector> => new Promise((resolve, reject) => {
   const w = createDetectorWorker();
-  const pending = new Map<number, { ok: (d: Detection[]) => void; fail: (e: Error) => void }>();
+  const pending = new Map<number, { ok: (r: DetectorResult) => void; fail: (e: Error) => void }>();
   let nextId = 0;
   let ready = false;
   w.onmessage = (e: MessageEvent<WorkerOut>) => {
@@ -30,7 +43,7 @@ export const startDetector = (model: DETECTOR_MODEL, backend: BACKEND): Promise<
         stop: () => w.terminate(),
       });
     } else if (m.type === WORKER_MESSAGE_TYPE.RESULT) {
-      pending.get(m.id)?.ok(m.dets);
+      pending.get(m.id)?.ok({ dets: m.dets, prepMs: m.prepMs, queueMs: m.queueMs, inferMs: m.inferMs, postMs: m.postMs });
       pending.delete(m.id);
     } else if (m.type === WORKER_MESSAGE_TYPE.ERROR) {
       const err = new Error(`detector: ${m.message}`);

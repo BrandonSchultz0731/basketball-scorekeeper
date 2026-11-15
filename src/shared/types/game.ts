@@ -1,5 +1,5 @@
 import type { EVENT_SOURCE, GAME_EVENT_KIND, GAME_STATUS, HOOP, SHOT } from '../enums';
-import type { Rim } from './rim';
+import type { Rim, RimReference } from './rim';
 
 export interface ScoringSettings {
   /** Points for each kind of make, e.g. { short: 2, long: 3 } or { short: 1, long: 2 }. */
@@ -20,6 +20,8 @@ export interface Settings {
   roomCode: string | null;
   /** Where the rims are in the camera image, marked on the Camera tab. Valid while the phone stays mounted. */
   rims?: Partial<Record<HOOP, Rim>>;
+  /** A picture of each rim from the last time watching started, to find the rims again after the phone is mounted again. */
+  rimRefs?: Partial<Record<HOOP, RimReference>>;
 }
 
 interface EventBase {

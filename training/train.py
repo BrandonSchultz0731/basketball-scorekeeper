@@ -1,4 +1,4 @@
-"""Fine-tunes YOLOX-s into a one-class basketball detector, from boxes made with the ball boxes page.
+"""Fine-tunes YOLOX-s (or the smaller, faster YOLOX-tiny, `--arch tiny`) into a one-class basketball detector, from boxes made with the ball boxes page.
 
     cd training
     uv run python train.py ../footage/court-1-bottom-left-baseline-shooting.boxes.json --name ball_v1
@@ -43,6 +43,8 @@ torch.Tensor.type = _mps_aware_type
 INPUT = 640
 COCO_SPORTS_BALL = 32
 CROP_MULTIPLES = (4.0, 10.0)
+# Model sizes: (depth, width, COCO weights in vendor/weights). Tiny is about a third of the work of s.
+ARCHS = {"s": (0.33, 0.50, "yolox_s.pth"), "tiny": (0.33, 0.375, "yolox_tiny.pth")}
 # A box cut by the crop edge is kept if at least this much of it is inside, else the crop is redrawn.
 MIN_VISIBLE = 0.5
 # Gray that fills ignored areas: YOLOX's own padding value.
@@ -189,10 +191,11 @@ def to_targets(boxes):
     return t
 
 
-def build_model():
-    """YOLOX-s with a one-class head, initialized from the COCO weights; the class layer takes COCO's sports ball."""
-    model = YOLOX(YOLOPAFPN(0.33, 0.50), YOLOXHead(1, 0.50))
-    coco = torch.load(HERE / "vendor" / "weights" / "yolox_s.pth", map_location="cpu", weights_only=False)["model"]
+def build_model(arch="s"):
+    """YOLOX with a one-class head, initialized from the COCO weights; the class layer takes COCO's sports ball."""
+    depth, width, weights = ARCHS[arch]
+    model = YOLOX(YOLOPAFPN(depth, width), YOLOXHead(1, width))
+    coco = torch.load(HERE / "vendor" / "weights" / weights, map_location="cpu", weights_only=False)["model"]
     state = model.state_dict()
     for k, v in coco.items():
         if ".cls_preds." in k:
@@ -201,6 +204,20 @@ def build_model():
             state[k] = v
     model.load_state_dict(state)
     return model
+
+
+def run_arch(name):
+    """The model size a training run used (saved in runs/<name>/arch.txt; runs from before it are YOLOX-s)."""
+    f = HERE / "runs" / name / "arch.txt"
+    return f.read_text().strip() if f.exists() else "s"
+
+
+def load_trained(name):
+    """A trained run's best model, on the CPU, and its size."""
+    arch = run_arch(name)
+    model = build_model(arch)
+    model.load_state_dict(torch.load(HERE / "runs" / name / "best.pth", map_location="cpu"))
+    return model, arch
 
 
 def decode(raw, size=INPUT):
@@ -281,6 +298,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("boxes", nargs="+", help="*.boxes.json files from the ball boxes page")
     ap.add_argument("--name", required=True, help="run name; output goes to runs/<name>/")
+    ap.add_argument("--arch", choices=ARCHS, default="s", help="model size: s, or tiny (faster, a little less accurate)")
     ap.add_argument("--epochs", type=int, default=20)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--crops", type=int, default=3, help="random crops per frame per epoch")
@@ -294,6 +312,9 @@ def main():
     device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
     out = HERE / "runs" / args.name
     out.mkdir(parents=True, exist_ok=True)
+    if args.eval_only:
+        args.arch = run_arch(args.name)
+    (out / "arch.txt").write_text(args.arch)
     log = open(out / "log.txt", "a")
 
     def say(*a):
@@ -304,9 +325,9 @@ def main():
 
     frames = load_frames(args.boxes)
     train, val = split(frames)
-    say(f"{len(frames)} frames ({sum(len(f['boxes']) for f in frames)} balls): {len(train)} train, {len(val)} val; device {device}")
+    say(f"{len(frames)} frames ({sum(len(f['boxes']) for f in frames)} balls): {len(train)} train, {len(val)} val; device {device}, YOLOX-{args.arch}")
 
-    model = build_model().to(device)
+    model = build_model(args.arch).to(device)
     model.train()
     if args.eval_only:
         for th in (0.1, 0.25, 0.5):
@@ -357,7 +378,7 @@ def main():
             break
 
     model.load_state_dict(torch.load(out / "best.pth", map_location=device))
-    onnx_path = out / f"yolox_s_{args.name}.onnx"
+    onnx_path = out / f"yolox_{args.arch}_{args.name}.onnx"
     export_onnx(model, onnx_path)
     say(f"exported {onnx_path} ({onnx_path.stat().st_size / 1e6:.1f} MB) in {time.time() - t0:.0f}s total")
 

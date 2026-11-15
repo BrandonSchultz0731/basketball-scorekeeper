@@ -21,7 +21,7 @@ import cv2
 import numpy as np
 import torch
 
-from train import INPUT, HERE, build_model, decode, nms, to_tensor
+from train import INPUT, decode, load_trained, nms, to_tensor
 
 CROP_NET_SHIFT = 0.5
 HOOPS = ("left", "right")
@@ -69,8 +69,7 @@ def main():
     crops = {h: rim_crop(rims[h], args.multiple, width, height) for h in HOOPS}
 
     device = "mps" if torch.backends.mps.is_available() else "cpu"
-    model = build_model()
-    model.load_state_dict(torch.load(HERE / "runs" / args.name / "best.pth", map_location="cpu"))
+    model, arch = load_trained(args.name)
     model.to(device).eval()
     model.head.decode_in_inference = False
 
@@ -122,7 +121,7 @@ def main():
     path.write_text(json.dumps({
         "version": 1,
         "video": {"name": labels["video"]["name"], "width": width, "height": height, "fps": fps, "frames": total},
-        "model": f"yolox_s_{tag}",
+        "model": f"yolox_{arch}_{tag}",
         "input": args.input,
         "multiple": args.multiple,
         "stride": args.stride,

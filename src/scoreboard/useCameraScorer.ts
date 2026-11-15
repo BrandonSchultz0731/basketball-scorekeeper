@@ -28,6 +28,12 @@ const MOTION_SIZE = 32;
  * flies in. (A tight square around the rim only saw the ball a moment before it went through, too late.)
  */
 const MOTION_MULTIPLE = DEFAULT_RIM_CROP_MULTIPLE;
+/**
+ * Checks allowed in flight at once. With one, a check could only start on the first video frame after the last one
+ * finished, so a 45 ms check ran every other frame at best (15 a second). With two, the worker prepares the next
+ * check while the model runs the current one.
+ */
+const MAX_IN_FLIGHT = 2;
 /** Seconds of rim frames kept: the clip reaches 0.27 s before a call and the call can be a little late. */
 const BUFFER_SECONDS = 2;
 /** The make/miss model's bar for counting a make. */
@@ -55,7 +61,12 @@ export interface CameraStatus {
   /** Frames arriving, and detector runs per rim, per second. */
   frameFps: number;
   detectFps: Record<HOOP, number>;
+  /**
+   * A check from start to answer, and its parts: cutting the rim's square out of the frame (on the page), then in the
+   * worker. The rest is passing the square to the worker and the answer back.
+   */
   detectMs: number;
+  detectParts: { cutMs: number; prepMs: number; queueMs: number; inferMs: number; postMs: number };
   /** Average time spent on each video frame (cut-outs and motion check), ms. Must stay well under 33. */
   frameMs: number;
   /** Rims with recent motion. */
@@ -64,6 +75,25 @@ export interface CameraStatus {
   calls: CameraCall[];
   frame: { width: number; height: number } | null;
 }
+
+/** One second of the status, kept for the log file. */
+interface LogEntry {
+  /** Seconds since watching started, and the video time. */
+  at: number;
+  videoTime: number;
+  frameFps: number;
+  frameMs: number;
+  detectFps: Record<HOOP, number>;
+  detectMs: number;
+  detectParts: CameraStatus['detectParts'];
+  active: Record<HOOP, boolean>;
+  inFlight: number;
+}
+
+/** Seconds of status kept in the log: four hours. */
+const LOG_LIMIT = 4 * 3600;
+
+const round = (x: number, digits = 1) => Number(x.toFixed(digits));
 
 /**
  * One buffered frame: both rims' clip squares side by side (left rim first), kept on the GPU as an ImageBitmap.
@@ -123,6 +153,7 @@ const toStrip = (frames: Uint8ClampedArray[]): string => {
 const nearest = (buf: Buffered[], t: number): Buffered | undefined =>
   buf.reduce<Buffered | undefined>((best, f) => (!best || Math.abs(f.t - t) < Math.abs(best.t - t) ? f : best), undefined);
 
+const NO_PARTS = { cutMs: 0, prepMs: 0, queueMs: 0, inferMs: 0, postMs: 0 };
 const zeroByHoop = <T,>(v: T): Record<HOOP, T> => ({ [HOOP.LEFT]: v, [HOOP.RIGHT]: v });
 const hoopSlot = (hoop: HOOP) => HOOPS.indexOf(hoop);
 
@@ -138,7 +169,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [status, setStatus] = useState<CameraStatus>({
     source: FRAME_SOURCE.NONE, running: false, ready: false, loading: false, error: '', frameFps: 0,
-    detectFps: zeroByHoop(0), detectMs: 0, frameMs: 0, active: zeroByHoop(false), calls: [], frame: null,
+    detectFps: zeroByHoop(0), detectMs: 0, detectParts: NO_PARTS, frameMs: 0, active: zeroByHoop(false), calls: [], frame: null,
   });
 
   // Everything the frame loop touches lives here, so it always sees the latest values.
@@ -150,7 +181,8 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     makeCheck: null as MakeCheck | null,
     /** The models' load in progress, shared by every caller, so repeated taps can't load a second copy. */
     loadingModels: null as Promise<void> | null,
-    busy: false,
+    /** Checks started and not yet answered. */
+    inFlight: 0,
     stream: null as MediaStream | null,
     fileUrl: '',
     squareCtx: null as CanvasRenderingContext2D | null,
@@ -166,8 +198,11 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     frames: 0,
     runs: zeroByHoop(0),
     msSum: 0,
+    parts: { ...NO_PARTS },
     frameMsSum: 0,
     statsAt: performance.now(),
+    log: [] as LogEntry[],
+    startedAt: 0,
   });
   s.current.rims = rims;
   s.current.onMake = onMake;
@@ -186,15 +221,20 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
   const detect = useCallback(async (hoop: HOOP, t: number) => {
     const st = s.current, v = videoRef.current, rim = st.rims[hoop];
     if (!st.detector || !v || !rim || !st.detectCtx) return;
-    st.busy = true;
+    st.inFlight++;
     st.scheduler.ran(hoop, t);
     try {
       const crop = rimCrop(rim, DEFAULT_RIM_CROP_MULTIPLE, v.videoWidth, v.videoHeight);
+      const t0 = performance.now();
+      // Drawn into a GPU canvas, then snapshotted. Cropping straight from the video with createImageBitmap was slower
+      // on the iPhone (Safari 18): 25 ms instead of 18 to cut out, and slower for the worker to read.
       st.detectCtx.drawImage(v, crop.x, crop.y, crop.side, crop.side, 0, 0, DETECT_SIZE, DETECT_SIZE);
       const bitmap = await createImageBitmap(st.detectCtx.canvas);
-      const t0 = performance.now();
-      const dets = await st.detector.run(bitmap, DETECT_MIN_SCORE);
+      st.parts.cutMs += performance.now() - t0;
+      const { dets, ...parts } = await st.detector.run(bitmap, DETECT_MIN_SCORE);
       st.msSum += performance.now() - t0;
+      st.parts.prepMs += parts.prepMs; st.parts.queueMs += parts.queueMs;
+      st.parts.inferMs += parts.inferMs; st.parts.postMs += parts.postMs;
       st.runs[hoop]++;
       const boxes: BallBox[] = dets.filter((d) => d.cls === COCO_CLASS.SPORTS_BALL).map((d) => {
         const b = toVideoBox(d, crop, DETECT_SIZE);
@@ -211,7 +251,7 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     } catch (err) {
       fail(err);
     } finally {
-      st.busy = false;
+      st.inFlight--;
     }
   }, []);
 
@@ -267,9 +307,14 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     }
     st.frameMsSum += performance.now() - t0;
     // The scheduler picks the rim (src/shared/utils/checkScheduler.ts, the same rules the make eval simulates).
-    if (!st.busy) {
+    // Up to MAX_IN_FLIGHT checks can start on one frame, each on a different rim. One check per frame capped the
+    // checks at the frame rate (about 24 a second on the phone), while the model alone could do far more.
+    const started: HOOP[] = [];
+    while (st.inFlight < MAX_IN_FLIGHT) {
       const next = st.scheduler.next(t);
-      if (next) void detect(next, t);
+      if (!next || started.includes(next)) break;
+      started.push(next);
+      void detect(next, t);
     }
     const due = st.pending.filter((c) => t >= clipAnchor(c) + MAKE_CLIP_AFTER + 1 / MAKE_CLIP.fps);
     st.pending = st.pending.filter((c) => !due.includes(c));
@@ -284,12 +329,30 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
         frameFps: st.frames / secs,
         detectFps: { [HOOP.LEFT]: st.runs[HOOP.LEFT] / secs, [HOOP.RIGHT]: st.runs[HOOP.RIGHT] / secs },
         detectMs: runs ? st.msSum / runs : 0,
+        detectParts: {
+          cutMs: runs ? st.parts.cutMs / runs : 0,
+          prepMs: runs ? st.parts.prepMs / runs : 0, queueMs: runs ? st.parts.queueMs / runs : 0,
+          inferMs: runs ? st.parts.inferMs / runs : 0, postMs: runs ? st.parts.postMs / runs : 0,
+        },
         frameMs: st.frames ? st.frameMsSum / st.frames : 0,
         active: { [HOOP.LEFT]: st.scheduler.busy(HOOP.LEFT, t), [HOOP.RIGHT]: st.scheduler.busy(HOOP.RIGHT, t) },
         calls: st.calls.map((c) => ({ ...c })),
       };
       setStatus((old) => ({ ...old, ...next }));
-      st.frames = 0; st.runs = zeroByHoop(0); st.msSum = 0; st.frameMsSum = 0; st.statsAt = now;
+      if (st.log.length < LOG_LIMIT) {
+        st.log.push({
+          at: round((now - st.startedAt) / 1000), videoTime: round(t, 2),
+          frameFps: round(next.frameFps), frameMs: round(next.frameMs),
+          detectFps: { [HOOP.LEFT]: round(next.detectFps[HOOP.LEFT]), [HOOP.RIGHT]: round(next.detectFps[HOOP.RIGHT]) },
+          detectMs: round(next.detectMs),
+          detectParts: {
+            cutMs: round(next.detectParts.cutMs), prepMs: round(next.detectParts.prepMs), queueMs: round(next.detectParts.queueMs),
+            inferMs: round(next.detectParts.inferMs), postMs: round(next.detectParts.postMs),
+          },
+          active: next.active, inFlight: st.inFlight,
+        });
+      }
+      st.frames = 0; st.runs = zeroByHoop(0); st.msSum = 0; st.parts = { ...NO_PARTS }; st.frameMsSum = 0; st.statsAt = now;
     }
   }, [detect, check]);
 
@@ -395,6 +458,11 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
       st.makers = {};
       st.scheduler = createCheckScheduler(HOOPS.filter((h) => st.rims[h]));
       st.pending = [];
+      st.log = [];
+      st.calls = [];
+      st.startedAt = performance.now();
+      st.statsAt = st.startedAt;
+      st.frames = 0; st.runs = zeroByHoop(0); st.msSum = 0; st.parts = { ...NO_PARTS }; st.frameMsSum = 0;
       st.running = true;
       if (v.paused) await v.play();
       setStatus((old) => ({ ...old, running: true, error: '' }));
@@ -410,5 +478,24 @@ export const useCameraScorer = (rims: Partial<Record<HOOP, Rim>>, onMake: (hoop:
     s.current.makeCheck?.stop();
   }, []);
 
-  return { videoRef, status, openCamera, openFile, start, stop };
+  /**
+   * Everything about the last watch, as JSON for a file: the phone, the model, the rims, the status every second
+   * and each make. For sending to whoever is tuning the app.
+   */
+  const exportLog = useCallback((): string => {
+    const st = s.current, v = videoRef.current;
+    return JSON.stringify({
+      version: 1,
+      savedAt: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      source: st.source,
+      video: v ? { width: v.videoWidth, height: v.videoHeight, time: v.currentTime } : null,
+      model: { ball: LIVE_BALL_MODEL, size: DETECT_SIZE, maxInFlight: MAX_IN_FLIGHT, makeCheckThreshold: MAKE_CHECK_THRESHOLD },
+      rims: st.rims,
+      seconds: st.log,
+      calls: st.calls.map(({ strip: _strip, ...c }) => c),
+    }, null, 1);
+  }, []);
+
+  return { videoRef, status, openCamera, openFile, start, stop, exportLog };
 };

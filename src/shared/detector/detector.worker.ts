@@ -10,6 +10,9 @@ let size = 416;
 let classes: COCO_CLASS[] | null = null;
 const WANTED = [COCO_CLASS.PERSON, COCO_CLASS.SPORTS_BALL];
 let ctx: OffscreenCanvasRenderingContext2D | null = null;
+// A check can arrive while the model is still on the last one. Its pixels are prepared straight away, but the model
+// runs checks one after another (a session can't run two at once), in the order they came.
+let modelQueue: Promise<unknown> = Promise.resolve();
 
 const post = (m: WorkerOut) => (self as DedicatedWorkerGlobalScope).postMessage(m);
 
@@ -45,13 +48,22 @@ self.onmessage = async (e: MessageEvent<WorkerIn>) => {
       const px = ctx.getImageData(0, 0, size, size).data;
       const input = new ort.Tensor('float32', toTensorData(px, size), [1, 3, size, size]);
       const t1 = performance.now();
-      const out = await session.run({ [session.inputNames[0]]: input });
+      const s = session;
+      const turn = modelQueue.then(async () => {
+        const start = performance.now();
+        return { out: await s.run({ [s.inputNames[0]]: input }), start };
+      });
+      modelQueue = turn.catch(() => undefined);
+      const { out, start } = await turn;
       const t2 = performance.now();
       const raw = out[session.outputNames[0]];
       const numClasses = (raw.dims[2] as number) - 5;
       const dets = decodeWanted(raw.data as Float32Array, size, numClasses, WANTED, msg.threshold, classes ?? undefined);
       raw.dispose();
-      post({ type: WORKER_MESSAGE_TYPE.RESULT, id: msg.id, prepMs: t1 - t0, inferMs: t2 - t1, postMs: performance.now() - t2, dets });
+      post({
+        type: WORKER_MESSAGE_TYPE.RESULT, id: msg.id, prepMs: t1 - t0, queueMs: start - t1, inferMs: t2 - start,
+        postMs: performance.now() - t2, dets,
+      });
     }
   } catch (err) {
     post({ type: WORKER_MESSAGE_TYPE.ERROR, message: err instanceof Error ? err.message : String(err) });

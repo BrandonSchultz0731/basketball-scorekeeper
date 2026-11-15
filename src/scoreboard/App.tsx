@@ -136,8 +136,9 @@ export const App = () => {
           </Tabs.Panel>
 
           <Tabs.Panel value={TAB.CAMERA} pt="md">
-            <CameraTab rims={sb.settings.rims ?? {}} names={names} gameLive={isLive}
-              onRimsChange={(rims) => sb.settings && sb.updateSettings({ ...sb.settings, rims })} onMake={sb.scoreAuto} />
+            <CameraTab rims={sb.settings.rims ?? {}} rimRefs={sb.settings.rimRefs ?? {}} names={names} gameLive={isLive}
+              onRimsChange={(rims, rimRefs) => sb.settings && sb.updateSettings({ ...sb.settings, rims, rimRefs })}
+              onMake={sb.scoreAuto} />
           </Tabs.Panel>
 
           <Tabs.Panel value={TAB.LOG} pt="md">

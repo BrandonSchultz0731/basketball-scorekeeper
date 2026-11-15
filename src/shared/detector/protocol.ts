@@ -27,7 +27,7 @@ export type WorkerIn =
 
 export type WorkerOut =
   | { type: WORKER_MESSAGE_TYPE.READY; model: DETECTOR_MODEL; size: number; backend: BACKEND; loadMs: number; warmupMs: number; info: string }
-  | { type: WORKER_MESSAGE_TYPE.RESULT; id: number; prepMs: number; inferMs: number; postMs: number; dets: Detection[] }
+  | { type: WORKER_MESSAGE_TYPE.RESULT; id: number; prepMs: number; queueMs: number; inferMs: number; postMs: number; dets: Detection[] }
   | { type: WORKER_MESSAGE_TYPE.ERROR; message: string };
 
 export enum MAKE_CHECK_MESSAGE_TYPE {

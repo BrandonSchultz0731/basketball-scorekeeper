@@ -9,3 +9,4 @@ export * from './makeClip';
 export * from './makeEval';
 export * from './motion';
 export * from './yolox';
+export * from './rimFind';

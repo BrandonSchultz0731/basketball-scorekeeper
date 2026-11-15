@@ -1,3 +1,4 @@
+export * from './boxHandle';
 export * from './cocoClass';
 export * from './eventSource';
 export * from './frameSource';

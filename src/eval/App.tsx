@@ -119,7 +119,7 @@ export const App = () => {
           const crop = rimCrop(rim, m, video.width, video.height);
           const bitmap = await createImageBitmap(v, crop.x, crop.y, crop.side, crop.side,
             { resizeWidth: size, resizeHeight: size, resizeQuality: 'high' });
-          const dets = await detector.run(bitmap, MIN_SCORE);
+          const { dets } = await detector.run(bitmap, MIN_SCORE);
           balls[m] = dets
             .filter((d) => d.cls === COCO_CLASS.SPORTS_BALL)
             .slice(0, MAX_BALLS)

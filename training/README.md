@@ -36,6 +36,16 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 uv run python train.py ../footage/<clip>.boxes.jso
 - **Balls that come and go** (a pile by a wall that people take balls from): `mask_unboxed.py` adds per-frame patches from a model's eval results, covering every ball-sized detection in a given area that you didn't box. See the comment at the top of the script.
 - `PYTORCH_ENABLE_MPS_FALLBACK=1` lets any operation the Mac GPU lacks run on the CPU instead of failing.
 
+## Smaller model
+
+`--arch tiny` trains YOLOX-tiny instead of YOLOX-s: about a third of the work per check, for a phone that manages more checks a second. It needs the COCO weights once:
+
+```sh
+curl -L -o vendor/weights/yolox_tiny.pth https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_tiny.pth
+```
+
+The run saves its size in `runs/<name>/arch.txt`, so `detect_video.py` and `export_model.py` pick the right model, and the export is named `yolox_tiny_<name>.onnx`.
+
 ## Use a trained model in the app
 
 Copy the export into `public/models`, named to match its entry in `src/shared/detector/models.ts`:
@@ -69,3 +79,7 @@ uv run python train_make.py --name make_v1 --seeds 3
 - **Model:** a small CNN trained from scratch on 10 frames stacked as channels.
 - **Checking:** leave-one-video-out. Each video is graded by models trained on the other videos, and it prints how many makes are kept and misses dropped at several thresholds. `--seeds` averages several models per check, which is steadier with few clips.
 - **Output:** `runs/<name>/<name>.onnx`. `clips/` is gitignored.
+
+## Rim finding
+
+`rim_frames.py` saves still frames from the videos and `rim_check.py` draws found rims, both for the rim eval. See [docs/rim-eval.md](../docs/rim-eval.md).
